@@ -67,9 +67,16 @@
   }
   
   .nav{
+    background-color: white;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    box-shadow: 0px 0px 25px -13px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
   }
 
   .flex{
@@ -240,6 +247,7 @@
     box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.26);
     border-radius: 15px;
     box-sizing: border-box;
+    word-wrap: break-word;
   }
   .elevated {
     -webkit-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.26); 
@@ -287,6 +295,12 @@
   
   .mb-4{
     margin-bottom: 16px;
+  }
+
+  .mx-1{
+      margin-left: 4px;
+      margin-right: 4px;
+
   }
   
   /*  GRID AND LAYOUT */
@@ -360,8 +374,7 @@
       font-size: 60px;
     }
    }
-  
-  /* X-Large devices (lcontentarge desktops, 1200px and up)*/
+   margin
   @media (min-width: 1200px) { 
     .container{
       max-width: 1140px;
@@ -393,9 +406,12 @@
 </style>
 
 <body>
-    <div class="container" >
 
- <h1> Comidas </h1>
+    {% include "navbar.njk" %}
+
+    <div class="container mt-4" >
+
+        <h1 class="title mt-4 " > Comidas </h1>
         <form method="POST"  >
             <h2> {% block title %} Anadir comida al menu {% endblock %}</h2>
             <input class="mt-2" name="name" placeholder="Nombre (Obligatorio)" value="{%block foodName%}{% endblock %}" required />

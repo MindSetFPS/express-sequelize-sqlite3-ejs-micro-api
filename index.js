@@ -48,15 +48,25 @@ app.get('/edit/:id', async (req, res) => {
     const search = await Food.findByPk(req.params.id, {
         attributes: ['id', 'name', 'description', 'link'],
         limit: 1,
-
     })
 
     console.log(search)
     res.render('edit', {food: search  })
 })
 
-app.post('/edit/:id', (req, res) => {
+app.post('/edit/:id', async (req, res) => {
     console.log('Editing...')
+    const search = await Food.findByPk(req.params.id, {
+        attributes: ['id', 'name', 'description', 'link'],
+        limit: 1,
+    })
+
+    search.update({
+        name: req.body.name,
+        description: req.body.description,
+        link: req.body.link
+    })
+
     res.redirect('/')
 })
 
