@@ -6,14 +6,15 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "help": "nodemon -h"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "ejs": "^3.1.6",
     "express": "^4.17.1",
+    "nunjucks": "^3.2.3",
     "sequelize": "^6.6.2",
     "sqlite3": "^5.0.2"
   },

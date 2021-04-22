@@ -1,23 +1,30 @@
 const express = require('express')
 const Food = require('./model')
 const bodyParser = require('body-parser')
+const nunjucks = require('nunjucks')
 
 const app = express()
 const port = 3000
 
+nunjucks.configure('views', {
+    autoescape: true,
+    noCache: true,
+    express: app
+})
+
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 
-
-app.engine('.html', require('ejs').__express);
-app.set('view engine', 'html');
+app.set('view engine', '.njk')
+app.set('view cache', false)
 
 //-- ROUTES --//
 app.get('/', (req, res) => {
     Food.findAll()
-        .then(food => 
-            res.render('index', {menu: food})
-        )
+    .then(food => {
+        res.render('index.njk', {menu: food})
+        console.log(typeof food )
+    })
 })
 
 app.get('/api/', (req, res) => {
@@ -33,6 +40,23 @@ app.post('/create',async (req, res) => {
         newFood = Food.build({name: req.body.name, description: req.body.description, link: req.body.link})
         await newFood.save()
     }
+    res.redirect('/')
+})
+
+app.get('/edit/:id', async (req, res) => {
+    console.log('New edit request.')
+    const search = await Food.findByPk(req.params.id, {
+        attributes: ['id', 'name', 'description', 'link'],
+        limit: 1,
+
+    })
+
+    console.log(search)
+    res.render('edit', {food: search  })
+})
+
+app.post('/edit/:id', (req, res) => {
+    console.log('Editing...')
     res.redirect('/')
 })
 

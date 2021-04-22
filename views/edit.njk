@@ -1,0 +1,21 @@
+{% extends "base.njk" %}
+
+{% block title  %}
+Editar comida
+{% endblock %}
+
+{% block foodName %}
+{{food.name}}
+{% endblock %}
+
+{% block foodDescription %}
+{{food.description}}
+{% endblock %}
+
+{% block foodLink %}
+{{food.link}}
+{% endblock %}
+ 
+{% block submitEdit %}
+{{'/edit/' + food.id}}
+{% endblock %}
