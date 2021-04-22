@@ -20,65 +20,60 @@ app.set('view cache', false)
 
 //-- ROUTES --//
 app.get('/', (req, res) => {
+    console.log('Sending...')
     Food.findAll()
     .then(food => {
         res.render('index.njk', {menu: food})
-        console.log(typeof food )
     })
 })
 
 app.get('/api/', (req, res) => {
+    console.log('Sending Api...')
     Food.findAll().then(food => 
         res.json(food)
     )
 })
 
 app.post('/create',async (req, res) => {
-    console.log('New request received')
-
     if(req.body.name){
         newFood = Food.build({name: req.body.name, description: req.body.description, link: req.body.link})
         await newFood.save()
     }
+    console.log('Created')
     res.redirect('/')
 })
 
 app.get('/edit/:id', async (req, res) => {
-    console.log('New edit request.')
     const search = await Food.findByPk(req.params.id, {
         attributes: ['id', 'name', 'description', 'link'],
         limit: 1,
     })
-
-    console.log(search)
+    console.log('Sending...')
     res.render('edit', {food: search  })
 })
 
 app.post('/edit/:id', async (req, res) => {
-    console.log('Editing...')
     const search = await Food.findByPk(req.params.id, {
         attributes: ['id', 'name', 'description', 'link'],
         limit: 1,
     })
-
     search.update({
         name: req.body.name,
         description: req.body.description,
         link: req.body.link
     })
+    console.log('Updated...')
 
     res.redirect('/')
 })
 
 app.get('/delete/:id', (req, res) => {
-    console.log('New delete request')
-    console.log(req.params)
     Food.destroy({
         where: {
             id: req.params.id
         }
     })
-    console.log('deleteado')
+    console.log('Deleted...')
     res.redirect('/')
 })
 

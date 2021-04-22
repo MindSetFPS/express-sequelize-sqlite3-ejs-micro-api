@@ -2,24 +2,27 @@
 {% extends "base.njk" %}
 
 {% block content%}
+    <div class="mb-extra" >
         {% for food in  menu %}
-        <div class="card mt-4" >
-            <div class="flex" >
-                <h2>  {{ food.name }}   </h2>
-                <div class="flex" >
-                    <form method="GET" class="mx-1" >
-                        <input type="submit" formaction="/edit/{{food.id}}" class="blue" value="Editar">
-                    </form>
-                    <form method="GET" class="mx-1" >
-                        <input type="submit" formaction="/delete/{{food.id}}" class="love" value="Borrar">
-                    </form>
-                </div>
+        <div class="card mt-4 mb-4 " >
+            <div class="flex-resizable " >
+                <h1 class="">  {{ food.name }}   </h1>
             </div>
             <p> {{ food.description }} </p>
-            <a href="" > {{ food.link }} </a>
+            <a href="{{ food.link }}" target="_blank" rel="noopener noreferrer" > {{ food.link }} </a>
+            <div class="flex mt-2" >
+                <form method="GET" class="mx-1" >
+                    <input type="submit" formaction="/edit/{{food.id}}" class="blue secondary" value="Editar">
+                </form>
+                <form method="GET" class="mx-1" >
+                    <input type="submit" formaction="/delete/{{food.id}}" class="love secondary" value="Borrar">
+                </form>
+            </div>
         </div>
-    {% endfor %}
-{% endblock %}
+        {% endfor %}
+    </div>
+    {% endblock %}
+    
 
 <!--
 

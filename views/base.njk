@@ -81,7 +81,7 @@
 
   .flex{
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
   }
   button { 
@@ -296,6 +296,16 @@
   .mb-4{
     margin-bottom: 16px;
   }
+  .mb-5{
+      margin-bottom: 20px;
+  }
+  .mb-6{
+      margin-bottom: 24px;
+  }
+
+  .mb-extra{
+      margin-bottom: 72px;
+  }
 
   .mx-1{
       margin-left: 4px;
@@ -322,6 +332,10 @@
     min-width: 160px;
     z-index: 1;
     right: 0;
+  }
+
+  .flex-resizable{
+      display: block;
   }
   
 
@@ -373,8 +387,11 @@
     .title{
       font-size: 60px;
     }
+    .flex-resizable{
+        display: flex;
+        justify-content: space-between;
+    }
    }
-   margin
   @media (min-width: 1200px) { 
     .container{
       max-width: 1140px;
@@ -409,9 +426,8 @@
 
     {% include "navbar.njk" %}
 
-    <div class="container mt-4" >
-
-        <h1 class="title mt-4 " > Comidas </h1>
+    <div class="container" >
+        <h1 class="title" > Comidas </h1>
         <form method="POST"  >
             <h2> {% block title %} Anadir comida al menu {% endblock %}</h2>
             <input class="mt-2" name="name" placeholder="Nombre (Obligatorio)" value="{%block foodName%}{% endblock %}" required />
@@ -420,11 +436,7 @@
 
             <input class="mt-2 green" type="submit" value="Enviar" formaction="{% block submitEdit %}/create{% endblock %}" />
         </form>
-
- 
- 
-        {% block content %}{% endblock %}
-
+            {% block content %}{% endblock %}
     </div>
 </body>
 </html>
