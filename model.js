@@ -2,12 +2,10 @@ const { DataTypes, Sequelize, ForeignKeyConstraintError } = require('sequelize')
 const db = require('./db')
 
 /*
-
 ------- COMIDA -------
 id      Name        description     link
 INT     STRING      STRING          STRING
 1       awa         joder q sed     awa.com
-
 */
 
 const Food = db.define('food', {
@@ -29,12 +27,10 @@ const Food = db.define('food', {
 })
 
 /*
-
 ------  Pedido -------
 idPedido!       comprador!      entregado!      total!      pagado!     fecha!      ubicacion?    
 INT             STRING          BOOLEAN         FLOAT       BOOLEAN     DATE        STRING
 3123123                         
-
 */
 
 const Pedido = db.define('pedido',{
@@ -71,7 +67,6 @@ const Pedido = db.define('pedido',{
 idPedidoFK  idComidaFK      cantidad
 INT         INT             INT
 5           12-takitos-     3
-
 */
 
 const PedidoItem = db.define('pedidoItem', {
@@ -94,6 +89,41 @@ const PedidoItem = db.define('pedidoItem', {
     }
 })
 
+/*
+------- ORDER ITEM --------
+id      date            menu1  menu2
+INT     DATE            INT     INT
+2       2020-04-25      4       23
+*/
+
+const TodaysMenu = db.define('todaysMenu', {
+    id: {
+        type: DataTypes.INTEGER,
+        unique: true,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    date: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+
+    },
+    menu1: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Food,
+            key: 'id'
+        }, 
+    },
+    menu2: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Food,
+            key: 'id'
+        }
+    }
+})
+
 
 /*
 
@@ -104,11 +134,14 @@ const PedidoItem = db.define('pedidoItem', {
 Food.sync().then(() => console.log('Food created'))
 Pedido.sync().then(() => console.log('Pedido created'))
 PedidoItem.sync().then(() => console.log('PedidoItem created'))
+TodaysMenu.sync().then(() => console.log('TodaysMenu created'))
+
 
 
 
 module.exports = {
     Food,
     Pedido,
-    PedidoItem
+    PedidoItem,
+    TodaysMenu
 };

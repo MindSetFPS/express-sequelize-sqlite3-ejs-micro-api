@@ -1,0 +1,30 @@
+{% extends "base.njk" %}
+
+
+{% block title %}
+<h1 class="title"> Crear Menu del Dia </h1>
+{% endblock %}
+
+{% block content %}
+
+<form autocomplete="off" >
+    
+    <label > Comida 1  </label>
+    <input type="text" placeholder="Nombre del Cliente" />
+
+    <label > Comida 2</label>
+    <input type="text" placeholder="Nombre del Cliente" autocomplete="off" list="menudata"  />
+ 
+    
+    <input type="submit" class="button blue mt-4 title" value="Crear Pedido" />
+</form>
+
+<h1 class="title" > Total: </h1>
+
+<datalist id="menudata" >
+    {% for food in menu %}
+        <option> {{ food.name }} </option>
+    {% endfor %}
+</datalist>
+
+{% endblock %}

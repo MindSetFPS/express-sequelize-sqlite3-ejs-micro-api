@@ -1,7 +1,12 @@
 const express = require('express')
-const Food = require('./model')
 const bodyParser = require('body-parser')
 const nunjucks = require('nunjucks')
+
+const foodRoutes = require('./food')
+const createPedidos = require('./createPedido')
+
+const { Food } = require('./model')
+
 
 const app = express()
 const port = 3000
@@ -14,68 +19,22 @@ nunjucks.configure('views', {
 
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static('static'))
 
 app.set('view engine', '.njk')
 app.set('view cache', false)
 
-//-- ROUTES --//
-app.get('/', (req, res) => {
-    console.log('Sending...')
-    Food.findAll()
-    .then(food => {
-        res.render('index.njk', {menu: food})
-    })
-})
+app.use('/', createPedidos )
 
-app.get('/api/', (req, res) => {
-    console.log('Sending Api...')
-    Food.findAll().then(food => 
-        res.json(food)
+app.get('/today', (req, res) => {
+    Food.findAll().then(
+        food => {
+            res.render('create-today-menu', {menu: food})
+        }
     )
 })
 
-app.post('/create',async (req, res) => {
-    if(req.body.name){
-        newFood = Food.build({name: req.body.name, description: req.body.description, link: req.body.link})
-        await newFood.save()
-    }
-    console.log('Created')
-    res.redirect('/')
-})
-
-app.get('/edit/:id', async (req, res) => {
-    const search = await Food.findByPk(req.params.id, {
-        attributes: ['id', 'name', 'description', 'link'],
-        limit: 1,
-    })
-    console.log('Sending...')
-    res.render('edit', {food: search  })
-})
-
-app.post('/edit/:id', async (req, res) => {
-    const search = await Food.findByPk(req.params.id, {
-        attributes: ['id', 'name', 'description', 'link'],
-        limit: 1,
-    })
-    search.update({
-        name: req.body.name,
-        description: req.body.description,
-        link: req.body.link
-    })
-    console.log('Updated...')
-
-    res.redirect('/')
-})
-
-app.get('/delete/:id', (req, res) => {
-    Food.destroy({
-        where: {
-            id: req.params.id
-        }
-    })
-    console.log('Deleted...')
-    res.redirect('/')
-})
+app.use('/food', foodRoutes)
 
 app.listen(port, () => {
     console.log('Running on port: ', port)
