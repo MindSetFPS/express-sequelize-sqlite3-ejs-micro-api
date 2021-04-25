@@ -7,16 +7,18 @@
 
 {% block content %}
 
-<form autocomplete="off" >
+<form autocomplete="off" method="POST"   >
     
     <label > Comida 1  </label>
-    <input type="text" placeholder="Nombre del Cliente" />
+    <input type="text" name="comida1" placeholder="Nombre del platillo" autocomplete="off" list="menudata" />
 
     <label > Comida 2</label>
-    <input type="text" placeholder="Nombre del Cliente" autocomplete="off" list="menudata"  />
+    <input type="text" name="comida2" placeholder="Nombre del platillo" autocomplete="off" list="menudata"  />
  
+    <label > Fecha </label>
+    <input type="date" name="date"    />
     
-    <input type="submit" class="button blue mt-4 title" value="Crear Pedido" />
+    <input type="submit" class="button blue mt-4 title" value="Crear Menu" formaction="/today" />
 </form>
 
 <h1 class="title" > Total: </h1>

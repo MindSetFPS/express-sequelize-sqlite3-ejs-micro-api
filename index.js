@@ -5,7 +5,7 @@ const nunjucks = require('nunjucks')
 const foodRoutes = require('./food')
 const createPedidos = require('./createPedido')
 
-const { Food } = require('./model')
+const { Food, TodaysMenu } = require('./model')
 
 
 const app = express()
@@ -32,6 +32,42 @@ app.get('/today', (req, res) => {
             res.render('create-today-menu', {menu: food})
         }
     )
+})
+
+app.post('/today', async (req, res) => {
+    if(req.body.comida1 && req.body.comida2){
+
+        const search1 = await Food.findOne({
+            where: {
+                name: req.body.comida1
+            }
+        })
+
+        const search2 = await Food.findOne({
+            where: {
+                name: req.body.comida2
+            }
+        })
+
+        console.log('Id comida1: ' + search1.id)
+        console.log('Id comida2: ' + search2.id)
+
+        
+        newTodayMenu = TodaysMenu.build({
+            menu1: search1.id,
+            menu2: search2.id,
+            date: req.body.date
+        })
+        await newTodayMenu.save().then( (e) => console.log(e))
+        
+    }
+})
+
+app.post('/today', (req, res) => {
+    console.log(req.body.comida1)
+    console.log(req.body.comida2)
+    
+    res.redirect('/today')
 })
 
 app.use('/food', foodRoutes)

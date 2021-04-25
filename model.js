@@ -17,6 +17,7 @@ const Food = db.define('food', {
     },
     name: {
         type: DataTypes.STRING,
+        unique: true
     },
     description: {
         type: DataTypes.TEXT,

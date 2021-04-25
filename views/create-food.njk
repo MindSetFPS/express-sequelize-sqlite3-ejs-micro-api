@@ -12,7 +12,7 @@
             <input class="mt-2" name="description" placeholder="Descripcion (Opcional) " value="{% block foodDescription %}{% endblock %}" />
             <input class="mt-2" name="link" placeholder="Link (Opcional) " value="{% block foodLink %}{% endblock %}" />
 
-            <input class="mt-2 green" type="submit" value="Enviar" formaction="{% block submitEdit %}/create{% endblock %}" />
+            <input class="mt-2 green" type="submit" value="Enviar" formaction="{% block submitEdit %}/food/create{% endblock %}" />
         </form>
 
 {% endblock %}
