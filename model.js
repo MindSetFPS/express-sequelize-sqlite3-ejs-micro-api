@@ -70,14 +70,15 @@ INT         INT             INT
 5           12-takitos-     3
 */
 
-const PedidoItem = db.define('pedidoItem', {
+const PedidoItems = db.define('pedidoItems', {
     pedidoId: {
         type: DataTypes.UUIDV4,
         references: {
             model: Pedido,
             key: 'id'
-        },
-    FoodId: {
+        }
+    },
+    foodId: {
         type: DataTypes.INTEGER,
         references: {
             model: Food,
@@ -86,7 +87,6 @@ const PedidoItem = db.define('pedidoItem', {
     },
     quantity: {
         type: DataTypes.FLOAT
-    }
     }
 })
 
@@ -97,7 +97,7 @@ INT     DATE            INT     INT
 2       2020-04-25      4       23
 */
 
-const TodaysMenu = db.define('todaysMenu', {
+const DayMenu = db.define('dayMenu', {
     id: {
         type: DataTypes.INTEGER,
         unique: true,
@@ -109,33 +109,41 @@ const TodaysMenu = db.define('todaysMenu', {
         allowNull: false,
 
     },
-    menu1: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: Food,
-            key: 'id'
-        }, 
-    },
-    menu2: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: Food,
-            key: 'id'
-        }
-    }
+
 })
 
 
-/*
 
-------- MENU DEL DIA --------
+//TodaysMenu.belongsTo(Food, {foreignKey: 'menu1'})
+//TodaysMenu.belongsTo(Food, {foreignKey: 'menu2'})
 
-*/
 
-Food.sync().then(() => console.log('Food created'))
-Pedido.sync().then(() => console.log('Pedido created'))
-PedidoItem.sync().then(() => console.log('PedidoItem created'))
-TodaysMenu.sync().then(() => console.log('TodaysMenu created'))
+//Food.hasMany(DayMenu)
+//DayMenu.belongsTo(Food, {foreignKey: 'comida1', as: 'alias1'})
+//DayMenu.belongsTo(Food, {foreignKey: 'comida2',    as: 'alias2'})
+
+///////////////////////////////
+
+Food.hasOne(DayMenu, {foreignKey: 'comida1', as: 'Comida1'})
+Food.hasOne(DayMenu, {foreignKey: 'comida2', as: 'Comida2'});
+
+DayMenu.belongsTo(Food, {foreignKey: 'comida1', as: 'Comida1'});
+DayMenu.belongsTo(Food, {foreignKey: 'comida2', as: 'Comida2'});
+
+
+
+
+
+
+
+//-----MANY TO MANY 
+Pedido.belongsToMany(Food, {through: PedidoItems})
+Food.belongsToMany(Pedido, {through: PedidoItems})
+
+Food.sync().then(() => console.log('Food created')).catch((e) => console.log(e))
+Pedido.sync().then(() => console.log('Pedido created')).catch((e) => console.log(e))
+PedidoItems.sync().then(() => console.log('PedidoItems created')).catch((e) => console.log(e))
+DayMenu.sync().then(() => console.log('DayMenu created')).catch((e) => console.log(e))
 
 
 
@@ -143,6 +151,6 @@ TodaysMenu.sync().then(() => console.log('TodaysMenu created'))
 module.exports = {
     Food,
     Pedido,
-    PedidoItem,
-    TodaysMenu
+    PedidoItems,
+    DayMenu
 };

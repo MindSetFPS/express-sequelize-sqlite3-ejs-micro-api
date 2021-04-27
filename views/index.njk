@@ -1,7 +1,6 @@
-
 {% extends "base.njk" %}
 
-{% block content%}
+{% block content %}
     <div class="mb-extra" >
         {% for food in  menu %}
         <div class="card mt-4 mb-4 " >
@@ -12,16 +11,16 @@
             <a href="{{ food.link }}" target="_blank" rel="noopener noreferrer" > {{ food.link }} </a>
             <div class="flex mt-2" >
                 <form method="GET" class="mx-1" >
-                    <input type="submit" formaction="/edit/{{food.id}}" class="blue secondary" value="Editar">
+                    <input type="submit" formaction="/food/edit/{{food.id}}" class="blue secondary" value="Editar">
                 </form>
                 <form method="GET" class="mx-1" >
-                    <input type="submit" formaction="/delete/{{food.id}}" class="love secondary" value="Borrar">
+                    <input type="submit" formaction="/food/delete/{{food.id}}" class="love secondary" value="Borrar">
                 </form>
             </div>
         </div>
         {% endfor %}
     </div>
-    {% endblock %}
+{% endblock %}
     
 
 <!--

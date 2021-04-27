@@ -6,19 +6,31 @@
 
 {% block content %}
 
-<form>
-    <label > Nombre del cliente</label>
-    <input type="text" placeholder="Nombre del Cliente" />
+    <form>
+        <label > <h1> Nombre del cliente </h1> </label>
+        <input type="text" placeholder="Nombre del Cliente" />
 
-    <label > Ubicacion  </label>
-    <input type="text" placeholder="Nombre del Cliente" />
-    
-    <label > Nombre del cliente</label>
-    <input type="text" placeholder="Nombre del Cliente" />
-    
-    <input type="submit" class="button blue mt-4 title" value="Crear Pedido" />
-</form>
+        <label > Ubicacion  </label>
+        <input type="text" placeholder="Nombre del Cliente" />
 
-<h1 class="title" > Total: </h1>
+        <div style="text-align: center;" >
+            <div>
+                <label   > <h2> {{ comida1.name }} </h2> </label>
+                <input type="number" placeholder="cantidad" style="width: 40%" />
+            </div>
+            <div>
+                <label  > <h2> {{ comida2.name }} </h2> </label>
+                <input type="number" placeholder="cantidad" style="width: 40% ;" />
+            </div>
+            <input type="submit" class="button blue mt-4 title" value="Crear Pedido" />
+        </div>
+    </form>
+    <h1 class="title" > Total: </h1>
 
 {% endblock %}
+
+<script>
+
+    //Por hacer:
+    //Lista automatica de clientes con datalist 
+</script>

@@ -1,0 +1,17 @@
+{% extends "base.njk" %}
+
+{% block content %}
+<h1 class="title" > Calendario </h1>
+    <div class="mb-extra" >
+        {% for menu in  menuList %}
+        <h2 class="subtitle " >{{ menu.date }} </h2>
+        <div class="card mt-4 mb-4 " >
+            <h3 > {{menu.Comida1.name}}</h3>
+        </div>
+        <div class="card mt-4 mb-4 " >
+            <h3 > {{menu.Comida2.name}}</h3>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+    

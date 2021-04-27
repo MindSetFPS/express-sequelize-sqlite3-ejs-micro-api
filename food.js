@@ -13,6 +13,13 @@ router.get('/', (req, res) => {
     })
 })
 
+router.get('/list', async (req, res)=>{
+    await Food.findAll().then(food => {
+
+        res.render('index.njk', {menu: food})
+    })
+})
+
 router.get('/api/', (req, res) => {
     console.log('Sending Api...')
     Food.findAll().then(food => 
@@ -22,20 +29,22 @@ router.get('/api/', (req, res) => {
 
 router.post('/create',async (req, res) => {
     if(req.body.name){
-        newFood = Food.build({name: req.body.name, description: req.body.description, link: req.body.link})
-        await newFood.save()
+        newFood = await Food.build({name: req.body.name, description: req.body.description, link: req.body.link})
+        await newFood.save().catch( (e) => console.log(e))
     }
     console.log('Created')
     res.redirect('/')
 })
 
 router.get('/edit/:id', async (req, res) => {
-    const search = await Food.findByPk(req.params.id, {
+    await Food.findByPk(req.params.id, {
         attributes: ['id', 'name', 'description', 'link'],
         limit: 1,
-    })
-    console.log('Sending...')
-    res.render('edit', {food: search  })
+    }).then( query => {
+
+        console.log('Sending...')
+        res.render('edit', {food: query })
+    } )  
 })
 
 router.post('/edit/:id', async (req, res) => {

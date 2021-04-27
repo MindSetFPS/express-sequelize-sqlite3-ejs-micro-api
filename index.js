@@ -5,7 +5,7 @@ const nunjucks = require('nunjucks')
 const foodRoutes = require('./food')
 const createPedidos = require('./createPedido')
 
-const { Food, TodaysMenu } = require('./model')
+const { Food, DayMenu } = require('./model')
 
 
 const app = express()
@@ -26,10 +26,25 @@ app.set('view cache', false)
 
 app.use('/', createPedidos )
 
-app.get('/today', (req, res) => {
+app.get('/create-menu', (req, res) => {
     Food.findAll().then(
         food => {
             res.render('create-today-menu', {menu: food})
+        }
+    )
+})
+
+app.get('/calendar', (req, res)=> {
+    DayMenu.findAll({
+        
+        include: [
+            { model: Food, as: 'Comida1' },
+            { model: Food, as: 'Comida2' }
+        ]
+
+    }).then(
+        menuList => {
+            res.render('calendar', {menuList: menuList})
         }
     )
 })
@@ -52,13 +67,15 @@ app.post('/today', async (req, res) => {
         console.log('Id comida1: ' + search1.id)
         console.log('Id comida2: ' + search2.id)
 
-        
-        newTodayMenu = TodaysMenu.build({
-            menu1: search1.id,
-            menu2: search2.id,
+        newTodayMenu = DayMenu.build({
+            comida1: search1.id,
+            comida2: search2.id,
             date: req.body.date
         })
-        await newTodayMenu.save().then( (e) => console.log(e))
+        await newTodayMenu.save().then( (e) => {
+            console.log(e)
+            res.redirect('/')
+        })
         
     }
 })
