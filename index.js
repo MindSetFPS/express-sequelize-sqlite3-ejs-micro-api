@@ -1,12 +1,21 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const nunjucks = require('nunjucks')
+const date = require('dayjs')
+const localizedFormat = require('dayjs/plugin/localizedFormat') 
+require('dayjs/locale/es')
+
 
 const foodRoutes = require('./food')
 const createPedidos = require('./createPedido')
+const listPedidos = require('./listPedidos')
 
+const { Op } = require('sequelize')
 const { Food, DayMenu } = require('./model')
+const dayjs = require('dayjs')
 
+
+dayjs.extend(localizedFormat)
 
 const app = express()
 const port = 3000
@@ -25,6 +34,7 @@ app.set('view engine', '.njk')
 app.set('view cache', false)
 
 app.use('/', createPedidos )
+app.use('/pedidos', listPedidos )
 
 app.get('/create-menu', (req, res) => {
     Food.findAll().then(
@@ -35,8 +45,13 @@ app.get('/create-menu', (req, res) => {
 })
 
 app.get('/calendar', (req, res)=> {
+
+    formatedDate = date().format('YYYY-MM-DD')
+
     DayMenu.findAll({
-        
+        where: {
+            date: {[Op.gte]: formatedDate}
+        },
         include: [
             { model: Food, as: 'Comida1' },
             { model: Food, as: 'Comida2' }
@@ -44,7 +59,20 @@ app.get('/calendar', (req, res)=> {
 
     }).then(
         menuList => {
-            res.render('calendar', {menuList: menuList})
+            const clientMenuList = []
+            menuList.forEach(element => {
+                const x = {
+                    fecha : date(element.date).locale('es').format('LL'),
+                    comida1 : element.Comida1,
+                    comida2 : element.Comida2,
+                }
+
+                clientMenuList.push(x)
+            })
+
+            console.log(typeof clientMenuList)
+
+            res.render('calendar', {menuList: clientMenuList, date: date().locale('es').format('LL')})
         }
     )
 })

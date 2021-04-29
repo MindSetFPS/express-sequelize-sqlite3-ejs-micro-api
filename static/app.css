@@ -326,6 +326,10 @@
   .flex-resizable{
       display: block;
   }
+
+  .stack {
+      display: grid;
+  }
   
 
 
@@ -351,6 +355,9 @@
     }
     .container{
       max-width: 540px;
+    }
+    .stack {
+        display: block;
     }
     
    }
