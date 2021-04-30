@@ -9,8 +9,9 @@ const createPedidos = require('./createPedido')
 const { Op } = require('sequelize')
 const { Food, DayMenu, Pedido, PedidoItems } = require('./model')
 
-router.get('/', (req, res) => {
-    res.send('test')
+router.get('/', async (req, res) => {
+    pedidos = await Pedido.findAll()
+    res.render('list-pedidos', {pedidos: pedidos})
 })
 
 module.exports = router;

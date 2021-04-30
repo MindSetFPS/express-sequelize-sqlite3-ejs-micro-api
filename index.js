@@ -65,6 +65,7 @@ app.get('/calendar', (req, res)=> {
                     fecha : date(element.date).locale('es').format('LL'),
                     comida1 : element.Comida1,
                     comida2 : element.Comida2,
+                    id: element.id
                 }
 
                 clientMenuList.push(x)
@@ -77,7 +78,16 @@ app.get('/calendar', (req, res)=> {
     )
 })
 
-app.post('/today', async (req, res) => {
+app.get('/calendar/delete/:id', (req, res) => {
+    DayMenu.destroy({
+        where: {
+            id: req.params.id
+        }
+    })
+    res.redirect('/calendar')
+})
+
+app.post('/create-menu', async (req, res) => {
     if(req.body.comida1 && req.body.comida2){
 
         const search1 = await Food.findOne({
@@ -108,12 +118,6 @@ app.post('/today', async (req, res) => {
     }
 })
 
-app.post('/today', (req, res) => {
-    console.log(req.body.comida1)
-    console.log(req.body.comida2)
-    
-    res.redirect('/today')
-})
 
 app.use('/food', foodRoutes)
 

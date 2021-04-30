@@ -1,0 +1,27 @@
+{% extends "base.njk" %}
+
+{% block content %}
+<h1 class="title" > Pedidos </h1>
+
+<div class="flex" style="justify-content: space-evenly;" >
+
+    <h1>Cliente</h1>
+    <h1>Entregado</h1>
+    <h1>Total</h1>
+    <h1>Pagado</h1>
+    <h1>Lugar</h1>
+</div>
+
+{% for pedido in pedidos %}
+    <div class="flex" style="justify-content: space-evenly;"  >
+        <div> {{ pedido.customer}} </div>
+        <div> {{ pedido.delivered}} </div>
+        <div> {{ pedido.total}} </div>
+        <div> {{ pedido.paid}} </div>
+        <div> {{ pedido.location}} </div>
+    </div>
+
+{% endfor %}
+
+
+{% endblock %}
