@@ -9,19 +9,19 @@
 
 <form autocomplete="off" method="POST"   >
     
-    <label > Comida 1  </label>
+    <label > Elige un platillo.  </label>
     <input type="text" name="comida1" placeholder="Nombre del platillo" autocomplete="off" list="menudata" />
 
-    <label > Comida 2</label>
+    <label > Elige un platillo mas.</label>
     <input type="text" name="comida2" placeholder="Nombre del platillo" autocomplete="off" list="menudata"  />
  
-    <label > Fecha </label>
+    <label > En que fecha estara disponible este menu? </label>
     <input type="date" name="date"    />
     
     <input type="submit" class="button blue mt-4 title" value="Crear Menu" formaction="/create-menu" />
 </form>
-
-<h1 class="title" > Total: </h1>
+ 
+{{ error }}
 
 <datalist id="menudata" >
     {% for food in menu %}

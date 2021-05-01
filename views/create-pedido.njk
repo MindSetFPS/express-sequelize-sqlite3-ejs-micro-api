@@ -27,6 +27,22 @@
     </form>
     <h1 class="title" > Total: </h1>
 
+    {% if comida1 %}
+
+    {% else %}
+
+    <div class="card love " style="display: block; align-items: center; font-size: 16px; vertical-align: middle;"  >
+        
+        <span class="material-icons" style="font-size: 18px; vertical-align: middle;" >&#xe000;</span>
+
+            {{ error }} 
+            <a href="/calendar/create-menu" >
+                <span class="material-icons" style="font-size: 18px; vertical-align: middle; color: cornflowerblue;" >&#xe895;</span>
+            </a>
+    </div>
+
+    {% endif %}
+
 {% endblock %}
 
 <script>

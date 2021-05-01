@@ -27,6 +27,7 @@ router.get('/', async (req, res) => {
                 })  
     } catch (e) {
         console.log(e)
+        res.render('create-pedido', {error: 'Para crear un pedido antes tienes que crear un menu que corresponda al dia de hoy.'})
     }
 })
 

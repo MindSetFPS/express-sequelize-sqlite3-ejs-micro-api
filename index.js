@@ -5,12 +5,11 @@ const date = require('dayjs')
 const localizedFormat = require('dayjs/plugin/localizedFormat') 
 require('dayjs/locale/es')
 
-
 const foodRoutes = require('./food')
 const createPedidos = require('./createPedido')
 const listPedidos = require('./listPedidos')
+const listCalendar = require('./listCalendar')
 
-const { Op } = require('sequelize')
 const { Food, DayMenu } = require('./model')
 const dayjs = require('dayjs')
 
@@ -35,57 +34,9 @@ app.set('view cache', false)
 
 app.use('/', createPedidos )
 app.use('/pedidos', listPedidos )
+app.use('/calendar', listCalendar)
 
-app.get('/create-menu', (req, res) => {
-    Food.findAll().then(
-        food => {
-            res.render('create-today-menu', {menu: food})
-        }
-    )
-})
 
-app.get('/calendar', (req, res)=> {
-
-    formatedDate = date().format('YYYY-MM-DD')
-
-    DayMenu.findAll({
-        where: {
-            date: {[Op.gte]: formatedDate}
-        },
-        include: [
-            { model: Food, as: 'Comida1' },
-            { model: Food, as: 'Comida2' }
-        ]
-
-    }).then(
-        menuList => {
-            const clientMenuList = []
-            menuList.forEach(element => {
-                const x = {
-                    fecha : date(element.date).locale('es').format('LL'),
-                    comida1 : element.Comida1,
-                    comida2 : element.Comida2,
-                    id: element.id
-                }
-
-                clientMenuList.push(x)
-            })
-
-            console.log(typeof clientMenuList)
-
-            res.render('calendar', {menuList: clientMenuList, date: date().locale('es').format('LL')})
-        }
-    )
-})
-
-app.get('/calendar/delete/:id', (req, res) => {
-    DayMenu.destroy({
-        where: {
-            id: req.params.id
-        }
-    })
-    res.redirect('/calendar')
-})
 
 app.post('/create-menu', async (req, res) => {
     if(req.body.comida1 && req.body.comida2){
