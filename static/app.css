@@ -29,6 +29,7 @@
   a {
     text-decoration: none;
     color: cornflowerblue;
+    font-size: 10px;
   }
 
   .background{
@@ -330,9 +331,24 @@
   .stack {
       display: grid;
   }
-  
 
+  .lateral-nav {
+      background-color: lightblue;
+      overflow-wrap: break-word;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: center;
+      text-align: center;
+  }
 
+  .list-heading{
+      font-size: 14px;
+  }
+
+  .list-text{
+      font-size: 8px;
+  }
 
   /* X-Small devices (portrait phones, less than 576px)
   // No media query for `xs` since this is the default in Bootstrap*/
@@ -387,6 +403,12 @@
         display: flex;
         justify-content: space-between;
     }
+    .list-text{
+        font-size: 14px;
+    }
+    .list-heading{
+        font-size: 24px;
+    }
    }
   @media (min-width: 1200px) { 
     .container{
@@ -394,6 +416,9 @@
     }
     .title{
       font-size: 68px;
+    }
+    .list-text{
+        font-size: 14px;
     }
    }
   

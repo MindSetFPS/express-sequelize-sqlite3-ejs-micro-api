@@ -6,20 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block page %} {% endblock %} </title>
     <link rel="icon" href="/icon.png" >
-    <link rel="stylesheet" href="/app.css"  >   
+    <link rel="stylesheet" href="/app.css"  >  
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"> 
 </head>
 
 
 <body>
 
+    <div class="" style=" display: grid; grid-template-columns: 1fr 11fr; " >
     {% include "navbar.njk" %}
-
-    
-
     <div class="container" >
         <h1 class="title" > {% block title %}{% endblock %} </h1>
-
             {% block content %}{% endblock %}
+    </div>
+
     </div>
 </body>
 </html>

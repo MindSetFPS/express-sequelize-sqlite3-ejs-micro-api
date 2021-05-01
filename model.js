@@ -127,7 +127,7 @@ const DayMenu = db.define('dayMenu', {
 Food.hasOne(DayMenu, {foreignKey: 'comida1', as: 'Comida1'})
 Food.hasOne(DayMenu, {foreignKey: 'comida2', as: 'Comida2'});
 
-DayMenu.belongsTo(Food, {foreignKey: 'comida1', as: 'Comida1'});
+DayMenu.belongsTo(Food, {foreignKey: 'comida1', as:  'Comida1'});
 DayMenu.belongsTo(Food, {foreignKey: 'comida2', as: 'Comida2'});
 
 

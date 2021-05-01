@@ -1,24 +1,25 @@
 {% extends "base.njk" %}
 
+{% block title %} Pedidos {% endblock %}
+
 {% block content %}
-<h1 class="title" > Pedidos </h1>
 
-<div class="flex" style="justify-content: space-evenly;" >
+<div class="flex" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr ;  justify-items: center;" >
 
-    <h1>Cliente</h1>
-    <h1>Entregado</h1>
-    <h1>Total</h1>
-    <h1>Pagado</h1>
-    <h1>Lugar</h1>
+    <h1 class="list-heading">Cliente</h1>
+    <h1 class="list-heading">Lugar</h1>
+    <h1 class="list-heading">Entregado</h1>
+    <h1 class="list-heading">Pagado</h1>
+    <h1 class="list-heading">Total</h1>
 </div>
 
 {% for pedido in pedidos %}
-    <div class="flex" style="justify-content: space-evenly;"  >
-        <div> {{ pedido.customer}} </div>
-        <div> {{ pedido.delivered}} </div>
-        <div> {{ pedido.total}} </div>
-        <div> {{ pedido.paid}} </div>
-        <div> {{ pedido.location}} </div>
+    <div class="love  mt-4 card {{  "green" if pedido.paid else "love"  }} " style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr ;  justify-items: center;  "  >
+        <div class="list-text  " > {{ pedido.customer}} </div>
+        <div class="list-text  " > {{ pedido.location}} </div>
+        <div class="list-text  " > {{ "Listo" if pedido.delivered else "Pendiente..." }} </div>
+        <div class="list-text  " > {{ "Listo" if pedido.paid else "Pendiente..." }} </div>
+        <div class="list-text  " > $ {{ 25.55}} </div>
     </div>
 
 {% endfor %}
