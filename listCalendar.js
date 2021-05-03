@@ -14,7 +14,13 @@ const { Food, DayMenu, Pedido, PedidoItems } = require('./model')
 router.get('/create-menu', (req, res) => {
     Food.findAll().then(
         food => {
-            res.render('create-today-menu', {menu: food})
+            
+            if(Array.isArray(food) && food.length){
+                res.render('create-today-menu', {menu: food})
+            }
+
+            res.render('create-today-menu', {menu: food, error: 'Para crear un Menu,  primero tienes que agregar al menos 2 platillos.'})
+
         }
     )
 })
@@ -33,21 +39,27 @@ router.get('/list', (req, res)=> {
 
     }).then(
         menuList => {
-            const clientMenuList = []
-            menuList.forEach(element => {
-                const x = {
-                    fecha : date(element.date).locale('es').format('LL'),
-                    comida1 : element.Comida1,
-                    comida2 : element.Comida2,
-                    id: element.id
-                }
 
-                clientMenuList.push(x)
-            })
+            if(Array.isArray(menuList) && menuList.length){
 
-            console.log(typeof clientMenuList)
-
-            res.render('calendar', {menuList: clientMenuList, date: date().locale('es').format('LL')})
+                
+                const clientMenuList = []
+                menuList.forEach(element => {
+                    const x = {
+                        fecha : date(element.date).locale('es').format('LL'),
+                        comida1 : element.Comida1,
+                        comida2 : element.Comida2,
+                        id: element.id
+                    }
+                    
+                    clientMenuList.push(x)
+                })
+                
+                console.log(clientMenuList)
+                
+                res.render('calendar', {menuList: clientMenuList, date: date().locale('es').format('LL')})
+            }
+                res.render('calendar', {date: date().locale('es').format('LL'), error: 'Crea tu primer Menu.'})
         }
     )
 })

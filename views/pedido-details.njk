@@ -1,0 +1,47 @@
+{% extends 'base.njk' %}
+
+{% block title %}
+
+Detalles
+
+{% endblock %}
+
+{% block content %}
+
+
+
+    <h1> {{ pedido.customer }}</h1>
+    <h2> {{ pedido.location }}</h1>
+
+        <div class="pedido" >
+            <h2> 
+                {{ pedido.food[0].name }} : {{ pedido.food[0].pedidoItems.quantity }}
+            </h2>
+            <h2>
+                {{ pedido.food[1].name }} : {{ pedido.food[1].pedidoItems.quantity }}
+            </h2>
+        </div>
+
+    {% if pedido.paid %}
+    Pagado
+    {% else %}
+    No pagado
+    {% endif %}
+      <p>Numero de pedido:{{ pedido.id }}</p>
+    <h1> {{ pedido.total}} </h1> 
+
+
+    <div>
+        <form method="GET" >
+            <button class="blue button" >  Editar </button>
+        </form>
+        <form method="GET" action="" >
+            <button class="love button" formaction="/pedidos/delete/{{pedido.id}}" >  Borrar </button>
+        </form>
+
+    </div>
+
+
+
+
+{% endblock %}

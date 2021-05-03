@@ -21,7 +21,15 @@
     <input type="submit" class="button blue mt-4 title" value="Crear Menu" formaction="/create-menu" />
 </form>
  
-{{ error }}
+    <div class="card love mt-4" style="display: block; align-items: center; font-size: 16px; vertical-align: middle;"  >
+        
+        <span class="material-icons" style="font-size: 18px; vertical-align: middle;" >&#xe000;</span>
+
+            {{ error }} 
+            <a href="/food" >
+                <span class="material-icons" style="font-size: 18px; vertical-align: middle; color: cornflowerblue;" >&#xe895;</span>
+            </a>
+    </div>
 
 <datalist id="menudata" >
     {% for food in menu %}

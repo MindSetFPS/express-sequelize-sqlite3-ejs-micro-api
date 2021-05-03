@@ -14,13 +14,15 @@
 </div>
 
 {% for pedido in pedidos %}
-    <div class="love  mt-4 card {{  "green" if pedido.paid else "love"  }} " style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr ;  justify-items: center;  "  >
-        <div class="list-text  " > {{ pedido.customer}} </div>
-        <div class="list-text  " > {{ pedido.location}} </div>
-        <div class="list-text  " > {{ "Listo" if pedido.delivered else "Pendiente..." }} </div>
-        <div class="list-text  " > {{ "Listo" if pedido.paid else "Pendiente..." }} </div>
-        <div class="list-text  " > $ {{ 25.55}} </div>
-    </div>
+        <a href="/pedidos/details/{{pedido.id}}" >
+            <div class="love  mt-4 card {{  "green" if pedido.paid else "love"  }} " style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr ;  justify-items: center;  "  >
+                    <div class="list-text  " > {{ pedido.customer}} </div>
+                    <div class="list-text  " > {{ pedido.location}} </div>
+                    <div class="list-text  " > {{ "Listo" if pedido.delivered else "Pendiente..." }} </div>
+                    <div class="list-text  " > {{ "Listo" if pedido.paid else "Pendiente..." }} </div>
+                    <div class="list-text  " > $ {{ 25.55}} </div>
+            </div>
+        </a>
 
 {% endfor %}
 

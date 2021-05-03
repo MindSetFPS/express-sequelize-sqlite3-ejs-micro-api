@@ -60,6 +60,9 @@ const Pedido = db.define('pedido',{
     },
     location: {
         type: DataTypes.STRING
+    },
+    createdAt: {
+        type: DataTypes.TEXT
     }
 })
 
