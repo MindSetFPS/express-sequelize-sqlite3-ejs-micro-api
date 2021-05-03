@@ -16,9 +16,11 @@ router.get('/', (req, res) => {
 router.get('/list', async (req, res)=>{
     await Food.findAll().then(food => {
         if(Array.isArray(food) && food.length){
-            res.render('food-list.njk', {menu: food})
+            return res.render('food-list.njk', {menu: food})
+            
+        } else {
+            res.render('food-list', {menu: food, error: 'Agrega el primer platillo al menu.'})
         }
-        res.render('food-list', {menu: food, error: 'Agrega el primer platillo al menu.'})
     })
 })
 

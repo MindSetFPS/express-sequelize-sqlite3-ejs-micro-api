@@ -17,9 +17,11 @@ router.get('/create-menu', (req, res) => {
             
             if(Array.isArray(food) && food.length){
                 res.render('create-today-menu', {menu: food})
+            } else {
+
+                res.render('create-today-menu', {menu: food, error: 'Para crear un Menu,  primero tienes que agregar al menos 2 platillos.'})
             }
 
-            res.render('create-today-menu', {menu: food, error: 'Para crear un Menu,  primero tienes que agregar al menos 2 platillos.'})
 
         }
     )
@@ -40,9 +42,7 @@ router.get('/list', (req, res)=> {
     }).then(
         menuList => {
 
-            if(Array.isArray(menuList) && menuList.length){
-
-                
+            if(Array.isArray(menuList) && menuList.length){  
                 const clientMenuList = []
                 menuList.forEach(element => {
                     const x = {
@@ -51,13 +51,12 @@ router.get('/list', (req, res)=> {
                         comida2 : element.Comida2,
                         id: element.id
                     }
-                    
                     clientMenuList.push(x)
                 })
                 
                 console.log(clientMenuList)
                 
-                res.render('calendar', {menuList: clientMenuList, date: date().locale('es').format('LL')})
+                return res.render('calendar', {menuList: clientMenuList, date: date().locale('es').format('LL')})
             }
                 res.render('calendar', {date: date().locale('es').format('LL'), error: 'Crea tu primer Menu.'})
         }

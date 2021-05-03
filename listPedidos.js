@@ -31,17 +31,6 @@ router.get('/details/:id', async (req, res) => {
         ]
     })
 
-//    const pedidoItems = await PedidoItems.findAll({
-//        where: {
-//            pedidoId: req.params.id
-//        },
-//        include: [
-//            {model: Food}
-//        ]
-//    })
-//
-//    console.log(pedidoItems)
-
     console.log(search.food[0].pedidoItems.quantity)
     res.render('pedido-details', {pedido: search} )
 })

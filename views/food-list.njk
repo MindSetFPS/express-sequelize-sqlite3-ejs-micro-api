@@ -21,17 +21,16 @@
         {% endfor %}
     </div>
 
-    <div style="display: flex; align-items: center; " > 
-    
-    <h1>
-    {{error}} 
-    </h1>
-    
-        <a href="/food" >
-            <span class="material-icons" style="vertical-align: middle; color: cornflowerblue;" >&#xe895;</span>
-        </a>
-     
-    </div>
+    {% if error %}
+        <div style="display: flex; align-items: center; " > 
+        <h1>
+        {{error}} 
+        </h1>
+            <a href="/food" >
+                <span class="material-icons" style="vertical-align: middle; color: cornflowerblue;" >&#xe895;</span>
+            </a>
+        </div>
+    {% endif %}
 
 {% endblock %}
     
