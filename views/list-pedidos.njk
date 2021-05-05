@@ -4,27 +4,37 @@
 
 {% block content %}
 
-<div class="flex" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr ;  justify-items: center;" >
+<div class="flex" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 0.5fr 0.5fr 0.5fr ;  justify-items: center; align-items: flex-end; max-height: 9vh  ;" >
 
     <h1 class="list-heading">Cliente</h1>
     <h1 class="list-heading">Lugar</h1>
     <h1 class="list-heading">Entregado</h1>
     <h1 class="list-heading">Pagado</h1>
     <h1 class="list-heading">Total</h1>
-</div>
+    <h1 class="list-heading food-heading "     >{{ pedidos[0].food[0].name }}</h1>
+    <h1 class="list-heading food-heading "     >{{ pedidos[0].food[1].name }}</h1>
 
-{% for pedido in pedidos %}
+    
+</div> 
+<div  >
+
+    <div style="overflow-y: scroll; height: 70vh; " >
+        {% for pedido in pedidos %}
         <a href="/pedidos/details/{{pedido.id}}" >
-            <div class="love  mt-4 card {{  "green" if pedido.paid else "love"  }} " style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr ;  justify-items: center;  "  >
+            <div class="love  mt-4 card {{  "green" if pedido.paid else "love"  }} " style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 0.5fr 0.5fr 0.5fr ;  justify-items: center;  "  >
                     <div class="list-text  " > {{ pedido.customer}} </div>
-                    <div class="list-text  " > {{ pedido.location}} </div>
-                    <div class="list-text  " > {{ "Listo" if pedido.delivered else "Pendiente..." }} </div>
-                    <div class="list-text  " > {{ "Listo" if pedido.paid else "Pendiente..." }} </div>
-                    <div class="list-text  " > $ {{ 25.55}} </div>
+                <div class="list-text  " > {{ pedido.location}} </div>
+                <div class="list-text  " > {{ "Listo" if pedido.delivered else "Pendiente..." }} </div>
+                <div class="list-text  " > {{ "Listo" if pedido.paid else "Pendiente..." }} </div>
+                <div class="list-text  " > $ {{ (pedido.food[0].pedidoItems.quantity + pedido.food[1].pedidoItems.quantity) * 45 }} </div>
+                <h3>{{ pedido.food[0].pedidoItems.quantity }}</h3>
+                <h3>{{ pedido.food[1].pedidoItems.quantity }}</h3>
+
             </div>
         </a>
-
-{% endfor %}
-
+        {% endfor %}
+        
+    </div>
+</div>
 
 {% endblock %}

@@ -15,12 +15,18 @@ router.get('/', async (req, res) => {
     console.log(selectedDate)
     pedidos = await Pedido.findAll({
         where: {
+
             createdAt: {
                [Op.substring] : selectedDate
-            } 
-            
-        }
-    })
+            },
+                  
+        },
+        include: [
+            {
+                model: Food, 
+                through: [] },
+        ],      
+    }).catch( e => console.log(e) )
     res.render('list-pedidos', {pedidos: pedidos})
 })
 
@@ -34,9 +40,6 @@ router.get('/details/:id', async (req, res) => {
     console.log(search.food[0].pedidoItems.quantity)
     res.render('pedido-details', {pedido: search} )
 })
-
-
-
 
 router.get('/delete/:id', (req, res) => {
     Pedido.destroy({

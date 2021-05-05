@@ -1,7 +1,8 @@
 {% extends "base.njk" %}
 {% block title %} Menu {% endblock %}
 {% block content %}
-    <div class="mb-extra" >
+    <div class="" style="overflow-y: scroll; height: 85vh;"  >
+
         {% for food in  menu %}
         <div class="card mt-4 mb-4 " >
             <div class="flex-resizable " >
@@ -19,6 +20,7 @@
             </div>
         </div>
         {% endfor %}
+
     </div>
 
     {% if error %}
