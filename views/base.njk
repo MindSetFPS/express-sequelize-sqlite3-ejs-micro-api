@@ -7,6 +7,8 @@
     <title>{% block page %} {% endblock %} </title>
     <link rel="icon" href="/icon.png" >
     <link rel="stylesheet" href="/app.css"  >  
+    <link rel="stylesheet" href="/switch.css"  >  
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"> 
 </head>
@@ -15,7 +17,7 @@
 <body>
 
     <div class="" style=" display: grid; grid-template-columns: 1fr 11fr; height: 100vh; " >
-    {% include "navbar.njk" %}
+        {% include "navbar.njk" %}
     <div class="container" >
         <h1 class="title" style="height: 12vh;" > {% block title %}{% endblock %} </h1>
             {% block content %}{% endblock %}

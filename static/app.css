@@ -91,6 +91,15 @@
     margin-top: 12px;
     margin-bottom: 12px;
   }
+
+  .button.small{
+      padding-left: 2px;
+      padding-right: 2px;
+      padding-top: 3px;
+      padding-bottom: 3px;
+      font-size: 10px;
+      margin: 2px;
+  }
   
   button.squared{
     border-radius: 0px;
@@ -243,6 +252,16 @@
     box-sizing: border-box;
     word-wrap: break-word;
   }
+
+  .card.love.secondary{
+    background-color: rgba(224, 36, 94, 0.2) ;
+    border: none;   
+}
+
+.card.love.secondary a {
+    color: black;
+}
+
   .elevated {
     -webkit-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.26); 
     box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.26);
@@ -349,10 +368,12 @@
 
   .list-heading{
       font-size: 12px;
-      writing-mode: vertical-rl;
+      text-align: center;
     }
     
     .food-heading{
+      text-align: center;
+
       line-height: 12px;
 
   }
@@ -372,7 +393,6 @@
     .title{
       font-size: 32px;
     }
-    
   }
   
   /* Small devices (landscape phones, 576px and up)*/
@@ -420,6 +440,7 @@
         padding: 16px;
         border-radius: 16px;
     }
+
 
    }
   

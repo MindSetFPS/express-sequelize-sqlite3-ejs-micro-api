@@ -4,37 +4,109 @@
 
 {% block content %}
 
-<div class="flex" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 0.5fr 0.5fr 0.5fr ;  justify-items: center; align-items: flex-end; max-height: 9vh  ;" >
+<!--    
 
-    <h1 class="list-heading">Cliente</h1>
-    <h1 class="list-heading">Lugar</h1>
-    <h1 class="list-heading">Entregado</h1>
-    <h1 class="list-heading">Pagado</h1>
-    <h1 class="list-heading">Total</h1>
-    <h1 class="list-heading food-heading "     >{{ pedidos[0].food[0].name }}</h1>
-    <h1 class="list-heading food-heading "     >{{ pedidos[0].food[1].name }}</h1>
 
-    
-</div> 
-<div  >
+    {#  CALCULANDO LAS SUMAS  #}
 
-    <div style="overflow-y: scroll; height: 70vh; " >
-        {% for pedido in pedidos %}
-        <a href="/pedidos/details/{{pedido.id}}" >
-            <div class="love  mt-4 card {{  "green" if pedido.paid else "love"  }} " style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 0.5fr 0.5fr 0.5fr ;  justify-items: center;  "  >
-                    <div class="list-text  " > {{ pedido.customer}} </div>
-                <div class="list-text  " > {{ pedido.location}} </div>
-                <div class="list-text  " > {{ "Listo" if pedido.delivered else "Pendiente..." }} </div>
-                <div class="list-text  " > {{ "Listo" if pedido.paid else "Pendiente..." }} </div>
-                <div class="list-text  " > $ {{ (pedido.food[0].pedidoItems.quantity + pedido.food[1].pedidoItems.quantity) * 45 }} </div>
-                <h3>{{ pedido.food[0].pedidoItems.quantity }}</h3>
-                <h3>{{ pedido.food[1].pedidoItems.quantity }}</h3>
 
+-->
+
+{% set totalComida1 = 0 %} 
+{% for pedido in pedidos %}
+{% set totalComida1 = totalComida1 + pedido.food[0].pedidoItems.quantity  %}
+{% endfor %}
+
+{% set totalComida2 = 0 %} 
+{% for pedido in pedidos %}
+{% set totalComida2 = totalComida2 + pedido.food[1].pedidoItems.quantity  %}
+{% endfor %}
+
+
+
+<div>
+    <class class="flex" style="display: grid; grid-template-columns:  1fr 1fr 1fr 1fr 0.7fr ;  justify-items: center; align-items: baseline; max-height: 9vh  ;" >
+
+        <!-- TITULOS -->
+
+        <div>
+            <p class="list-heading">Cliente</p>
+            <p class="list-heading">Lugar</p>
+        </div>
+        <p class="list-heading">Entregado</p>
+        <div class=" list-heading "     >
+            <div class="list-heading "  >
+                {{ pedidos[0].food[0].name }}
             </div>
-        </a>
-        {% endfor %}
-        
-    </div>
-</div>
+            <div class="list-heading" >
+                {{ totalComida1 }}
+            </div>
+            
+        </div>
+        <div class="list-heading  "     >
+            
+            <div class="list-heading"  >
+                {{ pedidos[0].food[1].name }}
+            </div>
+            
+            <div class="list-heading" >
+                {{ totalComida2 }}
+            </div>
+        </div>   
+        <div class="list-heading">
+            <p class="list-heading" >Total</p>
+            <p  class="list-heading" >
+                ${{ (totalComida1 + totalComida2) * 45 }}
+            </p>
+        </div>
+    </div> 
+        <div style=" height: 70vh; " >
+            <div style="overflow-y: scroll; height: 69vh;" >
+                <!--   LISTAS  -->
+                {% for pedido in pedidos %}
+                    <div class="  card  secondary {{  "green" if pedido.paid else "love"  }} mt-2 "   >
+                        
+                            <div style="display: grid; grid-template-columns:  1fr 1fr  1fr 1fr 0.7fr ;  justify-items: center; align-items: center; " >
 
+                                <div  >
+                                
+                                    <div class="list-text  " > {{ pedido.location}} </div>
+                                    <div class="list-text  " > {{ pedido.customer}} </div>
+                              
+
+                                </div>
+                              
+                              
+                              
+                                <div class="  " style="text-align: center;" > 
+                                    <p class="list-text" > Entregado   </p>
+
+                                    <label class="switch">
+                                        <input type="checkbox" >
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <p class="list-text" >Pagado</p>
+                                    <label class="switch">
+                                        <input type="checkbox" checked >
+                                        <span class="slider round"></span>
+                                    </label>
+                                        <input class="button small blue secondary " type="submit" value="Actualizar" />
+                                        <button class="button small green secondary " >
+                                            <a>
+                                                Editar
+                                            </a>
+                                        </button>
+                                    
+                                </div>
+                                <h3>{{ pedido.food[0].pedidoItems.quantity }}</h3>
+                                <h3>{{ pedido.food[1].pedidoItems.quantity }}</h3>
+                                <div class="list-text" > $ {{ (pedido.food[0].pedidoItems.quantity + pedido.food[1].pedidoItems.quantity) * 45 }} </div>
+                            </div>
+                        
+                    </div>
+                {% endfor %}
+            </div>
+        </div>    
+</div>
+    
 {% endblock %}
