@@ -12,15 +12,41 @@ const { Food, DayMenu, Pedido, PedidoItems } = require('./model')
 router.get('/', async (req, res) => {
 
     selectedDate = date().subtract(5, 'h').second(0).minute(0).hour(0).format('YYYY-MM-DD')
-    console.log(selectedDate)
+    
+    console.log( req.query)
+
+    const reqId         = req.params.id
+    const reqCustomer   = req.query.customer
+    const reqDelivered  = req.query.delivered
+    const reqPaid       = req.query.paid
+    const reqLocation   = req.query.location
+    const reqCreatedAt  = req.query.createdAt
+
+
+    let pedidoQuery = {}
+
+    reqPaid ?  pedidoQuery.paid = true : pedidoQuery.paid = false
+    reqDelivered ? pedidoQuery.delivered = true : pedidoQuery.delivered = false
+    
+    pedidoQuery.createdAt = {[Op.substring] : selectedDate}
+
+    console.log(pedidoQuery)
+
     pedidos = await Pedido.findAll({
-        where: {
-            createdAt: {
-               [Op.substring] : selectedDate
-            },
-            paid: false
-                  
-        },
+        //where: {
+        //    //id: reqId ,
+        //    //customer: reqCustomer ,
+        //    //delivered: reqDelivered,
+        //    //paid: reqPaid,
+        //    //location: reqLocation,
+        //    createdAt: {
+        //       [Op.substring] : selectedDate
+        //    },
+        //          
+        //},
+
+        where: pedidoQuery,
+
         include: [
             {
                 model: Food, 
