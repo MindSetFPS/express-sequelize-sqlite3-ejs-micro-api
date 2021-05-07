@@ -68,34 +68,41 @@
                         
                             <div style="display: grid; grid-template-columns:  1fr 1fr  1fr 1fr 0.7fr ;  justify-items: center; align-items: center; " >
 
-                                <div  >
-                                
+                                <div>
                                     <div class="list-text  " > {{ pedido.location}} </div>
                                     <div class="list-text  " > {{ pedido.customer}} </div>
-                              
-
                                 </div>
                               
                               
-                              
                                 <div class="  " style="text-align: center;" > 
-                                    <p class="list-text" > Entregado   </p>
 
-                                    <label class="switch">
-                                        <input type="checkbox" >
-                                        <span class="slider round"></span>
-                                    </label>
-                                    <p class="list-text" >Pagado</p>
-                                    <label class="switch">
-                                        <input type="checkbox" checked >
-                                        <span class="slider round"></span>
-                                    </label>
+                                    <form action="/pedidos/update/{{pedido.id}}" method="POST" >
+                                        <div class="flex" >    
+                                            <div class="" >
+                                                <p class="list-text" > Entregado   </p>
+                                                <label class="switch">
+                                                    <input type="checkbox" name="delivered"      {{  'checked' if pedido.delivered else ''   }}                       >
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                            
+                                            <div>
+                                                <p class="list-text" >Pagado</p>
+                                                <label class="switch">
+                                                    <input type="checkbox" name="paid"         {{  'checked' if pedido.paid else ''   }}  >
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                            
+                                        </div>
+                                        
                                         <input class="button small blue secondary " type="submit" value="Actualizar" />
                                         <button class="button small green secondary " >
-                                            <a>
-                                                Editar
+                                            <a href="/pedidos/details/{{pedido.id}}" >
+                                                Detalles
                                             </a>
                                         </button>
+                                    </form>
                                     
                                 </div>
                                 <h3>{{ pedido.food[0].pedidoItems.quantity }}</h3>
