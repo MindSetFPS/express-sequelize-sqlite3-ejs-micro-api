@@ -22,12 +22,33 @@ router.get('/', async (req, res) => {
     const reqLocation   = req.query.location
     const reqCreatedAt  = req.query.createdAt
 
-
     let pedidoQuery = {}
 
-    reqPaid ?  pedidoQuery.paid = true : pedidoQuery.paid = false
-    reqDelivered ? pedidoQuery.delivered = true : pedidoQuery.delivered = false
-    
+    //reqPaid ?  pedidoQuery.paid = true : pedidoQuery.paid = false
+    //reqDelivered ? pedidoQuery.delivered = true : pedidoQuery.delivered = false
+    if( reqPaid && reqDelivered){
+        pedidoQuery.paid = true
+        pedidoQuery.delivered = true
+    }
+
+    if(!reqPaid && !reqDelivered){
+        pedidoQuery.paid = false
+        pedidoQuery.delivered = false
+    }
+
+    if (!reqPaid && reqDelivered){
+        //pedidoQuery.paid = false
+        pedidoQuery.delivered = true
+    }
+
+    if( reqPaid && !reqDelivered){
+        pedidoQuery.paid = true
+        //pedidoQuery.delivered = false
+    }
+
+
+    //pedidoQuery[Op.or] = [{ paid: reqPaid ? true : false  }, { delivered: reqDelivered ? true : false }], 
+
     pedidoQuery.createdAt = {[Op.substring] : selectedDate}
 
     console.log(pedidoQuery)
