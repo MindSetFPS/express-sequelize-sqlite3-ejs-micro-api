@@ -25,111 +25,121 @@
 
 
 <div>
-    <class class="flex" style="display: grid; grid-template-columns:  1fr 1fr 1fr 1fr 0.7fr ;  justify-items: center; align-items: baseline; max-height: 9vh  ;" >
-
+    <form action="/pedidos/" method="get">
+        <class class="flex" style="display: grid; grid-template-columns:  1fr 1fr 1fr 1fr 0.7fr ;  justify-items: center; align-items: baseline ;" >
         <!-- TITULOS -->
-
-        <div>
-            <p class="list-heading">Cliente</p>
-            <p class="list-heading">Lugar</p>
-        </div>
-        <div class="list-heading">
-            
-            <form action="/pedidos/" method="GET" >
-                
+                <div>
+                    <p class="list-heading">Cliente</p>
+                <p class="list-heading">Lugar</p>
+                <select class="small" name="location" >
+                    <option value=""></option>
+                    
+                    {% for location in locations %}
+                    
+                    <option> {{ location }} </option>
+                    
+                    {% endfor %}
+                    
+                </select>
+            </div>
+            <div class="list-heading">
                 <div class="flex" >   
                     <p>Entregado</p>
-                    <input type="checkbox" name="delivered" id="" class="search" >    
+                    <input type="checkbox" name="delivered" id="" class="search"  >    
                 </div>            
                 
                 <div class="flex" >
                     <p>Pagado</p>
                     <input type="checkbox" name="paid" id="" class="search" >
-
+                    
                 </div>
                 
                 <input type="submit" value="Buscar" class="button small green secondary" >
-            
-            </form>
-        </div>
-        <div class=" list-heading "     >
-            <div class="list-heading "  >
-                {{ pedidos[0].food[0].name }}
             </div>
-            <div class="list-heading" >
-                {{ totalComida1 }}
+            <div class=" list-heading "     >
+                <div class="list-heading "  >
+                    {{ pedidos[0].food[0].name }}
+                </div>
+                <div class="list-heading" >
+                    {{ totalComida1 }}
+                </div>
+                
             </div>
-            
-        </div>
-        <div class="list-heading  "     >
-            
-            <div class="list-heading"  >
-                {{ pedidos[0].food[1].name }}
+            <div class="list-heading  "     >
+                
+                <div class="list-heading"  >
+                    {{ pedidos[0].food[1].name }}
+                </div>
+                
+                <div class="list-heading" >
+                    {{ totalComida2 }}
+                </div>
+            </div>   
+            <div class="list-heading">
+                <p class="list-heading" >Total</p>
+                <p  class="list-heading" >
+                    ${{ (totalComida1 + totalComida2) * 45 }}
+                </p>
             </div>
-            
-            <div class="list-heading" >
-                {{ totalComida2 }}
-            </div>
-        </div>   
-        <div class="list-heading">
-            <p class="list-heading" >Total</p>
-            <p  class="list-heading" >
-                ${{ (totalComida1 + totalComida2) * 45 }}
-            </p>
-        </div>
-    </div> 
-        <div style=" height: 70vh; " >
-            <div style="overflow-y: scroll; height: 69vh;" >
-                <!--   LISTAS  -->
-                {% for pedido in pedidos %}
+        </div> 
+    </form>
 
-                    <div class="  card  secondary {{  "green" if pedido.paid else "love"  }} mt-2 "   >
-                            <div style="display: grid; grid-template-columns:  1fr 1fr  1fr 1fr 0.7fr ;  justify-items: center; align-items: center; " >
-                                <div>
-                                    <div class="list-text  " > {{ pedido.location}} </div>
-                                    <div class="list-text  " > {{ pedido.customer}} </div>
-                                </div>
-                                <div class="  " style="text-align: center;" > 
-                                    <form action="/pedidos/update/{{pedido.id}}" method="POST" >
-                                        <div class="flex" >    
-                                            <div class="" >
-                                                <p class="list-text" > Entregado   </p>
-                                                <label class="switch">
-                                                    <input type="checkbox" name="delivered"      {{  'checked' if pedido.delivered else ''   }}                       >
-                                                    <span class="slider round"></span>
-                                                </label>
-                                            </div>
-                                            
-                                            <div>
-                                                <p class="list-text" >Pagado</p>
-                                                <label class="switch">
-                                                    <input type="checkbox" name="paid"         {{  'checked' if pedido.paid else ''   }}  >
-                                                    <span class="slider round"></span>
-                                                </label>
-                                            </div>
-                                            
+    <div style=" height: 70vh; " >
+        <div style="overflow-y: scroll; height: 69vh;" >
+            <!--   LISTAS  -->
+            {% for pedido in pedidos %}
+            
+            <div class="  card  secondary {{  "green" if pedido.paid else "love"  }} mt-2 "   >
+                <div style="display: grid; grid-template-columns:  1fr 1fr  1fr 1fr 0.7fr ;  justify-items: center; align-items: center; " >
+                            <div>
+                                <div class="list-text  " > {{ pedido.location}} </div>
+                                <div class="list-text  " > {{ pedido.customer}} </div>
+                                <div> {{ pedido.createdAt }} </div>
+                                <div> {{pedido.food[0].name}} </div>
+                                <div> {{pedido.food[1].name}} </div>
+
+                            </div>
+                            <div class="  " style="text-align: center;" > 
+                                <form action="/pedidos/update/{{pedido.id}}" method="POST" >
+                                    <div class="flex" >    
+                                        <div class="" >
+                                            <p class="list-text" > Entregado   </p>
+                                            <label class="switch">
+                                                <input type="checkbox" name="delivered"      {{  'checked' if pedido.delivered else ''   }}                       >
+                                                <span class="slider round"></span>
+                                            </label>
                                         </div>
                                         
-                                        <input class="button small blue secondary " type="submit" value="Actualizar" />
-                                        <button class="button small green secondary " >
-                                            <a href="/pedidos/details/{{pedido.id}}" >
-                                                Detalles
-                                            </a>
-                                        </button>
-                                    </form>
+                                        <div>
+                                            <p class="list-text" >Pagado</p>
+                                            <label class="switch">
+                                                <input type="checkbox" name="paid"         {{  'checked' if pedido.paid else ''   }}  >
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        
+                                    </div>
                                     
-                                </div>
-                                <h3>{{ pedido.food[0].pedidoItems.quantity }}</h3>
-                                <h3>{{ pedido.food[1].pedidoItems.quantity }}</h3>
-                                <div class="list-text" > $ {{ (pedido.food[0].pedidoItems.quantity + pedido.food[1].pedidoItems.quantity) * 45 }} </div>
+                                    <input class="button small blue secondary " type="submit" value="Actualizar" />
+                                    <button class="button small green secondary " >
+                                        <a href="/pedidos/details/{{pedido.id}}" >
+                                            Detalles
+                                        </a>
+                                    </button>
+                                </form>
+                                
                             </div>
-                        
-                    </div>
+                            <h3>{{ pedido.food[0].pedidoItems.quantity }}</h3>
+                            <h3>{{ pedido.food[1].pedidoItems.quantity }}</h3>
+                            <div class="list-text" > $ {{ (pedido.food[0].pedidoItems.quantity + pedido.food[1].pedidoItems.quantity) * 45 }} </div>
+                        </div>
+                    
+                </div>
 
 
-                {% endfor %}
-            </div>
-        </div>    
+            {% endfor %}
+        </div>
+    </div>    
 </div>
     
 {% endblock %}

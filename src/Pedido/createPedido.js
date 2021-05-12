@@ -1,7 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const dayjs = require('dayjs')
-const { Food, DayMenu, Pedido, PedidoItems  } = require('./model')
+const {  Pedido, PedidoItems  } = require('./PedidoModel')
+const Calendar = require('../Calendar/CalendarModel')
+const Food = require('../Food/FoodModel')
+
 const e = require('express')
 
 
@@ -12,7 +15,7 @@ router.get('/', async (req, res) => {
     const formatedDate = dayjs().format('YYYY-MM-DD')
     
     try {
-        await DayMenu.findOne({
+        await Calendar.findOne({
             where: {
                 date: formatedDate
             },

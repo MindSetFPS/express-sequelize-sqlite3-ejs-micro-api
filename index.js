@@ -5,12 +5,14 @@ const date = require('dayjs')
 const localizedFormat = require('dayjs/plugin/localizedFormat') 
 require('dayjs/locale/es')
 
-const foodRoutes = require('./food')
-const createPedidos = require('./createPedido')
-const listPedidos = require('./listPedidos')
-const listCalendar = require('./listCalendar')
+const foodRoutes = require('./src/Food/food')
+const createPedidos = require('./src/Pedido/createPedido')
+const listPedidos = require('./src/Pedido/listPedidos')
+const listCalendar = require('./src/Calendar/listCalendar')
 
-const { Food, DayMenu } = require('./model')
+const Food = require('./src/Food/FoodModel')
+const Calendar = require('./src/Calendar/CalendarModel')
+
 const dayjs = require('dayjs')
 
 
@@ -56,7 +58,7 @@ app.post('/create-menu', async (req, res) => {
         console.log('Id comida1: ' + search1.id)
         console.log('Id comida2: ' + search2.id)
 
-        newTodayMenu = DayMenu.build({
+        newTodayMenu = Calendar.build({
             comida1: search1.id,
             comida2: search2.id,
             date: req.body.date
