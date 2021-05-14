@@ -77,4 +77,4 @@ PedidoItems.sync().then(() => console.log('PedidoItems created')).catch((e) => c
 Location.sync().then(() => console.log('Location created')).catch((e) => console.log(e))
 
 
-module.exports = {Pedido, PedidoItems}
+module.exports = {Pedido, PedidoItems, Location }

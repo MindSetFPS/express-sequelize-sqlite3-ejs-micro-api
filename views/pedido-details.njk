@@ -1,24 +1,24 @@
 {% extends 'base.njk' %}
 
-{% block title %}
-
-Detalles
-
-{% endblock %}
+{% block title %} Detalles {% endblock %}
 
 {% block content %}
 
+    {% block pedidoCustomerName %} 
+        <h1> {{ pedido.customer }}</h1>
+    {% endblock %}
 
-
-    <h1> {{ pedido.customer }}</h1>
-    <h2> {{ pedido.location }}</h1>
-
-        <div class="pedido" >
-            <h2> 
-                {{ pedido.food[0].name }} : {{ pedido.food[0].pedidoItems.quantity }}
+    {% block pedidoLocation %}
+        <h2> {{ pedido.location }}</h1>
+    {% endblock %}
+        <div class="pedido mt-2 " >
+        
+            <h2 class="mt-2" > 
+                {{ pedido.food[0].name }} : {% block comida1Quantity %} {{ pedido.food[0].pedidoItems.quantity }} {% endblock %}
             </h2>
-            <h2>
-                {{ pedido.food[1].name }} : {{ pedido.food[1].pedidoItems.quantity }}
+        
+            <h2 class="mt-2" >
+                {{ pedido.food[1].name }} : {% block comida2Quantity %} {{ pedido.food[1].pedidoItems.quantity }} {% endblock %}
             </h2>
         </div>
 
@@ -32,9 +32,13 @@ Detalles
 
 
     <div>
-        <form method="GET" >
-            <button class="blue button" >  Editar </button>
-        </form>
+            {% block updateButton %}
+                <a href="/pedidos/edit/{{pedido.id}}"  >
+                    <button class="blue button" >
+                      Editar
+                    </button>
+                </a>
+            {% endblock %}
         <form method="GET" action="" >
             <button class="love button" formaction="/pedidos/delete/{{pedido.id}}" >  Borrar </button>
         </form>

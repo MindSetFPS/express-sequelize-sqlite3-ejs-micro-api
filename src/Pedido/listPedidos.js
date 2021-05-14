@@ -6,21 +6,18 @@ require('dayjs/locale/es')
 const foodRoutes = require('../Food/food')
 const createPedidos = require('./createPedido')
 
-const { Op, where } = require('sequelize')
-const { Pedido, PedidoItems } = require('./PedidoModel')
+const { Op, where, REAL } = require('sequelize')
+const { Pedido, Location, PedidoItems } = require('./PedidoModel')
 const Calendar = require('../Calendar/CalendarModel')
 const Food = require('../Food/FoodModel')
 
 router.get('/', async (req, res) => {
-
     selectedDate = date().subtract(5, 'h').second(0).minute(0).hour(0).format('YYYY-MM-DD')
     //selectedDate = '2021-05-08'
-
-
+  
     console.log('Req Query: ')
     console.log( req.query)
     console.log('End Req Query: ')
-
 
     const reqId         = req.params.id
     const reqCustomer   = req.query.customer
@@ -28,8 +25,6 @@ router.get('/', async (req, res) => {
     const reqPaid       = req.query.paid
     const reqLocation   = req.query.location
     const reqCreatedAt  = req.query.createdAt
-
-    console.log(reqLocation)
 
     let pedidoQuery = {}
 
@@ -57,7 +52,6 @@ router.get('/', async (req, res) => {
 
     pedidoQuery.createdAt = {[Op.substring] : selectedDate}
 
-    console.log(pedidoQuery)
 
     pedidos = await Pedido.findAll({
         where: pedidoQuery,
@@ -65,11 +59,13 @@ router.get('/', async (req, res) => {
             {
                 model: Food, 
                 through: [] 
-            },
+            },{
+                model: Location
+            }
         ],      
     }).catch( e => console.log(e) )
 
-    const Locations = ['Plaza las Americas', 'Pickup', 'Plaza Dorada']
+    const locations = await Location.findAll()
 
     //pedidos.forEach(element => {
 //
@@ -82,48 +78,71 @@ router.get('/', async (req, res) => {
 //
     //});
 
-    console.log(Locations)
-
-    res.render('list-pedidos', {pedidos: pedidos, locations: Locations})
-})
-
-router.get('/paid', async (req, res) => {
-
-    selectedDate = date().subtract(5, 'h').second(0).minute(0).hour(0).format('YYYY-MM-DD')
-    console.log(selectedDate)
-    pedidos = await Pedido.findAll({
-        where: {
-            createdAt: {
-               [Op.substring] : selectedDate
-            },
-            paid: true 
-        },
-        include: [
-            {
-                model: Food, 
-                through: [] },
-        ],      
-    }).catch( e => console.log(e) )
-    res.render('list-pedidos', {pedidos: pedidos})
+    res.render('list-pedidos', {pedidos: pedidos, locations: locations})
 })
 
 router.post('/update/:id', async (req, res) => {
-    
-    const search = await Pedido.findByPk( req.params.id )
+    const pedido = await Pedido.findByPk( req.params.id, {include: { model: Food}} )
+
+    console.log('Request Body')
+    console.log(req.body)
 
     if (req.body.delivered || req.body.paid ){
         if (req.body.delivered){
-            search.update({delivered: true})
+            pedido.update({delivered: true})
             console.log('Entregado')
         }
         if (req.body.paid){
-            search.update({paid: true})
+            pedido.update({paid: true})
             console.log('Pagado')
         }
     }
 
+    const customerName      = req.body.customerName
+    const customerLocation  = req.body.customerLocation
+    const comida1Quantity   = req.body.comida1Quantity
+    const comida2Quantity   = req.body.comida2Quantity
+
+    if (req.body.comida1Quantity || req.body.comida2Quantity ){
+        if (req.body.comida1Quantity){
+
+            const items = await PedidoItems.findOne({
+                where: {
+                    pedidoId: pedido.id,
+                    foodId: pedido.food[0].id
+                }
+            })
+
+            items.update({quantity: comida1Quantity})
+
+            console.log('items')
+            console.log(items)
+
+            //pedido.update({})
+        }
+        if (req.body.comida2Quantity){
+            const items = await PedidoItems.findOne({
+                where: {
+                    pedidoId: pedido.id,
+                    foodId: pedido.food[1].id
+                }
+            })
+
+            items.update({quantity: comida2Quantity})
+            console.log('items')
+            console.log(items)
+
+            pedido.update({})
+            console.log('')
+        }
+    }
+
+    //pedido.update({
+    //    customer: customerName,
+    //})
+
+
     res.redirect('/pedidos')
-    console.log(req.body)
 })
 
 router.get('/details/:id', async (req, res) => {
@@ -132,8 +151,18 @@ router.get('/details/:id', async (req, res) => {
             {model: Food}
         ]
     })
-    console.log(search.food[0].pedidoItems.quantity)
     res.render('pedido-details', {pedido: search} )
+})
+
+router.get('/edit/:id', async (req, res) => {
+
+    const search = await Pedido.findByPk(req.params.id, {
+        include: [
+            {model: Food}
+        ]
+    })
+
+    res.render('pedido-edit', {pedido: search})
 })
 
 router.get('/delete/:id', (req, res) => {

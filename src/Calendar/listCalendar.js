@@ -3,9 +3,6 @@ const date = require('dayjs')
 const localizedFormat = require('dayjs/plugin/localizedFormat') 
 require('dayjs/locale/es')
 
-const foodRoutes = require('../Food/food')
-const createPedidos = require('../Pedido/createPedido')
-
 const { Op } = require('sequelize')
 const Food  = require('../Food/FoodModel')
 const Calendar = require('./CalendarModel')
@@ -13,17 +10,44 @@ const Calendar = require('./CalendarModel')
 router.get('/create-menu', (req, res) => {
     Food.findAll().then(
         food => {
-            
             if(Array.isArray(food) && food.length){
                 res.render('create-today-menu', {menu: food})
             } else {
-
                 res.render('create-today-menu', {menu: food, error: 'Para crear un Menu,  primero tienes que agregar al menos 2 platillos.'})
             }
-
-
         }
     )
+})
+
+router.post('/create-menu', async (req, res) => {
+    if(req.body.comida1 && req.body.comida2){
+
+        const search1 = await Food.findOne({
+            where: {
+                name: req.body.comida1
+            }
+        })
+
+        const search2 = await Food.findOne({
+            where: {
+                name: req.body.comida2
+            }
+        })
+
+        console.log('Id comida1: ' + search1.id)
+        console.log('Id comida2: ' + search2.id)
+
+        newTodayMenu = Calendar.build({
+            comida1: search1.id,
+            comida2: search2.id,
+            date: req.body.date
+        })
+        await newTodayMenu.save().then( (e) => {
+            console.log(e)
+            res.redirect('/')
+        })
+        
+    }
 })
 
 router.get('/list', (req, res)=> {
