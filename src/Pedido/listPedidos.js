@@ -103,6 +103,19 @@ router.post('/update/:id', async (req, res) => {
     const comida1Quantity   = req.body.comida1Quantity
     const comida2Quantity   = req.body.comida2Quantity
 
+
+    if (customerLocation){   
+        const [editedLocation, created] = await Location.findOrCreate({
+            where: {
+                name: customerLocation
+            }
+        }).catch( e => console.log(e))
+
+        pedido.update({
+            locationId: editedLocation.id
+        })
+    }
+        
     if (req.body.comida1Quantity || req.body.comida2Quantity ){
         if (req.body.comida1Quantity){
 
