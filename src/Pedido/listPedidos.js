@@ -47,7 +47,15 @@ router.get('/', async (req, res) => {
     }
 
     if (reqLocation){
-        pedidoQuery.location = reqLocation
+        searchedLocation = await Location.findOne({
+            where: {
+                name: reqLocation
+            }
+        }).catch( e => console.log(e))
+
+        console.log(searchedLocation)
+
+        pedidoQuery.locationId = searchedLocation.id
     }
 
     pedidoQuery.createdAt = {[Op.substring] : selectedDate}

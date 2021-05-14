@@ -1,4 +1,4 @@
-{% extends "base.njk" %}
+    {% extends "base.njk" %}
 
 {% block title %} Pedidos {% endblock %}
 
@@ -28,15 +28,15 @@
     <form action="/pedidos/" method="get">
         <class class="flex" style="display: grid; grid-template-columns:  1fr 1fr 1fr 1fr 0.7fr ;  justify-items: center; align-items: baseline ;" >
         <!-- TITULOS -->
-                <div>
-                    <p class="list-heading">Cliente</p>
+            <div>
+                <p class="list-heading">Cliente</p>
                 <p class="list-heading">Lugar</p>
                 <select class="small" name="location" >
                     <option value=""></option>
                     
                     {% for location in locations %}
                     
-                    <option> {{ location.name }} </option>
+                    <option value="{{location.name}}" > {{ location.name }} </option>
                     
                     {% endfor %}
                     
