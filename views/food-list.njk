@@ -3,6 +3,16 @@
 {% block content %}
     <div class="" style="overflow-y: scroll; height: 85vh; padding-left: 20px; padding-right: 20px "  >
 
+    {% if error %}
+        <div style="display: flex; align-items: center; " > 
+        <h1>
+        {{error}} 
+        </h1>
+            <a href="/food" >
+                <span class="material-icons" style="vertical-align: middle; color: cornflowerblue;" >&#xe895;</span>
+            </a>
+        </div>
+    {% endif %}
         {% for food in  menu %}
         <div class="card mt-4 mb-4 " >
             <div class="flex-resizable " >
@@ -23,16 +33,6 @@
 
     </div>
 
-    {% if error %}
-        <div style="display: flex; align-items: center; " > 
-        <h1>
-        {{error}} 
-        </h1>
-            <a href="/food" >
-                <span class="material-icons" style="vertical-align: middle; color: cornflowerblue;" >&#xe895;</span>
-            </a>
-        </div>
-    {% endif %}
 
 {% endblock %}
     
