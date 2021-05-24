@@ -1,7 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const nunjucks = require('nunjucks')
-const date = require('dayjs')
 const localizedFormat = require('dayjs/plugin/localizedFormat') 
 require('dayjs/locale/es')
 

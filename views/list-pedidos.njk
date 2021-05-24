@@ -54,8 +54,8 @@
                 </div>
 
                 <div class="flex" >
-                    <p>No Entregado</p>
-                    <input type="checkbox" name="paid" id="" class="search" >
+                    <p>Todos</p>
+                    <input type="checkbox" name="all" id="" class="search" >
                 </div>
                 
                 <input type="submit" value="Buscar" class="button small green secondary" >
@@ -92,9 +92,9 @@
         <div style="overflow-y: scroll; height: 69vh;" >
             <!--   LISTAS  -->
             {% for pedido in pedidos %}
-            
-            <div class="  card  secondary {{  "green" if pedido.paid else "love"  }} mt-2 "   >
-                <div style="display: grid; grid-template-columns:  1fr 1fr  1fr 1fr 0.7fr ;  justify-items: center; align-items: center; " >
+
+                <div class="  card  secondary {{  "green" if pedido.paid else "love"  }} mt-2 "   >
+                    <div style="display: grid; grid-template-columns:  1fr 1fr  1fr 1fr 0.7fr ;  justify-items: center; align-items: center; " >
                             <div>
                                 <div class="list-text  " > {{ pedido.location.name}} </div>
                                 <div class="list-text  " > {{ pedido.customer}} </div>

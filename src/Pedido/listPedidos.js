@@ -25,25 +25,31 @@ router.get('/', async (req, res) => {
     const reqPaid       = req.query.paid
     const reqLocation   = req.query.location
     const reqCreatedAt  = req.query.createdAt
+    const reqAll        = req.query.all
 
     let pedidoQuery = {}
+    
+    if (reqAll){
 
-    if( reqPaid && reqDelivered){
-        pedidoQuery.paid = true
-        pedidoQuery.delivered = true
-    }
-
-    //if(!reqPaid && !reqDelivered){
-    //    pedidoQuery.paid = false
-    //    pedidoQuery.delivered = false
-    //}
-
-    if (!reqPaid && reqDelivered){
-        pedidoQuery.delivered = true
-    }
-
-    if( reqPaid && !reqDelivered){
-        pedidoQuery.paid = true
+    } else {
+   
+        if( reqPaid && reqDelivered){
+            pedidoQuery.paid = true
+            pedidoQuery.delivered = true
+        }
+        
+        if(!reqPaid && !reqDelivered){
+            pedidoQuery.paid = false
+            pedidoQuery.delivered = false
+        }
+        
+        if (!reqPaid && reqDelivered){
+            pedidoQuery.delivered = true
+        }
+        
+        if( reqPaid && !reqDelivered){
+            pedidoQuery.paid = true
+        }
     }
 
     if (reqLocation){

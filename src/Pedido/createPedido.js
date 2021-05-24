@@ -77,13 +77,13 @@ router.post('/', async (req, res) => {
     pedidoComida1Quantity = PedidoItems.build({
         pedidoId: pedido.id,
         foodId: food1Id,
-        quantity: req.body.comida1Quantity
+        quantity: req.body.comida1Quantity || 0
     })
 
     pedidoComida2Quantity = PedidoItems.build({
         pedidoId: pedido.id,
         foodId: food2Id,
-        quantity: req.body.comida2Quantity
+        quantity: req.body.comida2Quantity || 0
     })
 
     await pedido.save()

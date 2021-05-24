@@ -14,14 +14,14 @@ router.get('/', (req, res) => {
 })
 
 router.get('/list', async (req, res)=>{
-    await Food.findAll().then(food => {
+    await Food.findAll({order:[['name', 'ASC']]}).then(food => {
         if(Array.isArray(food) && food.length){
             return res.render('food-list.njk', {menu: food})
             
         } else {
             res.render('food-list', {menu: food, error: 'Agrega el primer platillo al menu.'})
         }
-    })
+    }).catch( e => console.error(e))
 })
 
 router.get('/api/', (req, res) => {
