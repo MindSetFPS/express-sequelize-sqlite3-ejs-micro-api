@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const dayjs = require('dayjs')
 
+const isAuth = require('../auth/passport')
+
 const {  Pedido, PedidoItems  } = require('./PedidoModel')
 const Calendar = require('../Calendar/CalendarModel')
 const Food = require('../Food/FoodModel')
