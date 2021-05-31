@@ -25,13 +25,13 @@ passport.use('login', new PassportStrategy({usernameField: 'email'}, async funct
 
     console.log(user)
 
-    if( user.email == username){
+    if( user && user.email == username){
         
         console.log(user)
         
         return done(null, user)
     }
-    done(null, false)   
+    return done(null, false)   
 }))
 
 passport.use('register', new PassportStrategy({usernameField: 'email'}, async function(username, password, done){
@@ -59,7 +59,7 @@ passport.use('register', new PassportStrategy({usernameField: 'email'}, async fu
 }))
 
 function isAutenticated(req, res, next){
-    if(req.isAuthenticated()) {
+    if(req.isAuthenticated()  ) {
         return next(null);
       }
     

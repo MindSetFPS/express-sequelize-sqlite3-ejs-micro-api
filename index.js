@@ -22,7 +22,7 @@ const dayjs = require('dayjs')
 dayjs.extend(localizedFormat)
 
 const app = express()
-const port = 3000
+const port = 3003
 
 nunjucks.configure('views', {
     autoescape: true,
@@ -48,9 +48,9 @@ app.set('view engine', '.njk')
 app.set('view cache', false)
 
 app.use('/login', login)
+app.use('/register', register )
 app.use(isAutenticated)
 app.use('/', createPedidos )
-app.use('/register', register )
 app.use('/pedidos', listPedidos )
 app.use('/calendar', listCalendar)
 app.use('/food', foodRoutes)
