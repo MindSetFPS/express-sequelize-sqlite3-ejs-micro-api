@@ -11,7 +11,6 @@ router.get('/', async (req, res, next) => {
     }
 
     usersExist = await User.findOne().catch( e => console.error(e))
-    console.log(usersExist)
 
     if(usersExist){
         return res.render("login") 

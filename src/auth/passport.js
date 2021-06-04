@@ -21,14 +21,7 @@ passport.use('login', new PassportStrategy({usernameField: 'email'}, async funct
         }
     })
     .catch( e => console.error(e))
-    
-
-    console.log(user)
-
-    if( user && user.email == username){
-        
-        console.log(user)
-        
+    if( user && user.email == username){        
         return done(null, user)
     }
     return done(null, false)   

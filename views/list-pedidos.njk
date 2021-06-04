@@ -26,8 +26,18 @@
 
 <div>
     <form action="/pedidos/" method="get">
-        <class class="flex" style="display: grid; grid-template-columns:  1fr 1fr 1fr 1fr 0.7fr ;  justify-items: center; align-items: baseline ;" >
-        <!-- TITULOS -->
+        <div class="flex" style="justify-content: space-evenly;" >
+            <div>
+                <label for="since">Since</label>
+                <input type="date" name="sincePicker" id="since" value="{{since}}" >
+            </div>
+            <div>
+                <label for="until">Until</label>
+                <input type="date" name="untilPicker" id="until" value="{{until}}" >
+            </div>
+        </div>
+        <div class="flex mt-3" style="display: grid; grid-template-columns:  1fr 1fr 1fr 1fr 0.7fr ;  justify-items: center; align-items: baseline ;" >
+            <!-- TITULOS -->
             <div>
                 <p class="list-heading">Cliente</p>
                 <p class="list-heading">Lugar</p>

@@ -26,6 +26,9 @@ router.get('/', async (req, res) => {
     const reqLocation   = req.query.location
     const reqCreatedAt  = req.query.createdAt
     const reqAll        = req.query.all
+    const since         = req.query.sincePicker
+    const until         = req.query.untilPicker
+
 
     let pedidoQuery = {}
     
@@ -64,7 +67,8 @@ router.get('/', async (req, res) => {
         pedidoQuery.locationId = searchedLocation.id
     }
 
-    pedidoQuery.createdAt = {[Op.substring] : selectedDate}
+    pedidoQuery.createdAt = {[Op.between] : [since, until] }
+    console.log(pedidoQuery.createdAt)
 
 
     pedidos = await Pedido.findAll({
@@ -81,18 +85,7 @@ router.get('/', async (req, res) => {
 
     const locations = await Location.findAll()
 
-    //pedidos.forEach(element => {
-//
-    //    if( Locations.includes(element.location) ){
-    //        console.log(element.location)
-    //    } else {
-    //        console.log('No esta')
-    //        Locations.push(element.location)
-    //    }
-//
-    //});
-
-    res.render('list-pedidos', {pedidos: pedidos, locations: locations})
+    res.render('list-pedidos', {pedidos: pedidos, locations: locations, since: since, until: until})
 })
 
 router.post('/update/:id', async (req, res) => {
