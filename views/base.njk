@@ -9,20 +9,26 @@
     <link rel="stylesheet" href="/app.css"  >  
     <link rel="stylesheet" href="/switch.css"  >  
 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"> 
-</head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+    <script src="https://unpkg.com/vue@next"></script>
+
+    </head>
+    
+    
+    <body>
+        
+        <div class="" style=" display: grid; grid-template-columns: 1fr 11fr; height: 100vh; " >
+            {% include "navbar.njk" %}
+            <div class="container"  >               
+                <h1 class="title" style="height: 12vh;" > {% block title %}{% endblock %} </h1>
+                {% block content %}{% endblock %}
+                
+            </div>
+            
+        </div>
+        
 
 
-<body>
-
-    <div class="" style=" display: grid; grid-template-columns: 1fr 11fr; height: 100vh; " >
-        {% include "navbar.njk" %}
-    <div class="container" >
-        <h1 class="title" style="height: 12vh;" > {% block title %}{% endblock %} </h1>
-            {% block content %}{% endblock %}
-    </div>
-
-    </div>
+    <script src="/base.js"></script>
 </body>
 </html>

@@ -86,6 +86,23 @@ router.get('/list', (req, res)=> {
     ).catch( e => console.log(e) )
 })
 
+router.get('/api/list', async (req, res) => {
+    formatedDate = date().format('YYYY-MM-DD')
+    comidas = await Calendar.findOne({
+        where: {
+            date: {[Op.gte]: formatedDate}
+        },
+        include: [
+            { model: Food, as: 'Comida1'},
+            { model: Food, as: 'Comida2'}
+        ]
+    })
+
+
+    console.log(comidas)
+    res.json(comidas)
+})
+
 router.get('/delete/:id', (req, res) => {
     Calendar.destroy({
         where: {

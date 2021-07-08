@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
     selectedDate = date().subtract(5, 'h').second(0).minute(0).hour(0).format('YYYY-MM-DD')
     //selectedDate = '2021-05-08'
   
-    console.log('Req Query: ')
+    console.log(' / , Req Query: ')
     console.log( req.query)
     console.log('End Req Query: ')
 
@@ -88,11 +88,108 @@ router.get('/', async (req, res) => {
     res.render('list-pedidos', {pedidos: pedidos, locations: locations, since: since, until: until})
 })
 
-router.post('/update/:id', async (req, res) => {
-    const pedido = await Pedido.findByPk( req.params.id, {include: { model: Food}} )
+router.get('/api/', async(req, res) => {
+    selectedDate = date().subtract(5, 'h').second(0).minute(0).hour(0).format('YYYY-MM-DD')
+    //selectedDate = '2021-05-08'
+  
+    console.log('/api/, Req Query: ')
+    console.log( req.query)
+    console.log('End Req Query: ')
 
+    console.log(typeof req.query.paid)
+    console.log(req.query.paid)
+
+    const reqId         = req.params.id
+    const reqCustomer   = req.query.customer
+    const reqDelivered  = parseInt(req.query.delivered)
+    const reqPaid       = parseInt(req.query.paid)
+    const reqLocation   = req.query.location
+    const reqCreatedAt  = req.query.createdAt
+    const reqAll        = req.query.all
+    const since         = req.query.sincePicker
+    const until         = req.query.untilPicker
+
+    console.log(typeof reqDelivered)
+    console.log(reqDelivered)
+
+    let pedidoQuery = {}
+    
+    if (reqAll){
+
+    } else {
+   
+        if( reqPaid && reqDelivered){
+            console.log('true true')
+            pedidoQuery.paid = true
+            pedidoQuery.delivered = true
+        }
+        
+        if(!reqPaid && !reqDelivered){
+            console.log('false false')
+            pedidoQuery.paid = false
+            pedidoQuery.delivered = false
+        }
+        
+        if (!reqPaid && reqDelivered){
+            console.log('false true')
+            pedidoQuery.delivered = true
+        }
+        
+        if( reqPaid && !reqDelivered){
+            console.log('true false')
+            pedidoQuery.paid = true
+        }
+    }
+
+    console.log('line 135', pedidoQuery)
+
+    if (reqLocation){
+        searchedLocation = await Location.findOne({
+            where: {
+                name: reqLocation
+            }
+        }).catch( e => console.log(e))
+
+        console.log(searchedLocation)
+
+        pedidoQuery.locationId = searchedLocation.id
+    }
+
+    pedidoQuery.createdAt = {[Op.between] : [since, until] }
+    console.log(pedidoQuery.createdAt)
+
+
+    pedidos = await Pedido.findAll({
+        where: pedidoQuery,
+        include: [
+            {
+                model: Food, 
+                through: [] 
+            },{
+                model: Location
+            }
+        ],      
+    }).catch( e => console.log(e) )
+
+    //console.log(pedidos)
+
+    res.json(pedidos)
+})
+
+router.get('/api/locations', async (req, res) => {
+    console.log('Consulting locations')
+    
+    const places = await Location.findAll()
+
+    res.json(places)
+})
+
+router.post('/api/update/:id', async (req, res) => {
+    console.log('/api/update/id')
     console.log('Request Body')
     console.log(req.body)
+    const pedido = await Pedido.findByPk( req.params.id, {include: { model: Food}} ).catch(err => console.error(err))
+
 
     if (req.body.delivered || req.body.paid ){
         if (req.body.delivered){
@@ -153,7 +250,6 @@ router.post('/update/:id', async (req, res) => {
             console.log(items)
 
             pedido.update({})
-            console.log('')
         }
     }
 
@@ -161,8 +257,10 @@ router.post('/update/:id', async (req, res) => {
     //    customer: customerName,
     //})
 
+    const pedidoUpdated = await Pedido.findByPk(req.params.id)
+    //console.log(pedidoUpdated)
 
-    res.redirect('/pedidos')
+    res.json(pedidoUpdated)
 })
 
 router.get('/details/:id', async (req, res) => {
