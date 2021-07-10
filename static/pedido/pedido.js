@@ -40,8 +40,8 @@ app.component('query-settings-component', {
 
             .then( () => {
                 this.pedidos.forEach((pedido) => {
-                    this.comida1Quantity = this.comida1Quantity + pedido.food[0].pedidoItems.quantity  
-                    this.comida2Quantity = this.comida2Quantity + pedido.food[1].pedidoItems.quantity  
+                    this.comida2Quantity = this.comida2Quantity + pedido.food[0].pedidoItems.quantity  
+                    this.comida1Quantity = this.comida1Quantity + pedido.food[1].pedidoItems.quantity  
 
                     console.log(this.comida1Quantity)
                })
@@ -120,21 +120,21 @@ app.component('query-settings-component', {
             </div>
             <div class=" list-heading "     >
                 <div class="list-heading "  >
-                {{ this.comida1Name  }}
+                {{ this.comida2Name  }}
                 </div>
                 <div class="list-heading" >
-                {{ this.comida1Quantity }}
+                {{ this.comida2Quantity }}
                 </div>
                 
             </div>
             <div class="list-heading  "     >
                 
                 <div class="list-heading"  >
-                    {{ this.comida2Name  }}
+                    {{ this.comida1Name  }}
                 </div>
                 
                 <div class="list-heading" >
-                    {{ this.comida2Quantity }}
+                    {{ this.comida1Quantity }}
 
                 </div>
             </div>   
