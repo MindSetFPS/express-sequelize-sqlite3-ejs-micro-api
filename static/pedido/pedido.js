@@ -41,7 +41,7 @@ app.component('query-settings-component', {
             .then( () => {
                 this.pedidos.forEach((pedido) => {
                     this.comida2Quantity = this.comida2Quantity + pedido.food[0].pedidoItems.quantity  
-                    this.comida1Quantity = this.comida1Quantity + pedido.food[1].pedidoItems.quantity  
+                    this.comida1Quantity = this.comida1Quantity + pedido.food[1 ].pedidoItems.quantity  
 
                     console.log(this.comida1Quantity)
                })
@@ -65,13 +65,15 @@ app.component('query-settings-component', {
                 this.comida1Name = this.menu.Comida1.name
                 this.comida2Name = this.menu.Comida2.name
             })
-
-
-
-            
-
         },
 
+    },
+    mounted(){
+        this.since = dayjs().format('YYYY-MM-DD')
+
+        this.until = dayjs().add(1, 'day').format('YYYY-MM-DD')
+
+        this.getPedidos()
     },
     template: `
     <button @click="getPedidos">Buscar pedidos</button>
