@@ -1,15 +1,16 @@
 const express = require('express')
 const router = express.Router()
 const dayjs = require('dayjs')
+const e = require('express')
 
 const isAuth = require('../auth/passport')
 
-const {  Pedido, PedidoItems  } = require('./PedidoModel')
 const Calendar = require('../Calendar/CalendarModel')
+const Customer = require('../Customer/CustomerModel')
 const Food = require('../Food/FoodModel')
 const {Location} = require('./PedidoModel')
 
-const e = require('express')
+const {  Pedido, PedidoItems  } = require('./PedidoModel')
 
 
 router.get('/', async (req, res) => {
@@ -50,9 +51,16 @@ router.post('/', async (req, res) => {
 
     console.log(pedidoLocation)
 
+    const [pedidoCustomer, createdCustomer] = await Customer.findOrCreate({
+        where: {
+            name: req.body.customerName
+        }
+    }).catch( e => console.error(e) )
+
+    console.log(pedidoCustomer)
 
     const pedido = Pedido.build({
-        customer: req.body.customerName,
+        customerId: pedidoCustomer.id,
         delivered: false,
         total: '',
         paid: false,
