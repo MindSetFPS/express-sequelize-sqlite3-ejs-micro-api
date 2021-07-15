@@ -2,6 +2,7 @@ const { DataTypes, Sequelize } = require('sequelize')
 const db = require('../../db')
 
 const Food = require('../Food/FoodModel')
+const Customer = require('../Customer/CustomerModel')
 
 const Pedido = db.define('pedido',{
     id: {
@@ -62,7 +63,8 @@ const Location = db.define('location', {
     }
 })
 
-
+Customer.hasMany(Pedido)
+Pedido.belongsTo(Customer)
 
 Location.hasMany(Pedido)
 Pedido.belongsTo(Location)
@@ -73,6 +75,7 @@ Food.belongsToMany(Pedido, {through: PedidoItems})
 Pedido.sync().then(() => console.log('Pedido created')).catch((e) => console.log(e))
 PedidoItems.sync().then(() => console.log('PedidoItems created')).catch((e) => console.log(e))
 Location.sync().then(() => console.log('Location created')).catch((e) => console.log(e))
+Customer.sync().then(()=> console.log('Customer created')).catch( (e) => console.error(e) )
 
 
 module.exports = { Pedido, PedidoItems, Location }

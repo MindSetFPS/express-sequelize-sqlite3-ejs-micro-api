@@ -1,5 +1,4 @@
 const { DataTypes } = require('sequelize')
-const { Pedido } = require('../Pedido/PedidoModel.js')
 
 const db = require('../../db')
 
@@ -16,9 +15,7 @@ const Customer = db.define('customer', {
     }
 })
 
-Customer.hasMany(Pedido)
-Pedido.belongsTo(Customer)
 
-Customer.sync().then(()=> console.log('Customer created')).catch( (e) => console.error(e) )
+
 
 module.exports = Customer
