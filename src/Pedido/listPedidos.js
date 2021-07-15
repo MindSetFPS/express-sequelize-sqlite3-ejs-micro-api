@@ -8,8 +8,8 @@ const createPedidos = require('./createPedido')
 
 const { Op, where, REAL } = require('sequelize')
 const { Pedido, Location, PedidoItems } = require('./PedidoModel')
-const Calendar = require('../Calendar/CalendarModel')
 const Food = require('../Food/FoodModel')
+const Customer = require('../Customer/CustomerModel')
 
 router.get('/', async (req, res) => {
     selectedDate = date().subtract(5, 'h').second(0).minute(0).hour(0).format('YYYY-MM-DD')
@@ -60,15 +60,15 @@ router.get('/', async (req, res) => {
             where: {
                 name: reqLocation
             }
-        }).catch( e => console.log(e))
+        }).catch( e => console.error(e))
 
-        console.log(searchedLocation)
+        //console.log(searchedLocation)
 
         pedidoQuery.locationId = searchedLocation.id
     }
 
     pedidoQuery.createdAt = {[Op.between] : [since, until] }
-    console.log(pedidoQuery.createdAt)
+    //console.log(pedidoQuery.createdAt)
 
 
     pedidos = await Pedido.findAll({
@@ -81,7 +81,7 @@ router.get('/', async (req, res) => {
                 model: Location
             }
         ],      
-    }).catch( e => console.log(e) )
+    }).catch( e => console.error(e) )
 
     const locations = await Location.findAll()
 
@@ -90,14 +90,10 @@ router.get('/', async (req, res) => {
 
 router.get('/api/', async(req, res) => {
     selectedDate = date().subtract(5, 'h').second(0).minute(0).hour(0).format('YYYY-MM-DD')
-    //selectedDate = '2021-05-08'
   
     console.log('/api/, Req Query: ')
     console.log( req.query)
     console.log('End Req Query: ')
-
-    console.log(typeof req.query.paid)
-    console.log(req.query.paid)
 
     const reqId         = req.params.id
     const reqCustomer   = req.query.customer
@@ -108,10 +104,6 @@ router.get('/api/', async(req, res) => {
     const reqAll        = req.query.all
     const since         = req.query.sincePicker
     const until         = req.query.untilPicker
-
-    console.log(typeof reqDelivered)
-    console.log(reqDelivered)
-
     let pedidoQuery = {}
     
     if (reqAll){
@@ -141,23 +133,34 @@ router.get('/api/', async(req, res) => {
         }
     }
 
-    console.log('line 135', pedidoQuery)
-
+    
     if (reqLocation){
         searchedLocation = await Location.findOne({
             where: {
                 name: reqLocation
             }
-        }).catch( e => console.log(e))
-
-        console.log(searchedLocation)
-
+        }).catch( e => console.error(e))
+        
+        //console.log(searchedLocation)
+        
         pedidoQuery.locationId = searchedLocation.id
     }
 
+    if (reqCustomer){
+        searchedCustomer = await Customer.findOne({
+            where: {
+                name: reqCustomer
+            }
+        }).catch( e => console.error(e) )
+        
+        console.log(searchedCustomer)
+        pedidoQuery.customerId = searchedCustomer.id
+        
+    }
+    
     pedidoQuery.createdAt = {[Op.between] : [since, until] }
-    console.log(pedidoQuery.createdAt)
-
+    
+    console.log('line 135', pedidoQuery)
 
     pedidos = await Pedido.findAll({
         where: pedidoQuery,
@@ -167,9 +170,11 @@ router.get('/api/', async(req, res) => {
                 through: [] 
             },{
                 model: Location
+            },{
+                model: Customer
             }
         ],      
-    }).catch( e => console.log(e) )
+    }).catch( e => console.error(e) )
 
     //console.log(pedidos)
 
@@ -213,7 +218,7 @@ router.post('/api/update/:id', async (req, res) => {
             where: {
                 name: customerLocation
             }
-        }).catch( e => console.log(e))
+        }).catch( e => console.error(e))
 
         pedido.update({
             locationId: editedLocation.id

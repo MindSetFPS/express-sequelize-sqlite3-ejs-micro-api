@@ -11,11 +11,7 @@ const Pedido = db.define('pedido',{
       allowNull: false,
       defaultValue: Sequelize.UUIDV4
 
-    },
-    customer: {
-        type: DataTypes.STRING ,
-        allowNull: false
-    },
+    }, 
     delivered: {
         type: DataTypes.BOOLEAN,
         allow: false
@@ -66,6 +62,8 @@ const Location = db.define('location', {
     }
 })
 
+
+
 Location.hasMany(Pedido)
 Pedido.belongsTo(Location)
 
@@ -77,4 +75,4 @@ PedidoItems.sync().then(() => console.log('PedidoItems created')).catch((e) => c
 Location.sync().then(() => console.log('Location created')).catch((e) => console.log(e))
 
 
-module.exports = {Pedido, PedidoItems, Location }
+module.exports = { Pedido, PedidoItems, Location }

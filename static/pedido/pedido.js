@@ -15,6 +15,7 @@ app.component('query-settings-component', {
             pedidos: [],
             locations: [],
             selectedLocation: '',
+            selectedCustomer: '',
             comida1Name: '',
             comida1Quantity: 0,
             comida2Name: '',
@@ -33,7 +34,7 @@ app.component('query-settings-component', {
             console.log(this.selectedLocation)
             this.comida1Quantity = 0
             this.comida2Quantity = 0
-            fetch('/pedidos/api/?' + new URLSearchParams({sincePicker: this.since, untilPicker: this.until, paid: this.paid, delivered: this.delivered, all: this.all, location: this.selectedLocation }))
+            fetch('/pedidos/api/?' + new URLSearchParams({sincePicker: this.since, untilPicker: this.until, paid: this.paid, delivered: this.delivered, all: this.all, location: this.selectedLocation, customer: this.selectedCustomer }))
             .then(res => res.json())   
             .then(pedidos => this.pedidos = pedidos)
             .then(console.log(this.pedidos))
@@ -50,12 +51,18 @@ app.component('query-settings-component', {
             .catch(err => console.error(err))
             .finally( () => console.log(this.pedidos))
 
-
+            // Consulting locations with the api
             fetch('/pedidos/api/locations')
             .then(res => res.json())
             .then(locations => this.locations = locations)
             .catch(err => console.error(err))
             console.log(this.locations)
+
+            fetch('/customers')
+            .then( res => res.json())
+            .then( customers => this.customers = customers )
+            .catch( e => console.error(e))
+            .finally( console.log(this.customers ))
 
             fetch('/calendar/api/list')
             .then(res => res.json())
@@ -93,6 +100,12 @@ app.component('query-settings-component', {
             <!-- TITULOS -->
             <div>
                 <p class="list-heading">Cliente</p>
+                <input class="small" name="customer" v-model="selectedCustomer" list="customersList" >
+                <datalist id="customersList" >
+                    <option value=""></option>
+                    <option v-for="customer in customers"  > {{ customer.name }} </option>
+                </datalist>
+                                
                 <p class="list-heading">Lugar</p>
                 <select class="small" name="location" v-model="selectedLocation" >
                     <option value=""></option>
@@ -162,6 +175,7 @@ app.component('query-settings-component', {
     </div>
 </div>
     
+
     
     
     `
@@ -183,7 +197,7 @@ app.component('pedido-item', {
         <div style="display: grid; grid-template-columns:  1fr 1fr  1fr 1fr 0.7fr ;  justify-items: center; align-items: center; " >
             <div>
                 <div> {{ pedido.location.name}} </div>
-                <div> {{ pedido.customer}} </div>
+                <div> {{ pedido.customer.name}} </div>
                 <div class="list-text" > {{ pedido.createdAt }} </div>
             </div>
 
