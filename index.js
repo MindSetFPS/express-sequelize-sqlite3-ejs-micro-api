@@ -15,6 +15,8 @@ const foodRoutes = require('./src/Food/food')
 const createPedidos = require('./src/Pedido/createPedido')
 const listPedidos = require('./src/Pedido/listPedidos')
 const listCalendar = require('./src/Calendar/listCalendar')
+const customers = require('./src/Customer/customers')
+
 
 require('./src/auth/passport')
 
@@ -56,6 +58,7 @@ app.use('/', createPedidos )
 app.use('/pedidos', listPedidos )
 app.use('/calendar', listCalendar)
 app.use('/accounts', accounts)
+app.use('/customers', customers)
 
 app.listen(port, () => {
     console.log('Running on port: ', port)
