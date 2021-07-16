@@ -34,7 +34,7 @@ app.component('query-settings-component', {
             console.log(this.selectedLocation)
             this.comida1Quantity = 0
             this.comida2Quantity = 0
-            fetch('/pedidos/api/?' + new URLSearchParams({sincePicker: this.since, untilPicker: this.until, paid: this.paid, delivered: this.delivered, all: this.all, location: this.selectedLocation, customer: this.selectedCustomer }))
+            fetch('/pedidos/api/?' + new URLSearchParams({sincePicker: this.since, untilPicker: this.until, paid: this.paid, delivered: this.delivered, all: this.all, location: this.selectedLocation, customer: this.selectedCustomer.trim() }))
             .then(res => res.json())   
             .then(pedidos => this.pedidos = pedidos)
             .then(console.log(this.pedidos))

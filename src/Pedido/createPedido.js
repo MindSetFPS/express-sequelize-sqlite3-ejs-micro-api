@@ -15,10 +15,7 @@ const {  Pedido, PedidoItems  } = require('./PedidoModel')
 
 router.get('/', async (req, res) => {
     console.log(dayjs().format('YYYY-MM-DD'))
-
-    
     const formatedDate = dayjs().format('YYYY-MM-DD')
-    
     try {
         await Calendar.findOne({
             where: {
@@ -33,7 +30,7 @@ router.get('/', async (req, res) => {
                     res.render('pedido-create', {comida1: query.Comida1, comida2: query.Comida2})
                 })  
             } catch (e) {
-                console.log(e)
+                console.error(e)
                 res.render('pedido-create', {error: 'Para crear un pedido antes tienes que crear un menu que corresponda al dia de hoy.'})
             }
         })
@@ -47,17 +44,13 @@ router.post('/', async (req, res) => {
         where: {
             name: req.body.customerLocation
         }
-    }).catch( e => console.log(e))
-
-    console.log(pedidoLocation)
+    }).catch( e => console.error(e))
 
     const [pedidoCustomer, createdCustomer] = await Customer.findOrCreate({
         where: {
-            name: req.body.customerName
+            name: req.body.customerName.trim()
         }
     }).catch( e => console.error(e) )
-
-    console.log(pedidoCustomer)
 
     const pedido = Pedido.build({
         customerId: pedidoCustomer.id,
@@ -68,8 +61,6 @@ router.post('/', async (req, res) => {
         createdAt: newDate
     })
 
-    console.log(pedido)
-
     const Menu = await Calendar.findOne({
         where: {
             date: formatedDate  
@@ -79,7 +70,7 @@ router.post('/', async (req, res) => {
             {model: Food, as: 'Comida2'}
 
         ]
-    }).catch( e => console.log(e))
+    }).catch( e => console.error(e))
 
     const food1Id = Menu.Comida1.id
     const food2Id = Menu.Comida2.id

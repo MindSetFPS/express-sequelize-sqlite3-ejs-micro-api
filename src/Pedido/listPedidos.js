@@ -13,11 +13,6 @@ const Customer = require('../Customer/CustomerModel')
 
 router.get('/', async (req, res) => {
     selectedDate = date().subtract(5, 'h').second(0).minute(0).hour(0).format('YYYY-MM-DD')
-    //selectedDate = '2021-05-08'
-  
-    console.log(' / , Req Query: ')
-    console.log( req.query)
-    console.log('End Req Query: ')
 
     const reqId         = req.params.id
     const reqCustomer   = req.query.customer
@@ -28,7 +23,6 @@ router.get('/', async (req, res) => {
     const reqAll        = req.query.all
     const since         = req.query.sincePicker
     const until         = req.query.untilPicker
-
 
     let pedidoQuery = {}
     
@@ -146,14 +140,21 @@ router.get('/api/', async(req, res) => {
         pedidoQuery.locationId = searchedLocation.id
     }
 
+    console.log('reqCustomer: ', reqCustomer)
+
     if (reqCustomer){
         searchedCustomer = await Customer.findOne({
             where: {
-                name: reqCustomer
+                name: reqCustomer.trim()
             }
-        }).catch( e => console.error(e) )
+        }).catch((e) => console.error('error: :',e))
+
+        if(searchedCustomer === null){
+            res.json(`Error 404.Record with name ${reqCustomer} not found`)
+            throw new Error(`Record with name ${reqCustomer} not found.`)
+        }
         
-        console.log(searchedCustomer)
+        console.log('searchedCustomer: ', searchedCustomer)
         pedidoQuery.customerId = searchedCustomer.id
         
     }

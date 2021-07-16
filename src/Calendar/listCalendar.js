@@ -97,9 +97,6 @@ router.get('/api/list', async (req, res) => {
             { model: Food, as: 'Comida2'}
         ]
     })
-
-
-    console.log(comidas)
     res.json(comidas)
 })
 
