@@ -135,21 +135,21 @@ app.component('query-settings-component', {
             </div>
             <div class=" list-heading "     >
                 <div class="list-heading "  >
-                {{ this.comida2Name  }}
+                {{ this.comida1Name  }}
                 </div>
                 <div class="list-heading" >
-                {{ this.comida2Quantity }}
+                {{ this.comida1Quantity }}
                 </div>
                 
             </div>
             <div class="list-heading  "     >
                 
                 <div class="list-heading"  >
-                    {{ this.comida1Name  }}
+                    {{ this.comida2Name  }}
                 </div>
                 
                 <div class="list-heading" >
-                    {{ this.comida1Quantity }}
+                    {{ this.comida2Quantity }}
 
                 </div>
             </div>   

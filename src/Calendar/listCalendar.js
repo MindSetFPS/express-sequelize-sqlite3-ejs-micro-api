@@ -22,16 +22,13 @@ router.get('/create-menu', (req, res) => {
 router.post('/create-menu', async (req, res) => {
     if(req.body.comida1 && req.body.comida2){
 
-        console.log(req.body.comida1)
-
-        
-        const search2 = await Food.findOne({
+        const search1 = await Food.findOne({
             where: {
                 name: req.body.comida1
             }
         }).catch( e => console.error(e))
         
-        const search1 = await Food.findOne({
+        const search2 = await Food.findOne({
             where: {
                 name: req.body.comida2
             }
