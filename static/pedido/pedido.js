@@ -41,8 +41,8 @@ app.component('query-settings-component', {
 
             .then( () => {
                 this.pedidos.forEach((pedido) => {
-                    this.comida2Quantity = this.comida2Quantity + pedido.food[0].pedidoItems.quantity  
-                    this.comida1Quantity = this.comida1Quantity + pedido.food[1 ].pedidoItems.quantity  
+                    this.comida1Quantity = this.comida1Quantity + pedido.food[0].pedidoItems.quantity  
+                    this.comida2Quantity = this.comida2Quantity + pedido.food[1].pedidoItems.quantity  
 
                     console.log(this.comida1Quantity)
                })
