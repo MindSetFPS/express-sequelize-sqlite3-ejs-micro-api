@@ -16,24 +16,24 @@ const {  Pedido, PedidoItems  } = require('./PedidoModel')
 router.get('/', async (req, res) => {
     console.log(dayjs().format('YYYY-MM-DD'))
     const formatedDate = dayjs().format('YYYY-MM-DD')
-    try {
-        await Calendar.findOne({
+    
+    const calendar = await Calendar.findOne({
             where: {
                 date: formatedDate
             },
             include: [
                 { model: Food, as: 'Comida1' },
                 { model: Food, as: 'Comida2' }
-            ]})
-            .then(
-                query => {
-                    res.render('pedido-create', {comida1: query.Comida1, comida2: query.Comida2})
-                })  
-            } catch (e) {
-                console.error(e)
-                res.render('pedido-create', {error: 'Para crear un pedido antes tienes que crear un menu que corresponda al dia de hoy.'})
-            }
-        })
+            ]}).catch( e => console.error(e))
+
+    console.log(calendar)
+    
+    if (!calendar){
+        console.error(e)
+        res.render('pedido-create', {error: 'Para crear un pedido antes tienes que crear un menu que corresponda al dia de hoy.'})
+    }
+    res.render('pedido-create', {comida1: calendar.Comida1, comida2: calendar.Comida2})
+})
         
 router.post('/', async (req, res) => {
 
