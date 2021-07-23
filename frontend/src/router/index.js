@@ -7,6 +7,9 @@ import FoodList from '../views/FoodList.vue'
 import Calendar from '../views/Calendar.vue'
 import CalendarList from '../views/CalendarList.vue'
 import Accounts from '../views/Accounts.vue'
+import Login from '../views/Login.vue'
+import Register from '../views/Register.vue'
+
 
 
 const routes = [
@@ -41,6 +44,16 @@ const routes = [
     path: '/accounts',
     name: 'Accounts',
     component: Accounts
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
   }
 ]
 
