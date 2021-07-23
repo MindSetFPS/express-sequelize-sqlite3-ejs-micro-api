@@ -1,7 +1,6 @@
 const bodyParser = require('body-parser')
 const express = require('express')
 const session = require('express-session')
-const nunjucks = require('nunjucks')
 const passport = require('passport')
 const localizedFormat = require('dayjs/plugin/localizedFormat') 
 require('dayjs/locale/es')
@@ -27,12 +26,6 @@ dayjs.extend(localizedFormat)
 const app = express()
 const port = 3000
 
-nunjucks.configure('views', {
-    autoescape: true,
-    noCache: true,
-    express: app
-})
-
 app.use(session({
     secret: 'secret key',
     resave: true,
@@ -45,16 +38,14 @@ app.use(passport.session())
 
 app.use(express.json())
 app.use(express.urlencoded());
-app.use(express.static('static'))
+app.use(express.static('dist'))
 
-app.set('view engine', '.njk')
-app.set('view cache', false)
 
-app.use('/login', login)
-app.use('/register', register )
+app.use('/', createPedidos)
+//app.use('/login', login)
+//app.use('/register', register )
 app.use('/food', foodRoutes)
-app.use(isAutenticated)
-app.use('/', createPedidos )
+//app.use(isAutenticated)
 app.use('/pedidos', listPedidos )
 app.use('/calendar', listCalendar)
 app.use('/accounts', accounts)

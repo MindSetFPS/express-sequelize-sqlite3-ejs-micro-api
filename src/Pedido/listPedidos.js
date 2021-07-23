@@ -3,84 +3,11 @@ const date = require('dayjs')
 const localizedFormat = require('dayjs/plugin/localizedFormat') 
 require('dayjs/locale/es')
 
-const foodRoutes = require('../Food/food')
-const createPedidos = require('./createPedido')
 
 const { Op, where, REAL } = require('sequelize')
 const { Pedido, Location, PedidoItems } = require('./PedidoModel')
 const Food = require('../Food/FoodModel')
 const Customer = require('../Customer/CustomerModel')
-
-router.get('/', async (req, res) => {
-    selectedDate = date().subtract(5, 'h').second(0).minute(0).hour(0).format('YYYY-MM-DD')
-
-    const reqId         = req.params.id
-    const reqCustomer   = req.query.customer
-    const reqDelivered  = req.query.delivered
-    const reqPaid       = req.query.paid
-    const reqLocation   = req.query.location
-    const reqCreatedAt  = req.query.createdAt
-    const reqAll        = req.query.all
-    const since         = req.query.sincePicker
-    const until         = req.query.untilPicker
-
-    let pedidoQuery = {}
-    
-    if (reqAll){
-
-    } else {
-   
-        if( reqPaid && reqDelivered){
-            pedidoQuery.paid = true
-            pedidoQuery.delivered = true
-        }
-        
-        if(!reqPaid && !reqDelivered){
-            pedidoQuery.paid = false
-            pedidoQuery.delivered = false
-        }
-        
-        if (!reqPaid && reqDelivered){
-            pedidoQuery.delivered = true
-        }
-        
-        if( reqPaid && !reqDelivered){
-            pedidoQuery.paid = true
-        }
-    }
-
-    if (reqLocation){
-        searchedLocation = await Location.findOne({
-            where: {
-                name: reqLocation
-            }
-        }).catch( e => console.error(e))
-
-        //console.log(searchedLocation)
-
-        pedidoQuery.locationId = searchedLocation.id
-    }
-
-    pedidoQuery.createdAt = {[Op.between] : [since, until] }
-    //console.log(pedidoQuery.createdAt)
-
-
-    pedidos = await Pedido.findAll({
-        where: pedidoQuery,
-        include: [
-            {
-                model: Food, 
-                through: [] 
-            },{
-                model: Location
-            }
-        ],      
-    }).catch( e => console.error(e) )
-
-    const locations = await Location.findAll()
-
-    res.render('list-pedidos', {pedidos: pedidos, locations: locations, since: since, until: until})
-})
 
 router.get('/api/', async(req, res) => {
     selectedDate = date().subtract(5, 'h').second(0).minute(0).hour(0).format('YYYY-MM-DD')
@@ -267,26 +194,6 @@ router.post('/api/update/:id', async (req, res) => {
     //console.log(pedidoUpdated)
 
     res.json(pedidoUpdated)
-})
-
-router.get('/details/:id', async (req, res) => {
-    const search = await Pedido.findByPk(req.params.id, {
-        include: [
-            {model: Food}
-        ]
-    })
-    res.render('pedido-details', {pedido: search} )
-})
-
-router.get('/edit/:id', async (req, res) => {
-
-    const search = await Pedido.findByPk(req.params.id, {
-        include: [
-            {model: Food}
-        ]
-    })
-
-    res.render('pedido-edit', {pedido: search})
 })
 
 router.get('/delete/:id', (req, res) => {
