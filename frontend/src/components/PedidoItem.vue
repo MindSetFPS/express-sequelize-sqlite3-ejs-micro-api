@@ -5,9 +5,9 @@
     <div class="  card  secondary  mt-2 " :class="[this.paid ? 'green' : 'love']"  >
         <div style="display: grid; grid-template-columns:  1fr 1fr  1fr 1fr 0.7fr ;  justify-items: center; align-items: center; " >
             <div>
-                <div> { pedido.location.name}} </div>
-                <div> { pedido.customer.name}} </div>
-                <div class="list-text" > { pedido.createdAt }} </div>
+                <div> {{ pedido.location.name}} </div>
+                <div> {{ pedido.customer.name}} </div>
+                <div class="list-text" > {{ pedido.createdAt }} </div>
             </div>
 
             <div style="text-align: center;" > 
@@ -35,8 +35,8 @@
                 </button>
             </div>
 
-            <h3>{ pedido.food[0].pedidoItems.quantity }}</h3>
-            <h3>{ pedido.food[1].pedidoItems.quantity }}</h3>
+            <h3>{{ pedido.food[0].pedidoItems.quantity }}</h3>
+            <h3>{{ pedido.food[1].pedidoItems.quantity }}</h3>
    
         </div>
     </div>
@@ -53,13 +53,14 @@ export default {
             delivered: this.pedido.delivered ,
             paid: this.pedido.paid ,
             all: '',
+            api: process.env.VUE_APP_API
         }
     },
     methods: {
         updatePedido(id){
             console.log(id)
             const url = '/pedidos/api/update/' + id
-            console.log(url)
+            console.log(this.api + url)
             // data = {
             //     delivered: this.delivered,
             //     paid: this.paid

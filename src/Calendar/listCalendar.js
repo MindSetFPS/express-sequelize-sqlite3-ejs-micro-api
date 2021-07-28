@@ -50,6 +50,7 @@ router.post('/create-menu', async (req, res) => {
     }
 })
 
+
 router.get('/list', (req, res)=> {
     formatedDate = date().format('YYYY-MM-DD')
     Calendar.findAll({
@@ -83,7 +84,24 @@ router.get('/list', (req, res)=> {
     ).catch( e => console.log(e) )
 })
 
+router.get('/api/all', async (req, res) => {
+    console.log('New request for /calendar/api/all')
+    formatedDate = date().format('YYYY-MM-DD')
+    const calendars = await Calendar.findAll({
+        where: {
+            date: {[Op.gte]: formatedDate}
+        },
+        include: [
+            { model: Food, as: 'Comida1' },
+            { model: Food, as: 'Comida2' }
+        ]
+    })
+
+    res.json(calendars)
+})
+
 router.get('/api/list', async (req, res) => {
+    console.log('New request for /calendar/api/list')
     formatedDate = date().format('YYYY-MM-DD')
     comidas = await Calendar.findOne({
         where: {
@@ -95,6 +113,47 @@ router.get('/api/list', async (req, res) => {
         ]
     })
     res.json(comidas)
+})
+
+router.post('/api/create', async (req, res) => {
+    console.log('New request to /calendar/api/create')
+    console.log(req.body)
+    
+    if( !req.body.comida1 || !req.body.comida2 || !req.body.date){
+        res.status(400).json({message: 'Faltan datos', error: true})
+    }
+
+    const search1 = await Food.findOne({
+        where: {
+            name: req.body.comida1
+        }
+    }).catch( e => console.error(e))
+
+    
+    const search2 = await Food.findOne({
+        where: {
+            name: req.body.comida2
+        }
+    }).catch( e => console.error(e))
+
+    if( !search1 || !search2 ){
+        res.status(400).json({error: true, message: 'La comida no existe.'})
+    }
+
+    console.log('Id comida1: ' + search1)
+    console.log('Id comida2: ' + search2.id)
+
+    newTodayMenu = Calendar.build({
+        comida1: search1.id,
+        comida2: search2.id,
+        date: req.body.date
+    })
+
+    await newTodayMenu.save().then( (e) => {
+        console.log(e)
+        res.status(200).json({message: 'Nuevo menu guardado'})
+    })
+
 })
 
 router.get('/delete/:id', (req, res) => {

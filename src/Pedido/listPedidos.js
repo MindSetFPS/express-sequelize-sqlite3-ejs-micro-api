@@ -3,18 +3,17 @@ const date = require('dayjs')
 const localizedFormat = require('dayjs/plugin/localizedFormat') 
 require('dayjs/locale/es')
 
-
 const { Op, where, REAL } = require('sequelize')
 const { Pedido, Location, PedidoItems } = require('./PedidoModel')
 const Food = require('../Food/FoodModel')
 const Customer = require('../Customer/CustomerModel')
+const Calendar = require('../Calendar/CalendarModel')
 
 router.get('/api/', async(req, res) => {
+    console.log('New request for /pedidos/api')
     selectedDate = date().subtract(5, 'h').second(0).minute(0).hour(0).format('YYYY-MM-DD')
   
-    console.log('/api/, Req Query: ')
     console.log( req.query)
-    console.log('End Req Query: ')
 
     const reqId         = req.params.id
     const reqCustomer   = req.query.customer
@@ -63,7 +62,7 @@ router.get('/api/', async(req, res) => {
         }).catch( e => console.error(e))
         
         //console.log(searchedLocation)
-        
+    
         pedidoQuery.locationId = searchedLocation.id
     }
 
@@ -88,7 +87,7 @@ router.get('/api/', async(req, res) => {
     
     pedidoQuery.createdAt = {[Op.between] : [since, until] }
     
-    console.log('line 135', pedidoQuery)
+    console.log(pedidoQuery)
 
     pedidos = await Pedido.findAll({
         where: pedidoQuery,
@@ -104,13 +103,78 @@ router.get('/api/', async(req, res) => {
         ],      
     }).catch( e => console.error(e) )
 
-    //console.log(pedidos)
+    console.log(pedidos)
 
     res.json(pedidos)
 })
 
+router.post('/api/create', async (req, res) => {
+    console.log('New request for /pedidos/api/create')
+    const formatedDate = date().format('YYYY-MM-DD')
+    const newDate = date().format('YYYY-MM-DD HH:MM:ss')
+
+    if(!req.body.customerLocation || !req.body.customerName ){
+        return res.json({ok: false, message: 'Faltan datos.' })
+    }
+
+    const [pedidoLocation, created] = await Location.findOrCreate({
+        where: {
+            name: req.body.customerLocation
+        }
+    }).catch( e => console.error(e))
+
+    const [pedidoCustomer, createdCustomer] = await Customer.findOrCreate({
+        where: {
+            name: req.body.customerName.trim()
+        }
+    }).catch( e => console.error(e) )
+
+    const pedido = Pedido.build({
+        customerId: pedidoCustomer.id,
+        delivered: false,
+        total: '',
+        paid: false,
+        locationId: pedidoLocation.id,
+        createdAt: newDate
+    })
+
+    const Menu = await Calendar.findOne({
+        where: {
+            date: formatedDate  
+        },
+        include: [
+            {model: Food, as: 'Comida1'},
+            {model: Food, as: 'Comida2'}
+
+        ]
+    }).catch( e => console.error(e))
+
+    const food1Id = Menu.Comida1.id
+    const food2Id = Menu.Comida2.id
+
+    pedidoComida1Quantity = PedidoItems.build({
+        pedidoId: pedido.id,
+        foodId: food1Id,
+        quantity: req.body.comida1Quantity || 0
+    })
+
+    pedidoComida2Quantity = PedidoItems.build({
+        pedidoId: pedido.id,
+        foodId: food2Id,
+        quantity: req.body.comida2Quantity || 0
+    })
+
+    await pedido.save()
+    await pedidoComida1Quantity.save()
+    await pedidoComida2Quantity.save()
+
+    res.json({ok: true, message: 'Pedido Creado'})
+
+
+})
+
 router.get('/api/locations', async (req, res) => {
-    console.log('Consulting locations')
+    console.log('New request for /pedidos/locations/api')
     
     const places = await Location.findAll()
 

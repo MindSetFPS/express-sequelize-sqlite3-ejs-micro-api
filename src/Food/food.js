@@ -25,6 +25,7 @@ router.get('/list', async (req, res)=>{
 })
 
 router.get('/api/', (req, res) => {
+    console.log('Recieving request for "/food/api"')
     console.log('Sending Api...')
     Food.findAll().then(food => 
         res.json(food)
@@ -38,6 +39,17 @@ router.post('/create',async (req, res) => {
     }
     console.log('Created')
     res.redirect('/')
+})
+
+router.post('/api/create',async (req, res) => {
+    console.log('Received new request for /food/api/create')
+    if(!req.body.name){
+        return res.json({error: true, message: 'Faltan datos'})
+    }
+    newFood = await Food.build({name: req.body.name, description: req.body.description, link: req.body.link})
+    await newFood.save().catch( (e) => console.log(e))
+    console.log('Created')
+    res.json({ok: true, message: 'Comida Creada.'})
 })
 
 router.get('/edit/:id', async (req, res) => {

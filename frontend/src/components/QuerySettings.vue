@@ -52,34 +52,33 @@
                     
                 </div>
                 <div class=" list-heading "     >
-                    <div class="list-heading "  >
-                    {{ this.comida1Name  }}
+                    <div class="list-heading " v-if="calendar"  >
+                    {{ calendar.Comida1.name  }}
                     </div>
                     <div class="list-heading" >
-                    {{ this.comida1Quantity }}
+                     {{ this.comida0Quantity }}
                     </div>
                     
                 </div>
                 <div class="list-heading  "     >
                     
-                    <div class="list-heading"  >
-                        {{ this.comida2Name  }}
+                    <div class="list-heading" v-if="calendar" >
+                        {{ calendar.Comida2.name  }}
                     </div>
                     
                     <div class="list-heading" >
-                        {{ this.comida2Quantity }}
+                         {{this.comida1Quantity}}
 
                     </div>
                 </div>   
                 <div class="list-heading">
                     <p class="list-heading" >Total:</p>
                     <p  class="list-heading" >
-                        $ {{ (this.comida1Quantity + this.comida2Quantity) * 45   }}
+                        $ 
                     </p>
                 </div>
             </div> 
         </form>
-        
         <div style=" height: 70vh; " >
             <div style="overflow-y: scroll; height: 69vh;" >
                 
@@ -95,17 +94,77 @@
                 </div>
             </div>
         </div>
-
     </div>
+
 </template>
 
 <script>
 import PedidoItem from "@/components/PedidoItem.vue";
+import * as dayjs from 'dayjs'
 
 export default {
     name: 'QuerySettings',
     components: {
         PedidoItem
+    },
+    data(){
+        return{
+            calendar: '',
+            customers: '',
+            locations: '',
+            since: '',
+            until: '',
+            paid: '',
+            delivered: '',
+            all: '',
+            selectedLocation: '',
+            selectedCustomer: '',
+            pedidos: '',
+            comida0Quantity: 0,
+            comida1Quantity: 0,
+            api: process.env.VUE_APP_API
+        }
+    },
+    methods: {
+        async getPedidos(){
+            this.comida0Quantity = 0
+            this.comida1Quantity = 0
+            console.log(this.selectedCustomer, this.selectedLocation, this.since, this.until, this.all)
+            const pedidos = await fetch(this.api + '/pedidos/api/?' + new URLSearchParams({sincePicker: this.since, untilPicker: this.until, paid: this.paid, delivered: this.delivered, all: this.all, location: this.selectedLocation, customer: this.selectedCustomer.trim() }))
+                                    .then(res => res.json())
+                                    .catch(e => console.error(e))
+            this.pedidos = pedidos
+            console.log(pedidos)
+            this.setQuantity()
+        },
+        async getCalendar(){
+            const calendar = await fetch(this.api + '/calendar/api/list').then(res => res.json()).catch(e => console.error(e))
+            this.calendar = calendar
+        },
+        async getCustomers(){
+            const customers = await fetch(this.api + '/customers').then(res => res.json()).catch(e => console.error(e))
+            this.customers = customers
+        },
+        async getLocations(){
+            const locations = await fetch( this.api + '/pedidos/api/locations').then( res => res.json() ).catch(e => console.error(e))
+            this.locations = locations
+        },
+        setQuantity(){
+            console.log(this.pedidos)
+            for(let pedido of this.pedidos){
+                this.comida0Quantity = this.comida0Quantity + pedido.food[0].pedidoItems.quantity
+                this.comida1Quantity = this.comida1Quantity + pedido.food[1].pedidoItems.quantity
+            }
+        }
+
+    },
+    mounted(){
+        this.since = dayjs().format('YYYY-MM-DD')
+        this.until = dayjs().add(1, 'day').format('YYYY-MM-DD')
+        this.getPedidos()
+        this.getCalendar()
+        this.getCustomers()
+        this.getLocations()
     }
 }
 </script>
