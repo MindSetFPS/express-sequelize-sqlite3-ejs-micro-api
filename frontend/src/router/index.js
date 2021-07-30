@@ -9,6 +9,7 @@ import CalendarList from '../views/CalendarList.vue'
 import Accounts from '../views/Accounts.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
+import Edit from '../views/Edit.vue'
 
 
 
@@ -54,6 +55,11 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Register
+  },
+  {
+    path: '/edit',
+    name: 'Edit',
+    component: Edit
   }
 ]
 
