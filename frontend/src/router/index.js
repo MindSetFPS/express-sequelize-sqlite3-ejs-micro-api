@@ -58,9 +58,10 @@ const routes = [
     component: Register
   },
   {
-    path: '/edit',
+    path: '/edit/pedido/:id',
     name: 'Edit',
-    component: Edit
+    component: Edit,
+    props: { editType: 'pedido'}
   },
   {
     path: '/details/:id',

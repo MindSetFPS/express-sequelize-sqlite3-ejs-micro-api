@@ -35,7 +35,10 @@
             </div>
 
             <div>
-                <button class="blue" >Editar</button>
+                <button class="button blue secondary  pt-2">
+                    <router-link class="link" :to="'/edit/pedido/' + pedidoDetails.id" > Editar Pedido </router-link>
+                </button>
+                
                 <button class="love" > Eliminar pedido </button>
             </div>
 
@@ -65,3 +68,9 @@ export default {
     }
 }
 </script>
+
+<style>
+    .link{
+        font-size: 18px;
+    }
+</style>

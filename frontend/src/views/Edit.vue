@@ -1,33 +1,34 @@
 <template>
     <div class="container">
-        <h1 class="title">Editar</h1>
-
-        <div class="comida" v-if="type == 'pedido'" >
-            <h2>Esto es un {{ type }}</h2>
+        <div v-if="editType == 'pedido'" >
+            <pedido-edit-or-create :pedidoId="$route.params.id" />
         </div>
 
-        <div class="comida" v-if="type == 'food'" >
-            <h2>Esto es un {{ type }}</h2>
+        <div v-if="editType == 'food'" >
+            <h2>Esto es un {{ editType }}</h2>
+            <food-edit-or-create />
         </div>
 
-        <div class="comida" v-if="type == 'calendar'" >
-            <h2>Esto es un {{ type }}</h2>
+        <div v-if="editType == 'calendar'" >
+            <h2>This is  {{ editType }}</h2>
         </div>
         
-        <div class="comida" v-if="type == 'account'" >
-            <h2>Esto es un {{ type }}</h2>
+        <div v-if="editType == 'account'" >
+            <h2>This is {{ editType }}</h2>
         </div>
 
     </div>
 </template>
 
 <script>
+import FoodEditOrCreate from '../components/FoodEditOrCreate.vue'
+import PedidoEditOrCreate from '../components/PedidoEditOrCreate.vue'
 export default {
     name: 'Edit',
-    data(){
-        return{
-            type: 'food'
-        }
+    props: ['editType'],
+    components: {
+        FoodEditOrCreate,
+        PedidoEditOrCreate
     }
 }
 </script>

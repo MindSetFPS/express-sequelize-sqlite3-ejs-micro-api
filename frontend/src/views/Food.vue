@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="container" >
         <h1 class="title" >Nuevo platillo</h1>
-        <form method="POST"  >
+        <form >
             <h2> Anadir un platillo al menu  </h2>
             <input class="mt-2" name="name" placeholder="Nombre (Obligatorio)" required v-model="name" />
             <input class="mt-2" name="description" placeholder="Descripcion (Opcional)" v-model="description" />
