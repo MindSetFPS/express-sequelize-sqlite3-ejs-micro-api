@@ -9,11 +9,11 @@
         <div style="text-align: center;" >
             <div>
                 <label   > <h2 v-if="menu" > {{ menu.Comida1.name  }} </h2> </label>
-                <input type="number" placeholder="cantidad" style="width: 40%" v-model="comida1Quantity" />
+                <input type="number" min="0" placeholder="cantidad" style="width: 40%" v-model="comida1Quantity" />
             </div>
             <div>
                 <label  > <h2 v-if="menu" > {{  menu.Comida2.name }} </h2> </label>
-                <input type="number" placeholder="cantidad" style="width: 40% ;" v-model="comida2Quantity"  />
+                <input type="number" min="0" placeholder="cantidad" style="width: 40% ;" v-model="comida2Quantity"  />
             </div>
                 <button class="button blue mt-4 title" @click.prevent="postPedido" >Crear Pedido</button>
         </div>
@@ -84,6 +84,12 @@ export default {
       .catch(e => console.error(e))
       this.res = res
       console.log(this.res)
+
+      this.selectedCustomer = ""
+      this.selectedLocation = ""
+      this.comida1Quantity = ""
+      this.comida2Quantity = ""
+
      }
   },
   mounted(){
