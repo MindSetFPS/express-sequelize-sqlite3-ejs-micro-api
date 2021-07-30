@@ -74,7 +74,7 @@
                 <div class="list-heading">
                     <p class="list-heading" >Total:</p>
                     <p  class="list-heading" >
-                        $ 
+                        $ {{ totalMoney }}
                     </p>
                 </div>
             </div> 
@@ -122,6 +122,7 @@ export default {
             pedidos: '',
             comida0Quantity: 0,
             comida1Quantity: 0,
+            totalMoney: 0,
             api: process.env.VUE_APP_API
         }
     },
@@ -136,6 +137,7 @@ export default {
             this.pedidos = pedidos
             console.log(pedidos)
             this.setQuantity()
+            this.calculateTotal()
         },
         async getCalendar(){
             const calendar = await fetch(this.api + '/calendar/api/list').then(res => res.json()).catch(e => console.error(e))
@@ -155,6 +157,10 @@ export default {
                 this.comida0Quantity = this.comida0Quantity + pedido.food[0].pedidoItems.quantity
                 this.comida1Quantity = this.comida1Quantity + pedido.food[1].pedidoItems.quantity
             }
+        },
+        calculateTotal(){
+            const totalFood = this.comida0Quantity + this.comida1Quantity
+            this.totalMoney = totalFood * 45
         }
 
     },
