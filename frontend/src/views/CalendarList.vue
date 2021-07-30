@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container" >
         <h1 class="title" > Calendario </h1>
             <div  class="mb-extra" >
 

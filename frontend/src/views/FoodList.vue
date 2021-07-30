@@ -1,6 +1,6 @@
 <template>
 
-    <div>
+    <div class="container"> 
         <h1 class="title" > Menu </h1>
             <div class="" style="overflow-y: scroll; height: 85vh; padding-left: 20px; padding-right: 20px "  >
                 
@@ -45,3 +45,9 @@ export default {
     }
 }
 </script>
+
+<style scoped >
+    .container{
+        min-width: 50vw;
+    }
+</style>

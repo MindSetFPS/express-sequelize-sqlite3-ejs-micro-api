@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container" >
         <h1 class="title"> Crear Menu del Dia </h1>
 
         <form autocomplete="off">
