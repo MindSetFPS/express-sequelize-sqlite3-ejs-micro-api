@@ -50,7 +50,6 @@ export default {
       comida1Quantity: '',
       comida2Quantity: '',
       api: process.env.VUE_APP_API,
-      cum: ''
     }
   },
   methods: {

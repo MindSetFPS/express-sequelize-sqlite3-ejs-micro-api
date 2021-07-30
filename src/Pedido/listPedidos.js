@@ -170,7 +170,17 @@ router.post('/api/create', async (req, res) => {
 
     res.json({ok: true, message: 'Pedido Creado'})
 
+})
 
+router.get('/api/details/:id', async (req, res) => {
+    const search = await Pedido.findByPk(req.params.id, {
+        include: [
+            {model: Food},
+            {model: Customer},
+            {model: Location}
+        ]
+    })
+    res.json(search)
 })
 
 router.get('/api/locations', async (req, res) => {

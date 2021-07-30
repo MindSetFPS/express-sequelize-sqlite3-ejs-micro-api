@@ -29,9 +29,7 @@
                 </div>
                 <button @click="updatePedido(pedido.id)" class="button small blue secondary " > Actualizar </button>
                 <button class="button small green secondary " >
-                    <a :href="'/pedidos/details/' + pedido.id" >
-                        Detalles
-                    </a>
+                    <router-link :to="'/details/' + pedido.id" > Details </router-link>
                 </button>
             </div>
 
