@@ -13,7 +13,6 @@ const {Location} = require('./PedidoModel')
 const {  Pedido, PedidoItems  } = require('./PedidoModel')
         
 router.post('/', async (req, res) => {
-
     const formatedDate = dayjs().format('YYYY-MM-DD')
     const newDate = dayjs().format('YYYY-MM-DD HH:MM:ss')
 
