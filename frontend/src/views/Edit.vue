@@ -29,6 +29,16 @@ export default {
     components: {
         FoodEditOrCreate,
         PedidoEditOrCreate
+    },
+    methods: {
+        async deletePedido(){
+            const res = await fetch( this.api + '/pedidos/api/update/' + this.pedidoId, {
+                headers: {'Content-Type': 'application/json'},
+                method: 'DELETE',
+            }).then(res => res.json()).catch(e => console.error(e))
+            
+            this.res = res
+        }
     }
 }
 </script>

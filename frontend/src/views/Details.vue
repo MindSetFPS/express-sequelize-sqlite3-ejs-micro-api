@@ -39,7 +39,11 @@
                     <router-link class="link" :to="'/edit/pedido/' + pedidoDetails.id" > Editar Pedido </router-link>
                 </button>
                 
-                <button class="love" > Eliminar pedido </button>
+                <button class="love" @click.prevent="deletePedido   " > Eliminar pedido </button>
+            </div>
+
+            <div v-if="res" >
+                {{ res }}
             </div>
 
         </div>
@@ -51,6 +55,7 @@ export default {
     name: 'Details',
     data(){
         return{
+            res: '',
             api: process.env.VUE_APP_API,
             pedidoId: this.$route.params.id,
             pedidoDetails: '',
@@ -61,6 +66,16 @@ export default {
             const details = await fetch( this.api + `/pedidos/api/details/${this.pedidoId}` ).then( res => res.json()).catch()
             this.pedidoDetails = details
             console.log(details)
+        },
+        async deletePedido(){
+            const res = await fetch( this.api + '/pedidos/api/delete/' + this.pedidoId, {
+                headers: {'Content-Type': 'application/json'},
+                method: 'DELETE',
+            }).then(res => res.json()).catch(e => console.error(e))
+            
+            this.res = res
+
+            this.$router.push('/pedidos')
         }
     },
     mounted(){
