@@ -53,7 +53,7 @@
                 </div>
                 <div class=" list-heading "     >
                     <div class="list-heading " v-if="calendar"  >
-                    {{ calendar.Comida1.name  }}
+                    {{ calendar.calendar.Comida1.name  }}
                     </div>
                     <div class="list-heading" >
                      {{ this.comida0Quantity }}
@@ -63,7 +63,7 @@
                 <div class="list-heading  "     >
                     
                     <div class="list-heading" v-if="calendar" >
-                        {{ calendar.Comida2.name  }}
+                        {{ calendar.calendar.Comida2.name  }}
                     </div>
                     
                     <div class="list-heading" >
@@ -141,6 +141,7 @@ export default {
         },
         async getCalendar(){
             const calendar = await fetch(this.api + '/calendar/api/list').then(res => res.json()).catch(e => console.error(e))
+            console.log(calendar)
             this.calendar = calendar
         },
         async getCustomers(){
