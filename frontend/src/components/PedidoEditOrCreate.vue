@@ -1,49 +1,53 @@
 <template>
   <div class="home container">
     <h1 class="title"> {{ pedidoId ? 'Editar Pedido' : 'Crear Pedido' }} </h1>
-    <form>
-        <label >  Nombre del cliente </label>
-        <input type="text" placeholder="Nombre del Cliente" name="customerName" list="customers" v-model="selectedCustomer" required />
-        <label > Ubicacion  </label>
-        <input type="text" placeholder="Nombre del Cliente" name="customerLocation" list="locations" v-model="selectedLocation" required />
-        <div style="text-align: center;" >
-            <div>
-                <label   > <h2 v-if="menu" > {{ menu.Comida1.name  }} </h2> </label>
-                <input type="number" min="0" placeholder="cantidad" style="width: 40%" v-model="comida1Quantity" />
-            </div>
-            <div>
-                <label  > <h2 v-if="menu" > {{  menu.Comida2.name }} </h2> </label>
-                <input type="number" min="0" placeholder="cantidad" style="width: 40% ;" v-model="comida2Quantity"  />
-            </div>
-                <button class="button blue mt-4 title" @click.prevent="postPedido" > {{ pedidoId ? 'Actualizar' : 'Crear Pedido' }} </button>
-        </div>
-    </form>
-    <h1 class="title" > Total: $ {{ (parseInt(comida1Quantity) + parseInt(comida2Quantity)) * 45 }}.00  </h1>
+    <div v-if="menu.ok" >
+      <form>
+          <label >  Nombre del cliente </label>
+          <input type="text" placeholder="Nombre del Cliente" name="customerName" list="customers" v-model="selectedCustomer" required />
+          <label > Ubicacion  </label>
+          <input type="text" placeholder="Nombre del Cliente" name="customerLocation" list="locations" v-model="selectedLocation" required />
+          <div style="text-align: center;" >
+              <div>
+                  <label   > <h2 v-if="menu" > {{ menu.calendar.Comida1.name  }} </h2> </label>
+                  <input type="number" min="0" placeholder="cantidad" style="width: 40%" v-model="comida1Quantity" />
+              </div>
+              <div>
+                  <label  > <h2 v-if="menu" > {{  menu.calendar.Comida2.name }} </h2> </label>
+                  <input type="number" min="0" placeholder="cantidad" style="width: 40% ;" v-model="comida2Quantity"  />
+              </div>
+                  <button class="button blue mt-4 title" @click.prevent="buttonHandler" > {{ pedidoId ? 'Actualizar' : 'Crear Pedido' }} </button>
+          </div>
+      </form>
+      <h1 class="title" > Total: $ {{ (parseInt(comida1Quantity) + parseInt(comida2Quantity)) * 45 }}.00  </h1>
 
-    <div v-if="res" >
-      {{ res }}
+      <datalist id="customers" >
+        <option v-for="customer in customers" :key="customer.id" :value="customer.name"> {{ customer.name }} </option>
+      </datalist> 
+
+
+      <datalist id="locations" >
+        <option v-for="location in locations" :key="location.id" :value="location.name"> {{ location.name }} </option>
+      </datalist> 
     </div>
-
-    <datalist id="customers" >
-      <option v-for="customer in customers" :key="customer.id" :value="customer.name"> {{ customer.name }} </option>
-    </datalist> 
-
-
-    <datalist id="locations" >
-      <option v-for="location in locations" :key="location.id" :value="location.name"> {{ location.name }} </option>
-    </datalist> 
-
+    <div v-if="!menu.ok" class="container" >
+       <error-alert :link="menu.link" :message="menu.message" />
+    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import ErrorAlert from './ErrorAlert.vue'
 export default {
   name: 'PedidoEditOrCreate',
+  components: {
+    ErrorAlert
+  },
   props: ['pedidoId'],
   data(){
     return{
-        res: '',
+      res: '',
       menu: '',
       customers: '',
       selectedCustomer: '',
@@ -57,8 +61,8 @@ export default {
   methods: {
     async getMenu(){
       const menu = await fetch(this.api + '/calendar/api/list').then(res => res.json()).catch(e => console.error(e))
-      console.log(menu)
       this.menu = menu
+      console.log(this.menu)
     },
     async getCustomers(){
        this.customers = await fetch( this.api + '/customers').then( res => res.json() ).catch(e => console.error(e))
@@ -79,7 +83,7 @@ export default {
 
      },
     async postPedido(){
-      console.log(this.selectedCustomer, this.selectedLocation, this.comida1Quantity, this.comida2Quantity)
+      console.log('Creando un nuevo pedido.')
 
       const res = await fetch( this.api + '/pedidos/api/create', {
           headers: {'Content-Type': 'application/json'},
@@ -101,7 +105,30 @@ export default {
       this.comida1Quantity = ""
       this.comida2Quantity = ""
 
-     }
+    },
+    async updatePedido(){
+      console.log('Actualizando pedido')
+      const res = await fetch( this.api + '/pedidos/api/update/' + this.pedidoId, {
+        headers: {'Content-Type': 'application/json'},
+        method: 'POST',
+        body: JSON.stringify({
+            comida1Quantity: this.comida1Quantity,
+            comida2Quantity: this.comida2Quantity,
+            customerName: this.selectedCustomer,
+            customerLocation: this.selectedLocation
+        })
+      }).then(res => res.json()).catch(e => console.error(e))
+      this.res = res
+      this.$router.push('/pedidos')
+    },
+    buttonHandler(){
+      if(!this.pedidoId){
+        this.postPedido()
+        return
+      }
+      this.updatePedido()
+
+    }
   },
   mounted(){
     if(this.pedidoId){
