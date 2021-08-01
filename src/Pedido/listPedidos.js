@@ -60,13 +60,9 @@ router.get('/api/', async(req, res) => {
                 name: reqLocation
             }
         }).catch( e => console.error(e))
-        
-        //console.log(searchedLocation)
     
         pedidoQuery.locationId = searchedLocation.id
     }
-
-    console.log('reqCustomer: ', reqCustomer)
 
     if (reqCustomer){
         searchedCustomer = await Customer.findOne({
@@ -80,14 +76,11 @@ router.get('/api/', async(req, res) => {
             throw new Error(`Record with name ${reqCustomer} not found.`)
         }
         
-        console.log('searchedCustomer: ', searchedCustomer)
         pedidoQuery.customerId = searchedCustomer.id
         
     }
     
     pedidoQuery.createdAt = {[Op.between] : [since, until] }
-    
-    console.log(pedidoQuery)
 
     pedidos = await Pedido.findAll({
         where: pedidoQuery,
@@ -102,8 +95,6 @@ router.get('/api/', async(req, res) => {
             }
         ],      
     }).catch( e => console.error(e) )
-
-    console.log(pedidos)
 
     res.json(pedidos)
 })
@@ -197,7 +188,6 @@ router.post('/api/update/:id', async (req, res) => {
     console.log(req.body)
     const pedido = await Pedido.findByPk( req.params.id, {include: { model: Food}} ).catch(err => console.error(err))
 
-
     if (req.body.delivered || req.body.paid ){
         if (req.body.delivered){
             pedido.update({delivered: true})
@@ -268,6 +258,19 @@ router.post('/api/update/:id', async (req, res) => {
     //console.log(pedidoUpdated)
 
     res.json(pedidoUpdated)
+})
+
+router.delete('/api/delete/:id', async (req, res) => {
+    console.log('New request for /api/delete/:id')
+    Pedido.destroy({
+        where: {
+            id: req.params.id
+        }
+    }).catch(e => console.error(e))
+
+    console.log('Succesfully deleted record.')
+    res.json({error: false, message: 'Succesfully deleted.'})
+        
 })
 
 router.get('/delete/:id', (req, res) => {
