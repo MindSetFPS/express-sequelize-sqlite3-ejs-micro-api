@@ -95,7 +95,14 @@ router.get('/api/all', async (req, res) => {
             { model: Food, as: 'Comida1' },
             { model: Food, as: 'Comida2' }
         ]
-    })
+    }).catch( e => console.error(e))
+
+    if(!calendars.length > 0){
+        console.log('no')
+        return res.status(404).json({ ok: false, message: 'Crea un calendario.', link: '/calendar/create-menu'})
+    }else{
+        console.log(calendars)
+    }
 
     res.json(calendars)
 })
@@ -103,7 +110,7 @@ router.get('/api/all', async (req, res) => {
 router.get('/api/list', async (req, res) => {
     console.log('New request for /calendar/api/list')
     formatedDate = date().format('YYYY-MM-DD')
-    comidas = await Calendar.findOne({
+    calendar = await Calendar.findOne({
         where: {
             date: {[Op.gte]: formatedDate}
         },
@@ -111,8 +118,19 @@ router.get('/api/list', async (req, res) => {
             { model: Food, as: 'Comida1'},
             { model: Food, as: 'Comida2'}
         ]
-    })
-    res.json(comidas)
+    }).catch( e => console.error(e))
+
+    if(!calendar){
+        console.log('No existe en la base de datos')
+        res.status(404).json({ok: false, message: 'Crea un calendario.', link: '/calendar/create-menu'})
+    }
+
+    if(calendar){
+        console.log('Correcto')
+        res.json({ok: true, message: 'Ok', calendar: calendar})
+    }
+    
+
 })
 
 router.post('/api/create', async (req, res) => {
@@ -163,6 +181,20 @@ router.get('/delete/:id', (req, res) => {
         }
     })
     res.redirect('/calendar/list')
+})
+
+router.get('/api/delete/:id', async (req, res) => {
+    const menu = await Calendar.destroy({
+        where: {
+            id: req.params.id
+        }
+    }).catch(e => console.error(e))
+
+    if(!menu){
+        return res.status(404).json({ok: false, message: 'No encontrado'})
+    }
+
+    res.json({ok: true, message: 'Succesfully deleted'})
 })
 
 
