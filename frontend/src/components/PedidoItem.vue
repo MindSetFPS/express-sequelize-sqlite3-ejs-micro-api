@@ -58,15 +58,11 @@ export default {
     },
     methods: {
         updatePedido(id){
-            console.log(id)
-            const url = '/pedidos/api/update/' + id
+            const url = '/pedidos/api/update/'
             console.log(this.api + url)
-            // data = {
-            //     delivered: this.delivered,
-            //     paid: this.paid
-            // }
-
-            fetch( url , {
+            console.log(this.api + url)
+        
+            fetch( this.api + url + id , {
                 headers: {'Content-Type': 'application/json'},
                 method: 'POST',
                 body: JSON.stringify({delivered: this.delivered, paid: this.paid})
