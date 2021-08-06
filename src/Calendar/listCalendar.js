@@ -58,8 +58,8 @@ router.get('/list', (req, res)=> {
             date: {[Op.gte]: formatedDate}
         },
         include: [
-            { model: Food, as: 'Comida1' },
-            { model: Food, as: 'Comida2' }
+            { model: Food },
+            { model: Food }
         ]
     }).then(
         menuList => {
@@ -115,9 +115,10 @@ router.get('/api/list', async (req, res) => {
             date: {[Op.gte]: formatedDate}
         },
         include: [
-            { model: Food, as: 'Comida1'},
-            { model: Food, as: 'Comida2'}
-        ]
+             {model: Food, as: 'Comida1'} ,
+             {model: Food, as: 'Comida2'} ,
+        ],
+        order: [['id', 'DESC']]
     }).catch( e => console.error(e))
 
     if(!calendar){
@@ -162,8 +163,8 @@ router.post('/api/create', async (req, res) => {
     console.log('Id comida2: ' + search2.id)
 
     newTodayMenu = Calendar.build({
-        comida1: search1.id,
-        comida2: search2.id,
+        Comida1Id: search1.id,
+        Comida2Id: search2.id,
         date: req.body.date
     })
 
