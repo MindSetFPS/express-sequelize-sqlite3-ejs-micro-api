@@ -21,11 +21,11 @@ const Food = db.define('food', {
     }
 })
 
-Food.hasOne(Calendar, {foreignKey: 'comida1', as: 'Comida1'})
-Food.hasOne(Calendar, {foreignKey: 'comida2', as: 'Comida2'});
+Food.hasOne(Calendar, { as: 'Comida1'})
+Food.hasOne(Calendar, { as: 'Comida2'});
 
-Calendar.belongsTo(Food, {foreignKey: 'comida1', as:  'Comida1'});
-Calendar.belongsTo(Food, {foreignKey: 'comida2', as: 'Comida2'});
+Calendar.belongsTo(Food, {as:  'Comida1'});
+Calendar.belongsTo(Food, {as: 'Comida2'});
 
 
 Food.sync().then(() => console.log('Food created')).catch((e) => console.log(e))
