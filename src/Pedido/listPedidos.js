@@ -3,7 +3,7 @@ const date = require('dayjs')
 const localizedFormat = require('dayjs/plugin/localizedFormat') 
 require('dayjs/locale/es')
 
-const { Op, where, REAL } = require('sequelize')
+const { Op, where, REAL, json } = require('sequelize')
 const { Pedido, Location, PedidoItems } = require('./PedidoModel')
 const Food = require('../Food/FoodModel')
 const Customer = require('../Customer/CustomerModel')
@@ -84,15 +84,19 @@ router.get('/api/', async(req, res) => {
 
     pedidos = await Pedido.findAll({
         where: pedidoQuery,
-        include: [
+        include: [  
             {
-                model: Food, 
-                through: [] 
-            },{
+                model: Food,
+                through: {
+                    attributes: ['quantity']
+                },
+                order: [[Food, PedidoItems, 'id', 'DESC']]
+            },
+            {
                 model: Location
             },{
                 model: Customer
-            }
+            },
         ],      
     }).catch( e => console.error(e) )
 
@@ -182,7 +186,7 @@ router.get('/api/locations', async (req, res) => {
     res.json(places)
 })
 
-router.post('/api/update/:id', async (req, res) => {
+router.post('/api/update/:id', async (req, res) => {    
     console.log('/api/update/id')
     console.log('Request Body')
     console.log(req.body)
