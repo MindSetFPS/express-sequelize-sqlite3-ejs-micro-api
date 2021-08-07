@@ -62,7 +62,6 @@ export default {
     async getMenu(){
       const menu = await fetch(this.api + '/calendar/api/list').then(res => res.json()).catch(e => console.error(e))
       this.menu = menu
-      console.log(this.menu)
     },
     async getCustomers(){
        this.customers = await fetch( this.api + '/customers').then( res => res.json() ).catch(e => console.error(e))
