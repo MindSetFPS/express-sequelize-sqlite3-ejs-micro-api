@@ -1,17 +1,14 @@
 <template>
-
-
-
     <div class="  card  secondary  mt-2 " :class="[this.paid ? 'green' : 'love']"  >
-        <div style="display: grid; grid-template-columns:  1fr 1fr  1fr 1fr 0.7fr ;  justify-items: center; align-items: center; " >
-            <div>
-                <div> {{ pedido.location.name}} </div>
-                <div> {{ pedido.customer.name}} </div>
-                <div class="list-text" > {{ pedido.createdAt }} </div>
-            </div>
-
+        <h2 class=""> {{ pedido.customer.name }} </h2>
+        <div style="display: flex; align-items: baseline;" >
+            <p class="list-text" > {{ pedido.location.name }} - </p>
+            <p class="list-text" > {{ pedido.createdAt }} </p>            
+        </div>
+        <div style="display: grid; grid-template-columns: 1.9fr  1fr 1fr 0.8fr ;  justify-items: center; align-items: center; " >
+            
             <div style="text-align: center;" > 
-                <div class="flex" >    
+                <div class="flex" style="justify-content: space-between;" >    
                     <div class="" >
                         <p class="list-text" > Entregado   </p>
                         <label class="switch">
@@ -35,13 +32,16 @@
                 </button>
             </div>
 
-            <h3>{{ pedido.food[0].pedidoItems.quantity }}</h3>
-            <h3>{{ pedido.food[1].pedidoItems.quantity }}</h3>
+            <h3>
+                {{ pedido.food[0].pedidoItems.quantity }}
+            </h3>
+            <h3>
+                {{ pedido.food[1].pedidoItems.quantity }}
+            </h3>
+            <h3> $ {{ (pedido.food[0].pedidoItems.quantity + pedido.food[1].pedidoItems.quantity) * 45 }}</h3>
    
         </div>
     </div>
-
-    
 </template>
 
 <script>
@@ -72,6 +72,9 @@ export default {
                 err => console.error(err)
             )
         }
+    },
+    mounted(){
+        console.log(this.pedido)
     }
 }
 </script>
