@@ -5,23 +5,26 @@ const router = express.Router()
 const User = require('./UserModel')
 
 router.get('/', async (req, res) => {
-    if(req.isAuthenticated()){
-        return res.redirect('/')
-    }
+    // if(req.isAuthenticated()){
+    //     return res.redirect()
+    // }
 
     userExists = await User.findOne()
 
     if(userExists){
-        return res.redirect('/')
+        return res.json({ok: true, exist: true})
     }
 
-
-    res.render('register')
+    res.json({ok: true, exist: false})
 })
 
-router.post('/', passport.authenticate('register', {
-    successRedirect: '/',
-    failureRedirect: '/register'
-}))
+router.post('/', (req, res, next)=>{
+        console.log('New request to /register ')
+        return next()
+    },
+    passport.authenticate('register', {
+        successRedirect: '/#/login',
+    }
+))
 
 module.exports = router
