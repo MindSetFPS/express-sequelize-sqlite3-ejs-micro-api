@@ -7,23 +7,32 @@ const User = require('./UserModel')
 
 router.get('/', async (req, res, next) => {
     if(req.isAuthenticated()){
-        return res.redirect('/')
+        return res.json({ok: true, authenticated: true})
     }
-
     usersExist = await User.findOne().catch( e => console.error(e))
 
     if(usersExist){
-        return res.render("login") 
+        return res.send("/#/login") 
     }
-
-    res.redirect('/register')
+    console.log(req)
+    res.send('/register')
 
 })
 
-router.post('/',  passport.authenticate('login', {
-    successRedirect: '/',
-    failureRedirect: '/login'
-}))
+router.post('/', (req, res, next) => {
+    passport.authenticate('login', (err, user, info) => {
+        if(err) throw err
+        if(!user) res.json({error: "No user"})
+        else{
+            req.logIn(user, (err) => {
+                if(err) throw err
+                res.json({msg: "Successfully authenticated", user: req.user})
+                //ToDo: Do not send the pasword 🤣
+                console.log(req.user)
+            })
+        }
+    }  )(req, res, next)
+})
 
 
 
