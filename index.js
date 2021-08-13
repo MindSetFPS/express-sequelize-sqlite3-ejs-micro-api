@@ -1,9 +1,15 @@
 const bodyParser = require('body-parser')
 const express = require('express')
-const session = require('express-session')
+
+//const session = require('express-session')
+const session = require('cookie-session')
+const cookieParser = require('cookie-parser')
+
 const passport = require('passport')
 const localizedFormat = require('dayjs/plugin/localizedFormat') 
 require('dayjs/locale/es')
+
+require('dotenv').config()
 
 const isAutenticated = require('./src/auth/passport')
 
@@ -24,14 +30,19 @@ const dayjs = require('dayjs')
 dayjs.extend(localizedFormat)
 
 const app = express()
-const port = 3000
+const port = process.env.ENVIRONMENT == 'development' ? 4500 : 3000
 
 app.use(session({
+    name: 'sessionCookie',
     secret: 'secret key',
-    resave: true,
-    saveUninitialized: false
+    keys: ['key1', 'key2']
 }))
+app.use(cookieParser("secret key"))
 
+// if(process.env.ENVIRONMENT=='development'){
+    const cors = require('cors')
+    app.use(cors())
+// }
 app.use(passport.initialize())
 app.use(passport.session())
 
@@ -40,12 +51,11 @@ app.use(express.json())
 app.use(express.urlencoded());
 app.use(express.static('dist'))
 
-
+app.use('/login', login)
+app.use('/register', register )
+app.use(isAutenticated)
 app.use('/', createPedidos)
-//app.use('/login', login)
-//app.use('/register', register )
 app.use('/food', foodRoutes)
-//app.use(isAutenticated)
 app.use('/pedidos', listPedidos )
 app.use('/calendar', listCalendar)
 app.use('/accounts', accounts)
