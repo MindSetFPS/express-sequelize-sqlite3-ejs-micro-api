@@ -53,12 +53,12 @@ app.use(express.static('dist'))
 
 app.use('/login', login)
 app.use('/register', register )
+app.use('/accounts', accounts)
 app.use(isAutenticated)
 app.use('/', createPedidos)
 app.use('/food', foodRoutes)
 app.use('/pedidos', listPedidos )
 app.use('/calendar', listCalendar)
-app.use('/accounts', accounts)
 app.use('/customers', customers)
 
 app.listen(port, () => {
