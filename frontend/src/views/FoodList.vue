@@ -1,8 +1,8 @@
 <template>
 
     <div class="container"> 
-        <h1 class="title" > Menu </h1>
-            <div class="" style="overflow-y: scroll; height: 85vh; padding-left: 20px; padding-right: 20px "  >
+            <h1 class="title" > Menu </h1>
+            <div class="" style="padding-left: 20px; padding-right: 20px "  >
                 
                 <div class="card mt-4 mb-4 " v-for="food in foodList" :key="food.id" >
                     <div class="flex-resizable " >
@@ -50,4 +50,5 @@ export default {
     .container{
         min-width: 50vw;
     }
+    
 </style>

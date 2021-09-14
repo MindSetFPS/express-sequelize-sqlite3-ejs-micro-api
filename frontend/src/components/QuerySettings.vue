@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <button @click="getPedidos">Buscar pedidos</button>
 
         <form action="/pedidos/" method="get">
@@ -79,11 +78,9 @@
                 </div>
             </div> 
         </form>
-        <div style=" height: 70vh; " >
-            <div style="overflow-y: scroll; height: 69vh;" >
-                
-                <div v-if="pedidos" >
-                    
+        <div>
+            <div>    
+                <div v-if="pedidos" >    
                     <PedidoItem
                         v-for="pedido in pedidos"
                         :pedido="pedido"

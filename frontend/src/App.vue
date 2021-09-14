@@ -40,13 +40,13 @@ export default {
   },
   mounted(){
     this.getUsers()
+    console.log('api: ', this.api)
   }
 }
 </script>
 
 <style scoped>
   .father{
-    display: grid; 
-    grid-template-columns: 1fr 11fr;
+    display: flex;
   }
 </style>

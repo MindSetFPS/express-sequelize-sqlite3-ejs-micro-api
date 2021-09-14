@@ -43,3 +43,9 @@ export default {
     name: 'Navbar'
 }
 </script>
+
+<style scoped>
+    .lateral-nav{
+        position: fixed;
+    }
+</style>
