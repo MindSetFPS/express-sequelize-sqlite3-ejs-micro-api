@@ -1,5 +1,5 @@
 <template>
-    <div class="  card  secondary  mt-2 " :class="[this.paid ? 'green' : 'love']"  >
+    <div class="  card  secondary  mt-2 " :class="[this.paid ? 'green' : 'love']" v-if="pedido.customer.name.toLowerCase().includes(customerFilter.toLowerCase())" >
         <h2 class=""> {{ pedido.customer.name }} </h2>
         <div style="display: flex; align-items: baseline;" >
             <p class="list-text" > {{ pedido.location.name }} - </p>
@@ -47,7 +47,7 @@
 <script>
 export default {
     name: 'PedidoItem',
-    props: ["pedido"],
+    props: ["pedido", "customerFilter"],
     data(){
         return{
             delivered: this.pedido.delivered ,
@@ -71,6 +71,9 @@ export default {
             }).catch(
                 err => console.error(err)
             )
+        },
+        showSelectedCustomer(){
+            console.log(this.customerFilter)
         }
     },
     mounted(){

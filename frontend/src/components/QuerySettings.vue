@@ -13,15 +13,15 @@
                     <input type="date" name="untilPicker" id="until" v-model="until" >
                 </div>
             </div>
+
+            <p class="list-heading">Cliente</p>
+            <input class="small" name="customer" v-model="selectedCustomer" >
+                    
+
             <div class="flex mt-3" style="display: grid; grid-template-columns:  1fr 1fr 1fr 1fr 0.7fr ;  justify-items: center; align-items: baseline ;" >
                 <!-- TITULOS -->
                 <div>
-                    <p class="list-heading">Cliente</p>
-                    <input class="small" name="customer" v-model="selectedCustomer" list="customersList" >
-                    <datalist id="customersList" >
-                        <option value=""></option>
-                        <option v-for="customer in customers" :key="customer.id" > {{ customer.name }} </option>
-                    </datalist>
+
                                     
                     <p class="list-heading">Lugar</p>
                     <select class="small" name="location" v-model="selectedLocation" >
@@ -85,6 +85,7 @@
                         v-for="pedido in pedidos"
                         :pedido="pedido"
                         :key="pedido.id"
+                        :customerFilter="selectedCustomer"
                     >
                     </PedidoItem>
         
