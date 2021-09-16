@@ -62,6 +62,7 @@ export default {
             
             this.res = res
             console.log(this.res)
+            if(this.res.ok) this.$router.push('/')
         }
 
     },

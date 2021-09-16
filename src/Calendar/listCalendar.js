@@ -123,7 +123,7 @@ router.get('/api/list', async (req, res) => {
 
     if(!calendar){
         console.log('No existe en la base de datos')
-        res.status(404).json({ok: false, message: 'Crea un calendario.', link: '/calendar/create-menu'})
+        res.json({ok: false, message: 'Crea un calendario.', link: '/calendar/create-menu'})
     }
 
     if(calendar){
@@ -170,7 +170,7 @@ router.post('/api/create', async (req, res) => {
 
     await newTodayMenu.save().then( (e) => {
         console.log(e)
-        res.status(200).json({message: 'Nuevo menu guardado'})
+        res.status(200).json({ok: true, message: 'Nuevo menu guardado'})
     })
 
 })
