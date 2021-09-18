@@ -12,7 +12,7 @@
                     <div class="" >
                         <p class="list-text" > Entregado   </p>
                         <label class="switch">
-                            <input type="checkbox" name="delivered" v-model="delivered" >
+                            <input type="checkbox" name="delivered" v-model="delivered" @change="change(pedido.id, delivered)" >
                             <span class="slider round"></span>
                         </label>
                     </div>
@@ -74,6 +74,10 @@ export default {
         },
         showSelectedCustomer(){
             console.log(this.customerFilter)
+        },
+        change(id, delivered){
+            console.log(id, delivered)
+            this.$emit('deliveryStateChanged', id)
         }
     },
     mounted(){

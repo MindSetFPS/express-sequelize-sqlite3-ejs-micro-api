@@ -15,7 +15,7 @@
             </div>
 
             <p class="list-heading">Cliente</p>
-            <input class="small" name="customer" v-model="selectedCustomer" >
+            <input class="small" name="customer" v-model="selectedCustomer" autocomplete="off" >
                     
 
             <div class="flex mt-3" style="display: grid; grid-template-columns:  1fr 1fr 1fr 1fr 0.7fr ;  justify-items: center; align-items: baseline ;" >
@@ -82,10 +82,12 @@
             <div>    
                 <div v-if="pedidos" >    
                     <PedidoItem
+                        @deliveryStateChanged="sendItemToLastPosition"
                         v-for="pedido in pedidos"
                         :pedido="pedido"
                         :key="pedido.id"
                         :customerFilter="selectedCustomer"
+
                     >
                     </PedidoItem>
         
@@ -129,9 +131,20 @@ export default {
             this.comida0Quantity = 0
             this.comida1Quantity = 0
             console.log(this.selectedCustomer, this.selectedLocation, this.since, this.until, this.all)
-            const pedidos = await fetch(this.api + '/pedidos/api/?' + new URLSearchParams({sincePicker: this.since, untilPicker: this.until, paid: this.paid, delivered: this.delivered, all: this.all, location: this.selectedLocation, customer: this.selectedCustomer.trim() }))
-                                    .then(res => res.json())
-                                    .catch(e => console.error(e))
+            const pedidos = await fetch(
+                this.api + '/pedidos/api/?' + new URLSearchParams(
+                    {
+                        sincePicker: this.since, 
+                        untilPicker: this.until, 
+                        paid: this.paid, 
+                        delivered: this.delivered, 
+                        all: this.all, 
+                        location: this.selectedLocation, 
+                        customer: this.selectedCustomer.trim()
+                    }
+                )
+            ).then(res => res.json()).catch(e => console.error(e))
+
             this.pedidos = pedidos
             console.log(this.pedidos)
             this.setQuantity()
@@ -160,6 +173,21 @@ export default {
         calculateTotal(){
             const totalFood = this.comida0Quantity + this.comida1Quantity
             this.totalMoney = totalFood * 45
+        },
+        sendItemToLastPosition(e){
+            const indexOfItemToMove = this.pedidos.findIndex( pedido => pedido.id === e)
+
+            if( indexOfItemToMove == this.pedidos.length -1 ){
+                console.log('Es el ultimo de la lista')
+            }else{
+                console.log('No es el ultimo de la lista')
+                const itemToMove = this.pedidos.find( pedido => pedido.id === e )
+                this.pedidos.splice(this.pedidos.length, 0, itemToMove)
+                this.pedidos.splice(indexOfItemToMove, 1)
+            }
+
+            console.log(this.pedidos)
+
         }
 
     },
