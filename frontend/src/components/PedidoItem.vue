@@ -1,5 +1,8 @@
 <template>
-    <div class="  card  secondary  mt-2 " :class="[this.paid ? 'green' : 'love']" v-if="pedido.customer.name.toLowerCase().includes(customerFilter.toLowerCase())" >
+    <div 
+    class="  card  secondary  mt-2 " 
+    :class="[this.paid ? 'green' : 'love']" 
+    v-if="pedido.customer.name.toLowerCase().includes(customerFilter.toLowerCase())" >
         <h2 class=""> {{ pedido.customer.name }} </h2>
         <div style="display: flex; align-items: baseline;" >
             <p class="list-text" > {{ pedido.location.name }} - </p>
@@ -12,19 +15,33 @@
                     <div class="" >
                         <p class="list-text" > Entregado   </p>
                         <label class="switch">
-                            <input type="checkbox" name="delivered" v-model="delivered" @change="change(pedido.id, delivered)" >
+                            <input 
+                             type="checkbox" 
+                             name="delivered" 
+                             v-bind="delivered" 
+                             @change="emitChange(pedido.id)" 
+                            >
                             <span class="slider round"></span>
                         </label>
                     </div>
                     <div>
                         <p class="list-text" >Pagado</p>
                         <label class="switch">
-                            <input type="checkbox" name="paid" v-model="paid"  >
+                            <input 
+                            type="checkbox" 
+                            name="paid" 
+                            v-model="paid"  
+                            >
                             <span class="slider round"></span>
                         </label>
                     </div>
                 </div>
-                <button @click="updatePedido(pedido.id)" class="button small blue secondary " > Actualizar </button>
+                <button 
+                 @click="updatePedido(pedido.id)" 
+                 class="button small blue secondary " 
+                > 
+                    Actualizar 
+                </button>
                 <button class="button small green secondary " >
                     <router-link :to="'/details/' + pedido.id" > 
                         Details
@@ -75,9 +92,8 @@ export default {
         showSelectedCustomer(){
             console.log(this.customerFilter)
         },
-        change(id, delivered){
-            console.log(id, delivered)
-            this.$emit('deliveryStateChanged', id)
+        emitChange(id){
+            this.$emit('delivery-state-changed', id)
         }
     },
     mounted(){

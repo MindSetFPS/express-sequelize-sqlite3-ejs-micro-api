@@ -54,8 +54,14 @@
                     <div class="list-heading " v-if="calendar"  >
                     {{ calendar.calendar.Comida1Id > calendar.calendar.Comida2Id ? calendar.calendar.Comida2.name : calendar.calendar.Comida1.name }}
                     </div>
-                    <div class="list-heading" >
-                     {{ this.comida0Quantity }}
+                    <div class="flex" >
+                        <div class="to-deliver" >
+                            {{ this.comida0DeliveredQuantity }}
+                        </div>
+                        /
+                        <div class="list-heading" >
+                        {{ this.comida0Quantity }}
+                        </div>
                     </div>
                     
                 </div>
@@ -65,8 +71,14 @@
                         {{ calendar.calendar.Comida2Id > calendar.calendar.Comida1Id ? calendar.calendar.Comida2.name : calendar.calendar.Comida1.name  }}
                     </div>
                     
-                    <div class="list-heading" >
+                    <div class="flex" >
+                        <div class="to-deliver" >
+                            {{ this.comida1DeliveredQuantity }}
+                        </div>
+                        /
+                        <div class="" >
                          {{this.comida1Quantity}}
+                        </div>
 
                     </div>
                 </div>   
@@ -82,12 +94,11 @@
             <div>    
                 <div v-if="pedidos" >    
                     <PedidoItem
-                        @deliveryStateChanged="sendItemToLastPosition"
+                        @delivery-state-changed="handleDeliveryChange"
                         v-for="pedido in pedidos"
                         :pedido="pedido"
                         :key="pedido.id"
                         :customerFilter="selectedCustomer"
-
                     >
                     </PedidoItem>
         
@@ -121,7 +132,9 @@ export default {
             selectedCustomer: '',
             pedidos: '',
             comida0Quantity: 0,
+            comida0DeliveredQuantity: 0,
             comida1Quantity: 0,
+            comida1DeliveredQuantity: 0,
             totalMoney: 0,
             api: process.env.VUE_APP_API
         }
@@ -129,7 +142,9 @@ export default {
     methods: {
         async getPedidos(){
             this.comida0Quantity = 0
+            this.comida0DeliveredQuantity = 0
             this.comida1Quantity = 0
+            this.comida1DeliveredQuantity = 0
             console.log(this.selectedCustomer, this.selectedLocation, this.since, this.until, this.all)
             const pedidos = await fetch(
                 this.api + '/pedidos/api/?' + new URLSearchParams(
@@ -164,15 +179,42 @@ export default {
             this.locations = locations
         },
         setQuantity(){
-            console.log(this.pedidos)
             for(let pedido of this.pedidos){
                 this.comida0Quantity = this.comida0Quantity + pedido.food[0].pedidoItems.quantity
                 this.comida1Quantity = this.comida1Quantity + pedido.food[1].pedidoItems.quantity
             }
         },
+        setLeftQuantity(){
+            this.comida0DeliveredQuantity = 0
+            this.comida1DeliveredQuantity = 0
+            console.log('changing quantity')
+
+            // if(id){
+            //     const pedido = this.pedidos.find( pedido => pedido.id = id )
+            //     console.log(pedido.delivered)
+            //     pedido.delivered = !pedido.delivered
+            //     console.log(pedido.delivered)
+            // }
+    
+            for(let pedido of this.pedidos){
+                if(pedido.delivered == false){
+                    this.comida0DeliveredQuantity = this.comida0DeliveredQuantity + pedido.food[0].pedidoItems.quantity
+                    this.comida1DeliveredQuantity = this.comida1DeliveredQuantity + pedido.food[1].pedidoItems.quantity
+
+                    // console.log(pedido.delivered)
+                }
+            }
+        },  
         calculateTotal(){
             const totalFood = this.comida0Quantity + this.comida1Quantity
             this.totalMoney = totalFood * 45
+        },
+        updateDeliveredCount(id){
+            const indexOfItemToUpdate = this.pedidos.findIndex( pedido => pedido.id === id )
+            console.log(indexOfItemToUpdate)
+            console.log(this.pedidos[indexOfItemToUpdate])
+            this.pedidos[indexOfItemToUpdate].delivered = !this.pedidos[indexOfItemToUpdate].delivered
+            console.log(this.pedidos[indexOfItemToUpdate].delivered)
         },
         sendItemToLastPosition(e){
             const indexOfItemToMove = this.pedidos.findIndex( pedido => pedido.id === e)
@@ -185,11 +227,17 @@ export default {
                 this.pedidos.splice(this.pedidos.length, 0, itemToMove)
                 this.pedidos.splice(indexOfItemToMove, 1)
             }
-
-            console.log(this.pedidos)
-
+        },
+        handleDeliveryChange(id){
+            console.log(id)
+            this.updateDeliveredCount(id)
+            this.sendItemToLastPosition(id)
+            this.setLeftQuantity(id)
+            // if(id){
+            //     const pedido = this.pedidos.find( pedido => pedido.id = id )
+            //     console.log('entregado? : ', pedido.delivered)
+            // }
         }
-
     },
     mounted(){
         this.since = dayjs().format('YYYY-MM-DD')
@@ -198,6 +246,7 @@ export default {
         this.getCalendar()
         this.getCustomers()
         this.getLocations()
+        this.setLeftQuantity()
     }
 }
 </script>
