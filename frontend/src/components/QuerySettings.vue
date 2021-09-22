@@ -162,6 +162,7 @@ export default {
 
             this.pedidos = pedidos
             console.log(this.pedidos)
+            this.setLeftQuantity()
             this.setQuantity()
             this.calculateTotal()
         },
