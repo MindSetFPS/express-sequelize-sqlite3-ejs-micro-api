@@ -15,19 +15,20 @@
             </div>
 
             <p class="list-heading">Cliente</p>
-            <input class="small" name="customer" v-model="selectedCustomer" autocomplete="off" >
+            <input class="small" name="customer" v-model="selectedCustomer" autocomplete="off"  >
                     
 
             <div class="flex mt-3" style="display: grid; grid-template-columns:  1fr 1fr 1fr 1fr 0.7fr ;  justify-items: center; align-items: baseline ;" >
                 <!-- TITULOS -->
                 <div>
-
-                                    
                     <p class="list-heading">Lugar</p>
-                    <select class="small" name="location" v-model="selectedLocation" >
+                    <select class="small" name="location" v-model="selectedLocation" v-if="locations" >
                         <option value=""></option>
                         <option v-for="location in locations" :key="location.id" >  {{ location.name }} </option>
                     </select>
+                    <div v-else >
+                        <Loading />
+                    </div>
                 </div>
                 <div class="list-heading">
                     <div class="flex" >   
@@ -38,21 +39,21 @@
                             <option value="">Indiferente</option>
                         </select>   
                     </div>            
-                    
                     <div class="flex" >
                         <p>Pagado</p>
                         <input type="checkbox" name="paid" id="paid" class="search" v-model="paid" >
                     </div>
-
                     <div class="flex" >
                         <p>Todos</p>
                         <input type="checkbox" name="all" id="all" class="search" v-model="all" >
                     </div>
-                    
                 </div>
                 <div class=" list-heading "     >
                     <div class="list-heading " v-if="calendar"  >
                     {{ calendar.calendar.Comida1Id > calendar.calendar.Comida2Id ? calendar.calendar.Comida2.name : calendar.calendar.Comida1.name }}
+                    </div>
+                    <div v-else >
+                        <Loading />
                     </div>
                     <div class="flex" >
                         <div class="to-deliver" >
@@ -63,14 +64,14 @@
                         {{ this.comida0Quantity }}
                         </div>
                     </div>
-                    
                 </div>
                 <div class="list-heading  "     >
-                    
                     <div class="list-heading" v-if="calendar" >
                         {{ calendar.calendar.Comida2Id > calendar.calendar.Comida1Id ? calendar.calendar.Comida2.name : calendar.calendar.Comida1.name  }}
                     </div>
-                    
+                    <div v-else >
+                        <Loading />
+                    </div>
                     <div class="flex" >
                         <div class="to-deliver" >
                             {{ this.comida1DeliveredQuantity }}
@@ -79,13 +80,12 @@
                         <div class="" >
                          {{this.comida1Quantity}}
                         </div>
-
                     </div>
                 </div>   
                 <div class="list-heading">
                     <p class="list-heading" >Total:</p>
                     <p  class="list-heading" >
-                        $ {{ totalMoney }}
+                        <!-- $ {{ totalMoney }} -->
                     </p>
                 </div>
             </div> 
@@ -95,28 +95,32 @@
                 <div v-if="pedidos" >    
                     <PedidoItem
                         @delivery-state-changed="handleDeliveryChange"
+                        @increase="setTotalQuantity"
                         v-for="pedido in pedidos"
-                        :pedido="pedido"
+                        :pedidoId="pedido.id"
                         :key="pedido.id"
                         :customerFilter="selectedCustomer"
                     >
                     </PedidoItem>
-        
+                </div>
+                <div v-else >
+                    <Loading />
                 </div>
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
 import PedidoItem from "@/components/PedidoItem.vue";
+import Loading from "@/components/Loading.vue"
 import * as dayjs from 'dayjs'
 
 export default {
     name: 'QuerySettings',
     components: {
-        PedidoItem
+        PedidoItem,
+        Loading
     },
     data(){
         return{
@@ -146,25 +150,26 @@ export default {
             this.comida1Quantity = 0
             this.comida1DeliveredQuantity = 0
             console.log(this.selectedCustomer, this.selectedLocation, this.since, this.until, this.all)
-            const pedidos = await fetch(
-                this.api + '/pedidos/api/?' + new URLSearchParams(
-                    {
-                        sincePicker: this.since, 
-                        untilPicker: this.until, 
-                        paid: this.paid, 
-                        delivered: this.delivered, 
-                        all: this.all, 
-                        location: this.selectedLocation, 
-                        customer: this.selectedCustomer.trim()
-                    }
-                )
-            ).then(res => res.json()).catch(e => console.error(e))
+            // const pedidos = await fetch(
+            //     this.api + '/pedidos/api/?' + new URLSearchParams(
+            //         {
+            //             sincePicker: this.since, 
+            //             untilPicker: this.until, 
+            //             paid: this.paid, 
+            //             delivered: this.delivered, 
+            //             all: this.all, 
+            //             location: this.selectedLocation, 
+            //             customer: this.selectedCustomer.trim()
+            //         }
+            //     )
+            // ).then(res => res.json()).catch(e => console.error(e))
+
+            const pedidos = await fetch(this.api + '/pedidos/api/today').then(res => res.json()).catch(e => console.error(e))
 
             this.pedidos = pedidos
-            console.log(this.pedidos)
-            this.setLeftQuantity()
-            this.setQuantity()
-            this.calculateTotal()
+            // this.setLeftQuantity()
+            // this.setQuantity()
+            // this.calculateTotal()
         },
         async getCalendar(){
             const calendar = await fetch(this.api + '/calendar/api/list').then(res => res.json()).catch(e => console.error(e))
@@ -179,36 +184,24 @@ export default {
             const locations = await fetch( this.api + '/pedidos/api/locations').then( res => res.json() ).catch(e => console.error(e))
             this.locations = locations
         },
-        setQuantity(){
-            for(let pedido of this.pedidos){
-                this.comida0Quantity = this.comida0Quantity + pedido.food[0].pedidoItems.quantity
-                this.comida1Quantity = this.comida1Quantity + pedido.food[1].pedidoItems.quantity
-            }
+        setTotalQuantity(food0Count, food1Count){
+            this.comida0Quantity = this.comida0Quantity + food0Count
+            this.comida1Quantity = this.comida1Quantity + food1Count
+
+            this.comida0DeliveredQuantity = this.comida0Quantity
+            this.comida1DeliveredQuantity = this.comida1Quantity
+
         },
-        setLeftQuantity(){
-            this.comida0DeliveredQuantity = 0
-            this.comida1DeliveredQuantity = 0
-            console.log('changing quantity')
+        setRemainingCount(food0Count, food1Count){
 
-            // if(id){
-            //     const pedido = this.pedidos.find( pedido => pedido.id = id )
-            //     console.log(pedido.delivered)
-            //     pedido.delivered = !pedido.delivered
-            //     console.log(pedido.delivered)
-            // }
-    
-            for(let pedido of this.pedidos){
-                if(pedido.delivered == false){
-                    this.comida0DeliveredQuantity = this.comida0DeliveredQuantity + pedido.food[0].pedidoItems.quantity
-                    this.comida1DeliveredQuantity = this.comida1DeliveredQuantity + pedido.food[1].pedidoItems.quantity
-
-                    // console.log(pedido.delivered)
-                }
+            if( this.comida0DeliveredQuantity || this.comida1DeliveredQuantity >= 0 ){
+                console.log('setting remaining count')
+                console.log(food0Count, food1Count)
+                this.comida0DeliveredQuantity = this.comida0DeliveredQuantity - food0Count
+                this.comida1DeliveredQuantity = this.comida1DeliveredQuantity - food1Count
+            }else{
+                console.log(false)
             }
-        },  
-        calculateTotal(){
-            const totalFood = this.comida0Quantity + this.comida1Quantity
-            this.totalMoney = totalFood * 45
         },
         updateDeliveredCount(id){
             const indexOfItemToUpdate = this.pedidos.findIndex( pedido => pedido.id === id )
@@ -229,25 +222,20 @@ export default {
                 this.pedidos.splice(indexOfItemToMove, 1)
             }
         },
-        handleDeliveryChange(id){
-            console.log(id)
+        handleDeliveryChange(id, food0Count, food1Count){
+            console.log(this.pedidos)
             this.updateDeliveredCount(id)
             this.sendItemToLastPosition(id)
-            this.setLeftQuantity(id)
-            // if(id){
-            //     const pedido = this.pedidos.find( pedido => pedido.id = id )
-            //     console.log('entregado? : ', pedido.delivered)
-            // }
+            this.setRemainingCount( food0Count, food1Count)
         }
     },
     mounted(){
         this.since = dayjs().format('YYYY-MM-DD')
-        this.until = dayjs().add(1, 'day').format('YYYY-MM-DD')
+        // this.until = dayjs().add(1, 'day').format('YYYY-MM-DD')
         this.getPedidos()
         this.getCalendar()
-        this.getCustomers()
+        // this.getCustomers()
         this.getLocations()
-        this.setLeftQuantity()
     }
 }
 </script>
