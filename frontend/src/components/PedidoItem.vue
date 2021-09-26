@@ -18,7 +18,7 @@
                                     <input 
                                         type="checkbox" 
                                         name="delivered" 
-                                        v-bind="pedido.delivered" 
+                                        v-model="pedido.delivered" 
                                         @change="emitChange(pedido.id, food0Count, food1Count)" 
                                     >
                                     <span class="slider round"></span>
@@ -92,7 +92,7 @@ export default {
             fetch( this.api + url + id , {
                 headers: {'Content-Type': 'application/json'},
                 method: 'POST',
-                body: JSON.stringify({delivered: this.delivered, paid: this.paid})
+                body: JSON.stringify({delivered: this.pedido.delivered, paid: this.pedido.paid})
             }).then(res => {
                 console.log(res)
             }).catch(
