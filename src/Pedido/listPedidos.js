@@ -103,6 +103,26 @@ router.get('/api/', async(req, res) => {
     res.json(pedidos)
 })
 
+router.get('/api/today', async (req, res) => {
+    console.log('/pedidos/api/today')
+
+    let pedidoQuery = {}
+
+    const since = req.query.sincePicker || date().format('YYYY-MM-DD')
+    const until = req.query.untilPicker || date().add(1, 'day').format('YYYY-MM-DD')
+    console.log(since, until)
+
+    pedidoQuery.createdAt = {[Op.between] : [since, until] }
+
+    pedidos = await Pedido.findAll({
+        where: pedidoQuery,
+        attributes: { exclude: ['delivered', 'paid', 'createdAt', 'updatedAt', 'customerId', 'locationId']}
+
+    }).catch(e => console.error(e))
+
+    res.json(pedidos)
+})
+
 router.post('/api/create', async (req, res) => {
     console.log('New request for /pedidos/api/create')
     const formatedDate = date().format('YYYY-MM-DD')
@@ -192,22 +212,26 @@ router.post('/api/update/:id', async (req, res) => {
     console.log(req.body)
     const pedido = await Pedido.findByPk( req.params.id, {include: { model: Food}} ).catch(err => console.error(err))
 
-    if (req.body.delivered || req.body.paid ){
-        if (req.body.delivered){
-            pedido.update({delivered: true})
-            console.log('Entregado')
-        }
-        if (req.body.paid){
-            pedido.update({paid: true})
-            console.log('Pagado')
-        }
+    // console.log(pedido)
+
+    if(req.body.delivered != pedido.delivered ){
+        console.log('different')
+        pedido.update({delivered: req.body.delivered})
+    }else{
+        console.log('same')
+    }
+
+    if(req.body.paid != pedido.paid){
+        console.log('different')
+        pedido.update({paid: req.body.paid})
+    }else{
+        console.log('not paid')
     }
 
     const customerName      = req.body.customerName
     const customerLocation  = req.body.customerLocation
     const comida1Quantity   = req.body.comida1Quantity
     const comida2Quantity   = req.body.comida2Quantity
-
 
     if (customerLocation){   
         const [editedLocation, created] = await Location.findOrCreate({
