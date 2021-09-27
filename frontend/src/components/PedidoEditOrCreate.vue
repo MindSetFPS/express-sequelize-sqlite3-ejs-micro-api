@@ -6,7 +6,7 @@
           <label >  Nombre del cliente </label>
           <input type="text" placeholder="Nombre del Cliente" name="customerName" list="customers" v-model="selectedCustomer" required />
           <label > Ubicacion  </label>
-          <input type="text" placeholder="Nombre del Cliente" name="customerLocation" list="locations" v-model="selectedLocation" required />
+          <input type="text" placeholder="Ubicacion" name="customerLocation" list="locations" v-model="selectedLocation" required />
           <div style="text-align: center;" >
               <div>
                   <label   > <h2 v-if="menu" > {{ menu.calendar.Comida1.name  }} </h2> </label>
@@ -101,8 +101,8 @@ export default {
 
       this.selectedCustomer = ""
       this.selectedLocation = ""
-      this.comida1Quantity = ""
-      this.comida2Quantity = ""
+      this.comida1Quantity = 0
+      this.comida2Quantity = 0
 
     },
     async updatePedido(){
