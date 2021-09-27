@@ -1,8 +1,6 @@
 <template>
     <div>
         <button @click="getPedidos">Buscar pedidos</button>
-
-        <form action="/pedidos/" method="get">
             <div class="flex" style="justify-content: space-evenly;" >
                 <div>
                     <label for="since">Since</label>
@@ -89,7 +87,6 @@
                     </p>
                 </div>
             </div> 
-        </form>
         <div>
             <div>    
                 <div v-if="pedidos" >    
