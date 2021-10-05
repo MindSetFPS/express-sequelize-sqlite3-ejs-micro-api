@@ -59,7 +59,7 @@
                         </div>
                         /
                         <div class="list-heading" >
-                        {{ this.comida0Quantity }}
+                        {{ this.comida0TotalQuantity }}
                         </div>
                     </div>
                 </div>
@@ -76,23 +76,23 @@
                         </div>
                         /
                         <div class="" >
-                         {{this.comida1Quantity}}
+                         {{this.comida1TotalQuantity}}
                         </div>
                     </div>
                 </div>   
                 <div class="list-heading">
                     <p class="list-heading" >Total:</p>
                     <p  class="list-heading" >
-                        <!-- $ {{ totalMoney }} -->
+                        $ {{ totalMoney }}
                     </p>
-                </div>
+               </div>
             </div> 
         <div>
             <div>    
                 <div v-if="pedidos" >    
                     <PedidoItem
                         @delivery-state-changed="handleDeliveryChange"
-                        @increase="setTotalQuantity"
+                        @pedido-loaded="handlePedido"
                         v-for="pedido in pedidos"
                         :pedidoId="pedido.id"
                         :key="pedido.id"
@@ -132,9 +132,9 @@ export default {
             selectedLocation: '',
             selectedCustomer: '',
             pedidos: '',
-            comida0Quantity: 0,
+            comida0TotalQuantity: 0,
             comida0DeliveredQuantity: 0,
-            comida1Quantity: 0,
+            comida1TotalQuantity: 0,
             comida1DeliveredQuantity: 0,
             totalMoney: 0,
             api: process.env.VUE_APP_API
@@ -142,9 +142,9 @@ export default {
     },
     methods: {
         async getPedidos(){
-            this.comida0Quantity = 0
+            this.comida0TotalQuantity = 0
             this.comida0DeliveredQuantity = 0
-            this.comida1Quantity = 0
+            this.comida1TotalQuantity = 0
             this.comida1DeliveredQuantity = 0
             console.log(this.selectedCustomer, this.selectedLocation, this.since, this.until, this.all)
             // const pedidos = await fetch(
@@ -164,9 +164,7 @@ export default {
             const pedidos = await fetch(this.api + '/pedidos/api/today').then(res => res.json()).catch(e => console.error(e))
 
             this.pedidos = pedidos
-            // this.setLeftQuantity()
-            // this.setQuantity()
-            // this.calculateTotal()
+            // this.calculateTotalMoney()
         },
         async getCalendar(){
             const calendar = await fetch(this.api + '/calendar/api/list').then(res => res.json()).catch(e => console.error(e))
@@ -181,31 +179,50 @@ export default {
             const locations = await fetch( this.api + '/pedidos/api/locations').then( res => res.json() ).catch(e => console.error(e))
             this.locations = locations
         },
-        setTotalQuantity(food0Count, food1Count){
-            this.comida0Quantity = this.comida0Quantity + food0Count
-            this.comida1Quantity = this.comida1Quantity + food1Count
-
-            this.comida0DeliveredQuantity = this.comida0Quantity
-            this.comida1DeliveredQuantity = this.comida1Quantity
-
+        handlePedido(food0Count, food1Count, delivered){
+            this.setTotalQuantity(food0Count, food1Count)
+            this.setFirstCount(food0Count, food1Count, delivered)
         },
-        setRemainingCount(food0Count, food1Count){
+        setFirstCount(food0Count, food1Count, delivered){
 
-            if( this.comida0DeliveredQuantity || this.comida1DeliveredQuantity >= 0 ){
-                console.log('setting remaining count')
-                console.log(food0Count, food1Count)
-                this.comida0DeliveredQuantity = this.comida0DeliveredQuantity - food0Count
-                this.comida1DeliveredQuantity = this.comida1DeliveredQuantity - food1Count
-            }else{
-                console.log(false)
+            // if(delivered){
+            //     don't do anything 
+            // }
+
+            if(!delivered){
+                console.log('not delivered')
+                if(this.comida0DeliveredQuantity || this.comida1DeliveredQuantity >= 0){
+                    console.log( 'sumando ', food0Count, 'a comida 0')
+                    this.comida0DeliveredQuantity = this.comida0DeliveredQuantity + food0Count
+                    this.comida1DeliveredQuantity = this.comida1DeliveredQuantity + food1Count
+                    console.log('Post sum comida0 por entregar: ', this.comida0DeliveredQuantity)
+                    console.log('Post sum comida1 por entregar: ', this.comida1DeliveredQuantity)
+                }
             }
+
         },
-        updateDeliveredCount(id){
-            const indexOfItemToUpdate = this.pedidos.findIndex( pedido => pedido.id === id )
-            console.log(indexOfItemToUpdate)
-            console.log(this.pedidos[indexOfItemToUpdate])
-            this.pedidos[indexOfItemToUpdate].delivered = !this.pedidos[indexOfItemToUpdate].delivered
-            console.log(this.pedidos[indexOfItemToUpdate].delivered)
+        setTotalQuantity(food0Count, food1Count){
+            this.comida0TotalQuantity = this.comida0TotalQuantity + food0Count
+            this.comida1TotalQuantity = this.comida1TotalQuantity + food1Count
+        },
+        setRemainingCount(delivered, food0Count, food1Count){
+
+            if(!delivered){
+                console.log('sumando')
+                    console.log( this.comida0DeliveredQuantity, ' + ', food0Count, ' = ' )
+                    this.comida0DeliveredQuantity = this.comida0DeliveredQuantity + food0Count
+                    this.comida1DeliveredQuantity = this.comida1DeliveredQuantity + food1Count
+                    console.log(this.comida0DeliveredQuantity)
+            }
+            
+            if(delivered){
+                console.log('restando')
+                if( this.comida0DeliveredQuantity > 0 || this.comida1DeliveredQuantity > 0 ){
+                    console.log('setting remaining count')
+                    this.comida0DeliveredQuantity = this.comida0DeliveredQuantity - food0Count
+                    this.comida1DeliveredQuantity = this.comida1DeliveredQuantity - food1Count
+                }
+            }
         },
         sendItemToLastPosition(e){
             const indexOfItemToMove = this.pedidos.findIndex( pedido => pedido.id === e)
@@ -219,19 +236,18 @@ export default {
                 this.pedidos.splice(indexOfItemToMove, 1)
             }
         },
-        handleDeliveryChange(id, food0Count, food1Count){
-            console.log(this.pedidos)
-            this.updateDeliveredCount(id)
+        handleDeliveryChange(id, delivered, food0Count, food1Count){
+            // console.log(this.pedidos)
             this.sendItemToLastPosition(id)
-            this.setRemainingCount( food0Count, food1Count)
+            this.setRemainingCount( delivered, food0Count, food1Count)
         }
     },
     mounted(){
+        console.log(this.comida0TotalQuantity)
         this.since = dayjs().format('YYYY-MM-DD')
         // this.until = dayjs().add(1, 'day').format('YYYY-MM-DD')
         this.getPedidos()
         this.getCalendar()
-        // this.getCustomers()
         this.getLocations()
     }
 }

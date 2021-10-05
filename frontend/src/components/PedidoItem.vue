@@ -19,7 +19,7 @@
                                         type="checkbox" 
                                         name="delivered" 
                                         v-model="pedido.delivered" 
-                                        @change="emitChange(pedido.id, food0Count, food1Count)" 
+                                        @change="emitChange(pedido.id, pedido.delivered)" 
                                     >
                                     <span class="slider round"></span>
                                 </label>
@@ -72,6 +72,7 @@ export default {
             all: '',
             food0Count: 0,
             food1Count: 0,
+            delivered: 0,
             api: process.env.VUE_APP_API
         }
     },
@@ -81,8 +82,8 @@ export default {
             this.pedido = pedido
             this.food0Count = pedido.food[0].pedidoItems.quantity
             this.food1Count = pedido.food[1].pedidoItems.quantity
-            console.log(this.food0Count, this.food1Count)
-            this.$emit('increase', this.food0Count, this.food1Count)
+            this.delivered = pedido.delivered
+            this.$emit('pedido-loaded', this.food0Count, this.food1Count, this.pedido.delivered)
         },
         updatePedido(id){
             const url = '/pedidos/api/update/'
@@ -102,8 +103,8 @@ export default {
         showSelectedCustomer(){
             console.log(this.customerFilter)
         },
-        emitChange(id){
-            this.$emit('delivery-state-changed', id, this.food0Count, this.food1Count)
+        emitChange(id, delivered){
+            this.$emit('delivery-state-changed', id, delivered, this.food0Count, this.food1Count)
         }
     },
     mounted(){
