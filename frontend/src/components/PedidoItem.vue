@@ -2,7 +2,7 @@
     <div>
         <div v-if="pedido" >
             <div class="  card  secondary  mt-2 " :class="[pedido.paid ? 'green' : 'love']"  
-                v-if="pedido.customer.name && pedido.customer.name.toLowerCase().includes(customerFilter.toLowerCase())" 
+                v-if="pedido.customer.name && pedido.customer.name.toLowerCase().includes(customerFilter.toLowerCase()) && locationFilter ==  '' || locationFilter == pedido.location.name " 
             >
                 <h2 class=""> {{ pedido.customer.name }} </h2>
                 <div style="display: flex; align-items: baseline;" >
@@ -65,7 +65,7 @@ import Loading from './Loading.vue'
 export default {
   components: { Loading },
     name: 'PedidoItem',
-    props: ["pedidoId", "customerFilter"],
+    props: ["pedidoId", "customerFilter", "locationFilter"],
     data(){
         return{
             pedido: '',

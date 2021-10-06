@@ -97,6 +97,7 @@
                         :pedidoId="pedido.id"
                         :key="pedido.id"
                         :customerFilter="selectedCustomer"
+                        :locationFilter="selectedLocation"
                     >
                     </PedidoItem>
                 </div>
@@ -122,7 +123,7 @@ export default {
     data(){
         return{
             calendar: '',
-            customers: '',
+            customers: '',  
             locations: '',
             since: '',
             until: '',
@@ -246,8 +247,8 @@ export default {
         console.log(this.comida0TotalQuantity)
         this.since = dayjs().format('YYYY-MM-DD')
         // this.until = dayjs().add(1, 'day').format('YYYY-MM-DD')
-        this.getPedidos()
         this.getCalendar()
+        this.getPedidos()
         this.getLocations()
     }
 }
