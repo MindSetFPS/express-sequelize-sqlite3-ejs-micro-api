@@ -1,25 +1,31 @@
 <template>
-  <div class="home container">
-    <h1 class="title"> {{ pedidoId ? 'Editar Pedido' : 'Crear Pedido' }} </h1>
+  <div class="">
+    <h1 class="text-3xl font-bold "> {{ pedidoId ? 'Editar Pedido' : 'Crear Pedido' }} </h1>
     <div v-if="menu.ok" >
       <form>
+        <div class="w-full" >
           <label >  Nombre del cliente </label>
-          <input type="text" placeholder="Nombre del Cliente" name="customerName" list="customers" v-model="selectedCustomer" required />
+          <input class="block rounded-md p-1 w-full" type="text" placeholder="Nombre del Cliente" name="customerName" list="customers" v-model="selectedCustomer" required />
+        </div>
           <label > Ubicacion  </label>
-          <input type="text" placeholder="Ubicacion" name="customerLocation" list="locations" v-model="selectedLocation" required />
-          <div style="text-align: center;" >
-              <div>
+          <input class="block rounded-md p-1 w-full" type="text" placeholder="Ubicacion" name="customerLocation" list="locations" v-model="selectedLocation" required />
+          
+          <div style="text-align: center;" class="flex justify-evenly items-end "  >
+              <div class="px-2 w-5/12 " >
                   <label   > <h2 v-if="menu" > {{ menu.calendar.Comida1.name  }} </h2> </label>
-                  <input type="number" min="0" placeholder="cantidad" style="width: 40%" v-model="comida1Quantity" />
+                  <input class="rounded-md p-1 w-full" type="number" min="0" placeholder="cantidad" v-model="comida1Quantity" />
               </div>
-              <div>
+              <div class="px-2 w-5/12 " >
                   <label  > <h2 v-if="menu" > {{  menu.calendar.Comida2.name }} </h2> </label>
-                  <input type="number" min="0" placeholder="cantidad" style="width: 40% ;" v-model="comida2Quantity"  />
+                  <input class="rounded-md p-1 w-full" type="number" min="0" placeholder="cantidad" v-model="comida2Quantity"  />
               </div>
-                  <button class="button blue mt-4 title" @click.prevent="buttonHandler" > {{ pedidoId ? 'Actualizar' : 'Crear Pedido' }} </button>
+              <h1 class=" text-xl font-bold text-center w-3/12 " > $ {{ (parseInt(comida1Quantity) + parseInt(comida2Quantity)) * 45 }}.00  </h1>
+          </div>
+
+          <div class="mt-2" >
+            <button class="rounded-md bg-blue-200 p-2 m-auto w-full" @click.prevent="buttonHandler" > {{ pedidoId ? 'Actualizar' : 'Crear Pedido' }} </button>
           </div>
       </form>
-      <h1 class="title" > Total: $ {{ (parseInt(comida1Quantity) + parseInt(comida2Quantity)) * 45 }}.00  </h1>
 
       <datalist id="customers" >
         <option v-for="customer in customers" :key="customer.id" :value="customer.name"> {{ customer.name }} </option>

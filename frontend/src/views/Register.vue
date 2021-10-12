@@ -1,16 +1,16 @@
 <template>
     <div class="" >
-        <h1 class="title">Register</h1>
+        <h1 class="">Register</h1>
         <form  >
     
             <label for="email">Email</label>
-            <input class="mt-2" required type="email" name="email" v-model="email" id="email-field" placeholder="Correo" autofocus >
+            <input class="" required type="email" name="email" v-model="email" id="email-field" placeholder="Correo" autofocus >
 
             <label for="password">Password</label>
-            <input class="mt-2" required type="password" name="password" v-model="password" id="pasword-field " placeholder="Contrasena" >
+            <input class="" required type="password" name="password" v-model="password" id="pasword-field " placeholder="Contrasena" >
             
 
-            <button class="button love mt-4" @click.prevent="postRegisterUser" > Crear Cuenta </button>
+            <button class="" @click.prevent="postRegisterUser" > Crear Cuenta </button>
 
         </form>
     </div>

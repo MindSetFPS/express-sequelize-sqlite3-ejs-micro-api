@@ -1,13 +1,13 @@
 <template>
-    <div class="container" >
-        <h1 class="title" >Nuevo platillo</h1>
+    <div class="" >
+        <h1 class="text-3xl font-semibold" >Nuevo platillo</h1>
         <form >
             <h2> Anadir un platillo al menu  </h2>
-            <input class="mt-2" name="name" placeholder="Nombre (Obligatorio)" required v-model="name" />
-            <input class="mt-2" name="description" placeholder="Descripcion (Opcional)" v-model="description" />
-            <input class="mt-2" name="link" placeholder="Link (Opcional) " v-model="link" />
+            <input class="rounded-md p-1 mt-2 w-full" name="name" placeholder="Nombre (Obligatorio)" required v-model="name" />
+            <input class="rounded-md p-1 mt-2 w-full" name="description" placeholder="Descripcion (Opcional)" v-model="description" />
+            <input class="rounded-md p-1 mt-2 w-full" name="link" placeholder="Link (Opcional) " v-model="link" />
 
-            <button class="mt-2 green" @click.prevent="postFood" > Crear platillo </button>
+            <button class="w-full bg-green-400 p-2 mt-2 text-white rounded-md" @click.prevent="postFood" > Crear platillo </button>
         </form>
     </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="">
         <div v-if="editType == 'pedido'" >
             <pedido-edit-or-create :pedidoId="$route.params.id" />
         </div>

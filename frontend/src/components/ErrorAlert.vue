@@ -1,7 +1,7 @@
 <template>
-        <div class="card love alert" >
+        <div class="" >
             <span class="text">
-                {{ message }}
+                {{ message }} 
             </span>
             
 

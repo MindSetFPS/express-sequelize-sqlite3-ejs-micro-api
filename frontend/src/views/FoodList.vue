@@ -1,21 +1,19 @@
 <template>
-
-    <div class="container"> 
-            <h1 class="title" > Menu </h1>
-            <div class="" style="padding-left: 20px; padding-right: 20px "  >
-                
-                <div class="card mt-4 mb-4 " v-for="food in foodList" :key="food.id" >
-                    <div class="flex-resizable " >
+    <div class=""> 
+            <h1 class="text-3xl font-semibold " > Menu </h1>
+            <div class=""  >
+                <div class="bg-white p-2 my-2 flex justify-between rounded-md" v-for="food in foodList" :key="food.id" >
+                    <div class="" >
                         <h1 class="">  {{ food.name }}   </h1>
                     </div>
                     <p> {{ food.description }} </p>
-                    <a href="{ food.link }}" target="_blank" rel="noopener noreferrer" > {{ food.link }} </a>
-                    <div class="flex mt-2" >
-                        <form method="GET" class="mx-1" >
-                            <input type="submit" formaction="/food/edit/{food.id}}" class="blue secondary" value="Editar">
+                    <a href="{ food.link }}" target="_blank" rel="noopener noreferrer" > {{ food.link  /*fix this*/ }} </a>
+                    <div class="flex" >
+                        <form method="GET" class="" >
+                            <input type="submit" formaction="/food/edit/{food.id}}" class="rounded-md bg-blue-100 text-blue-500 p-2 mr-2" value="Editar">
                         </form>
                         <form method="GET" class="mx-1" >
-                            <input type="submit" formaction="/food/delete/{food.id}}" class="love secondary" value="Borrar">
+                            <input type="submit" formaction="/food/delete/{food.id}}" class="rounded-md bg-red-100 p-2 text-red-500" value="Borrar">
                         </form>
                     </div>
                 </div>

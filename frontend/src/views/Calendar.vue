@@ -1,22 +1,23 @@
 <template>
     <div class="container" >
-        <h1 class="title"> Crear Menu del Dia </h1>
+        <h1 class="text-3xl font-bold"> Crear Menu del Dia </h1>
 
         <form autocomplete="off">
             
             <label > Elige un platillo.  </label>
-            <input type="text" name="comida1" placeholder="Nombre del platillo" v-model="comida0" autocomplete="off" list="menudata" />
+            <input class="block rounded-md p-1" type="text" name="comida1" placeholder="Nombre del platillo" v-model="comida0" autocomplete="off" list="menudata" />
 
             <label > Elige un platillo mas.</label>
-            <input type="text" name="comida2" placeholder="Nombre del platillo" v-model="comida1" autocomplete="off" list="menudata"  />
+            <input class="block rounded-md p-1" type="text" name="comida2" placeholder="Nombre del platillo" v-model="comida1" autocomplete="off" list="menudata"  />
         
             <label > En que fecha estara disponible este menu? </label>
-            <input type="date" name="date" v-model="date"   />
-            
-            <button @click.prevent="postCalendar" class="button blue mt-4 title" >Crear Menu</button>
+            <input class="w-full p-1 rounded-md" type="date" name="date" v-model="date"   />
+            <div class="mx-auto mt-2 text-center" >
+                <button @click.prevent="postCalendar" class="rounded-md bg-pink-200 p-2  " >Crear Menu</button>
+            </div>
         </form>
 
-        <div v-if="res.error" class="love secondary rounded p4 m4" >
+        <div v-if="res.error" class="" >
             <h1>Hubo un error: {{ this.res.message }}</h1>
         </div>
 

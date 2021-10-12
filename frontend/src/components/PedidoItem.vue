@@ -1,19 +1,21 @@
 <template>
-    <div>
+    <div class="" >
         <div v-if="pedido" >
-            <div class="  card  secondary  mt-2 " :class="[pedido.paid ? 'green' : 'love']"  
+            <div class="bg-white rounded-md mt-2 px-2 py-1 text-xs" :class="[pedido.paid ? 'bg-green-200' : '']"  
                 v-if="pedido.customer.name && pedido.customer.name.toLowerCase().includes(customerFilter.toLowerCase()) && locationFilter ==  '' || locationFilter == pedido.location.name " 
             >
-                <h2 class=""> {{ pedido.customer.name }} </h2>
-                <div style="display: flex; align-items: baseline;" >
-                    <p class="list-text" > {{ pedido.location.name }} - </p>
-                    <p class="list-text" > {{ pedido.createdAt }} </p>            
+
+            <div class="" >
+                <h2 class="text-base font-medium inline-block"> {{ pedido.customer.name }} </h2> <span> {{ pedido.location.name }} </span>
+            </div>
+                <div style="flex" >
+                    <p class="" >{{ pedido.createdAt }} </p>     
                 </div>
-                <div style="display: grid; grid-template-columns: 1.9fr  1fr 1fr 0.8fr ;  justify-items: center; align-items: center; " >
-                    <div style="text-align: center;" > 
-                        <div class="flex" style="justify-content: space-between;" >    
+                <div style="flex  justify-items: center; align-items: center; " class="flex justify-between" >
+                    <div> 
+                        <div class="flex" >    
                             <div class="" >
-                                <p class="list-text" > Entregado   </p>
+                                <p>Entregado</p>
                                 <label class="switch">
                                     <input 
                                         type="checkbox" 
@@ -25,7 +27,7 @@
                                 </label>
                             </div>
                             <div>
-                                <p class="list-text" >Pagado</p>
+                                <p class="" >Pagado</p>
                                 <label class="switch">
                                     <input 
                                     type="checkbox" 
@@ -37,12 +39,12 @@
                             </div>
                         </div>
                         <button 
-                        @click="updatePedido(pedido.id)" 
-                        class="button small blue secondary " 
+                            @click="updatePedido(pedido.id)" 
+                            class=" p-1 bg-gray-100 mt-1 text-xs rounded-md" 
                         > 
                             Actualizar 
                         </button>
-                        <button class="button small green secondary " >
+                        <button class="p-1 bg-gray-50 mt-1" >
                             <router-link :to="'/details/' + pedido.id" > 
                                 Details
                             </router-link>

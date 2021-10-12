@@ -1,8 +1,8 @@
 <template>
-    <div class="container" >
-        <h1 class="title">Detalles</h1>
+    <div class="" >
+        <h1 class="text-4xl font-bold">Detalles</h1>
         <div  v-if="pedidoDetails" > 
-            <h2 class="">
+            <h2 class="text-xl font-semibold">
                 {{ pedidoDetails.customer.name }}
             </h2>
 
@@ -34,12 +34,11 @@
                 ID: {{ pedidoDetails.id }}
             </div>
 
-            <div>
-                <button class="button blue secondary  pt-2">
-                    <router-link class="link" :to="'/edit/pedido/' + pedidoDetails.id" > Editar Pedido </router-link>
+            <div class="flex justify-evenly" >
+                <button class=" rounded-md bg-blue-200 p-2  border-blue-500 text-blue-500 font-medium  ">
+                    <router-link class="link text-sm" :to="'/edit/pedido/' + pedidoDetails.id" > Editar Pedido </router-link>
                 </button>
-                
-                <button class="love" @click.prevent="deletePedido   " > Eliminar pedido </button>
+                <button class="bg-pink-100 rounded-md py-3 px-2  text-red-400 text-sm font-medium " @click.prevent="deletePedido   " > Eliminar pedido </button>
             </div>
 
             <div v-if="res" >

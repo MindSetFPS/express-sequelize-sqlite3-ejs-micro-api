@@ -1,26 +1,28 @@
 <template>
-    <div>
-        <button @click="getPedidos">Buscar pedidos</button>
-            <div class="flex" style="justify-content: space-evenly;" >
-                <div>
+    <div class="mx-auto " >
+                <h1  class="text-3xl font-bold">Pedidos</h1>
+
+            <div class="flex">
+                <div class="w-1/2" >
                     <label for="since">Since</label>
-                    <input type="date" name="sincePicker" id="since"  v-model="since" >
+                    <input class=" block" type="date" name="sincePicker" id="since"  v-model="since" >
                 </div>
-                <div>
+                <div class="w-1/2" >
                     <label for="until">Until</label>
-                    <input type="date" name="untilPicker" id="until" v-model="until" >
+                    <input class=" block" type="date" name="untilPicker" id="until" v-model="until" >
                 </div>
             </div>
 
-            <p class="list-heading">Cliente</p>
-            <input class="small" name="customer" v-model="selectedCustomer" autocomplete="off"  >
+            <p class="">Cliente</p>
+            <input class="w-full rounded-md p-1" placeholder="Buscar un cliente" name="customer" v-model="selectedCustomer" autocomplete="off"  >
                     
+            <button @click="getPedidos" class="rounded-md bg-red-200 p-2 w-full mt-2 text-red-600" >Buscar pedidos</button>
 
-            <div class="flex mt-3" style="display: grid; grid-template-columns:  1fr 1fr 1fr 1fr 0.7fr ;  justify-items: center; align-items: baseline ;" >
+            <div class="flex mt-3 text-xs w-full justify-between" >
                 <!-- TITULOS -->
-                <div>
-                    <p class="list-heading">Lugar</p>
-                    <select class="small" name="location" v-model="selectedLocation" v-if="locations" >
+                <div class=" w-2/12 " >
+                    <p class="">Lugar</p>
+                    <select class="" name="location" v-model="selectedLocation" v-if="locations" >
                         <option value=""></option>
                         <option v-for="location in locations" :key="location.id" >  {{ location.name }} </option>
                     </select>
@@ -28,10 +30,10 @@
                         <Loading />
                     </div>
                 </div>
-                <div class="list-heading">
-                    <div class="flex" >   
-                        <p>Entregado</p>
-                        <select type="checkbox" name="delivered" id="delivered" class="search" v-model="delivered"  > 
+                <div class="w-1/5">
+                    <div class="" >   
+                        <p  >Entregado</p>
+                        <select type="checkbox" name="delivered" id="delivered" class="" v-model="delivered"  > 
                             <option value="1">Si</option>
                             <option value="0">No</option>
                             <option value="">Indiferente</option>
@@ -39,39 +41,39 @@
                     </div>            
                     <div class="flex" >
                         <p>Pagado</p>
-                        <input type="checkbox" name="paid" id="paid" class="search" v-model="paid" >
+                        <input type="checkbox" name="paid" id="paid" class="" v-model="paid" >
                     </div>
                     <div class="flex" >
                         <p>Todos</p>
-                        <input type="checkbox" name="all" id="all" class="search" v-model="all" >
+                        <input type="checkbox" name="all" id="all" class="" v-model="all" >
                     </div>
                 </div>
-                <div class=" list-heading "     >
-                    <div class="list-heading " v-if="calendar"  >
+                <div class="w-1/5">
+                    <div class="" v-if="calendar"  >
                     {{ calendar.calendar.Comida1Id > calendar.calendar.Comida2Id ? calendar.calendar.Comida2.name : calendar.calendar.Comida1.name }}
                     </div>
                     <div v-else >
                         <Loading />
                     </div>
                     <div class="flex" >
-                        <div class="to-deliver" >
+                        <div class="" >
                             {{ this.comida0DeliveredQuantity }}
                         </div>
                         /
-                        <div class="list-heading" >
+                        <div class="" >
                         {{ this.comida0TotalQuantity }}
                         </div>
                     </div>
                 </div>
-                <div class="list-heading  "     >
-                    <div class="list-heading" v-if="calendar" >
+                <div class="w-1/5"     >
+                    <div class="" v-if="calendar" >
                         {{ calendar.calendar.Comida2Id > calendar.calendar.Comida1Id ? calendar.calendar.Comida2.name : calendar.calendar.Comida1.name  }}
                     </div>
                     <div v-else >
                         <Loading />
                     </div>
                     <div class="flex" >
-                        <div class="to-deliver" >
+                        <div class="" >
                             {{ this.comida1DeliveredQuantity }}
                         </div>
                         /
@@ -80,9 +82,9 @@
                         </div>
                     </div>
                 </div>   
-                <div class="list-heading">
-                    <p class="list-heading" >Total:</p>
-                    <p  class="list-heading" >
+                <div class="w-1/12">
+                    <p class="" >Total:</p>
+                    <p  class="" >
                         $ {{ totalMoney }}
                     </p>
                </div>

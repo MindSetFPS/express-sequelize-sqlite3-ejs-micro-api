@@ -1,38 +1,38 @@
 <template>
-    <nav class="lateral-nav" > 
-        <router-link to="/" class="mt-4 mb-4" > 
+    <nav class="bg-blue-200 w-1/12 sticky  h-screen flex flex-col items-center justify-evenly left-0  top-0" > 
+        <router-link to="/" class="" > 
             <span class="material-icons" >&#xe88a;</span>
-            <p class="nav-link-text" > Inicio </p> 
+            <p class="hidden" > Inicio </p> 
         </router-link>
         <router-link to="/pedidos" > 
             <span class="material-icons">&#xef6e;</span>
-            <p class="nav-link-text" >Pedidos</p>
+            <p class="hidden" >Pedidos</p>
         </router-link>
 
         <router-link to="/calendar/create-menu" >
             <span class="material-icons">&#xe561;</span>
-            <p class="nav-link-text" > Crear un menu  </p>
+            <p class="hidden" > Crear un menu  </p>
         </router-link>
 
 
         <router-link to="/calendar/list" > 
             <span class="material-icons">&#xe8df;</span>
-            <p class="nav-link-text" >Calendario</p>
+            <p class="hidden" >Calendario</p>
         </router-link>
 
         <router-link to="/food" >
-            <span class="material-icons">&#xea20;</span>
-            <p class="nav-link-text" > Nuevo <br/> Platillo  </p>
+            <span class="material-icons block">&#xea20;</span>
+            <p class="hidden" > Nuevo <br/> Platillo  </p>
         </router-link>
 
         <router-link to="/food/list" >
             <span class="material-icons">&#xe0ee;</span>
-            <p class="nav-link-text" >Platillos </p>
+            <p class="hidden" >Platillos </p>
         </router-link>
 
         <router-link to="/accounts">
             <span class="material-icons" >&#xe853;</span>
-            <p class="nav-link-text" >Cuentas</p>
+            <p class="hidden" >Cuentas</p>
         </router-link>
 
     </nav>

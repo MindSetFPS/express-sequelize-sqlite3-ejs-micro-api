@@ -1,13 +1,14 @@
 <template>
-  <div :class="[user ? 'father' : 'container']" >  
-        <Navbar v-if="user" />
-      <router-view v-on:logInSuccesfull="doSomething" />
+  <div class="flex  "  >  
+      <Navbar v-if="user" />
+      <router-view v-on:logInSuccesfull="doSomething" class="container mx-auto p-4 md:p-24"  />
     </div>
 </template>
 
 <script>
 
 import Navbar from "@/components/Navbar";
+import './assets/tailwind.css'
 
 export default {
   components: {

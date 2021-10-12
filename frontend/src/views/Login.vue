@@ -1,16 +1,20 @@
 <template>
-    <div>
-        <h1 class="title" >Login</h1>
+    <div class="" >
+        <h1 class="text-4xl font-bold text-center " >Login</h1>
         <form >
-            
-            <label for="email">Email</label>
-            <input class="mt-2" type="email" v-model="email" name="email" id="email-field" placeholder="Correo" autofocus >
+            <div class="p-2" >
+                <label for="email">Email</label>
+                <input class="block w-full p-2 rounded-md " type="email" v-model="email" name="email" id="email-field" placeholder="Correo" autofocus >
+            </div>
 
-            <label for="password">Password</label>
-            <input class="mt-2" type="password" v-model="password" name="password" id="pasword-field " placeholder="Contrasena" >
-            
+            <div class="p-2" >
+                <label for="password">Password</label>
+                <input class="block w-full p-2 rounded-md " type="password" v-model="password" name="password" id="pasword-field " placeholder="Contrasena" >
+            </div>
 
-            <button class="button love mt-4" @click.prevent="postLogin" > Iniciar Sesion </button>
+            <div class="p-2" >
+                <button class="bg-green-200 rounded-md w-full py-2 " @click.prevent="postLogin" > Iniciar Sesion </button>
+            </div>
 
         </form>
 

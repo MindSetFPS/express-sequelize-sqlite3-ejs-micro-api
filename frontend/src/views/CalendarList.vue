@@ -1,25 +1,24 @@
 <template>
-    <div class="container" >
-        <h1 class="title" > Calendario </h1>
-            <div v-if="calendars && calendars.length > 0 " class="mb-extra" >
+    <div class=" w-full " >
+        <h1 class="text-3xl font-bold" > Calendario </h1>
+            <div v-if="calendars && calendars.length > 0 " class="mt-3" >
 
-                <div class="card mt-4 mb-4" v-for="calendar in calendars" :key="calendar.id" >
-                    <h1 style="text-align: center;"  >  {{ 'Hoy ? ' }} </h1> 
-                    <h1 style="text-align: center;" >{{ calendar.date }} </h1>
-                    <div class="flex" style="justify-content: space-between;" >
-                        <div>
+                <div class=" bg-white w-full text-center rounded-md p-3 "   v-for="calendar in calendars" :key="calendar.id" >
+                    <h1 class="font-medium text-xl" >{{ calendar.date }} </h1>
+                    <div class="" >
+                        <div class="flex justify-evenly text-lg " >
                             <div>
-                                <h2 class="subtitle" style="text-align: left;" > {{ calendar.Comida1.name }}</h2>
+                                <h2 class="" > {{ calendar.Comida1.name }}</h2>
                             </div>
                             <div>
-                                <h2 class="subtitle" style="text-align: left;" > {{calendar.Comida2.name}}</h2>
+                                <h2 class="" > {{calendar.Comida2.name}}</h2>
                             </div>
                         </div>
-                        <div class="stack" >
+                        <div class="flex justify-center" >
+                            <button class="     rounded-md bg-blue-100 text-blue-500 p-2 mr-2 " > Editar </button>
                             <form>
-                                <button class="button secondary love" @click="deleteCalendar(calendar.id)" > Borrar </button>  
+                                <button class="rounded-md bg-red-100 p-2 text-red-500" @click="deleteCalendar(calendar.id)" > Borrar </button>  
                             </form>
-                            <button class="button secondary blue" > Editar </button>
                         </div>
                     </div>
                     
