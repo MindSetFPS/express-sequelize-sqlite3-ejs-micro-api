@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { get } from 'tiny-cookie'
 
 import Navbar from "@/components/Navbar";
 import './assets/tailwind.css'
@@ -22,17 +23,24 @@ export default {
   },
   methods: {
     async getUsers(){
-      const users = await fetch(this.api + '/accounts/api/get').then(res => res.json())
-      this.users = users
-      console.log(this.users)
-      if(!this.users.exists){
-        console.log('No users found, creating the first user.')
-        this.$router.push('/register')
-      }else{
-        console.log('Users found, redirecting to login.')
-        this.$router.push('/login')
+      if (get('user')){
+        console.log('user found')
+        this.user = get('user')
+        this.$router.push('/')
+      } else {
+          const users = await fetch(this.api + '/accounts/api/get').then(res => res.json())
+          this.users = users
+          console.log(this.users)
+          if(!this.users.exists){
+            console.log('No users found, creating the first user.')
+            this.$router.push('/register')
+          }else{
+            console.log('Users found, redirecting to login.')
+            this.$router.push('/login')
+          }
+          console.log(this.users)
+
       }
-      console.log(this.users)
     },
     doSomething(payload){
       this.user = payload

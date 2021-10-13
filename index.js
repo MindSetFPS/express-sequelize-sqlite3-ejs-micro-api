@@ -1,5 +1,6 @@
 const bodyParser = require('body-parser')
 const express = require('express')
+const cors = require('cors')
 
 //const session = require('express-session')
 const session = require('cookie-session')
@@ -33,19 +34,16 @@ const app = express()
 const port = process.env.ENVIRONMENT == 'development' ? 4500 : 3000
 
 app.use(session({
-    name: 'sessionCookie',
-    secret: 'secret key',
-    keys: ['key1', 'key2']
+    name: 'user',
+    secret: process.env.SECRETKEY ,
+    maxAge: 24 * 60 * 60 * 1000,
+    httpOnly: false,
+    keys: [process.env.KEYONE, process.env.KEYTWO]
 }))
-app.use(cookieParser("secret key"))
+app.use(cookieParser(process.env.COOKIEPARSERKEY))
 
-// if(process.env.ENVIRONMENT=='development'){
-    const cors = require('cors')
-    app.use(cors())
-// }
 app.use(passport.initialize())
 app.use(passport.session())
-
 
 app.use(express.json())
 app.use(express.urlencoded());
@@ -54,13 +52,14 @@ app.use(express.static('dist'))
 app.use('/login', login)
 app.use('/register', register )
 app.use('/accounts', accounts)
+app.use('/food', foodRoutes)
 app.use(isAutenticated)
 app.use('/', createPedidos)
-app.use('/food', foodRoutes)
 app.use('/pedidos', listPedidos )
 app.use('/calendar', listCalendar)
 app.use('/customers', customers)
 
 app.listen(port, () => {
     console.log('Running on port: ', port)
+    console.log(`http://localhost:${port}`)
 })
