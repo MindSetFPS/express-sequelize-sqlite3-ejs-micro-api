@@ -1,13 +1,14 @@
 <template>
   <div class="">
-    <h1 class="text-3xl font-bold "> {{ pedidoId ? 'Editar Pedido' : 'Crear Pedido' }} </h1>
+    <page-title :text="pedidoId ? 'Editar Pedido' : 'Crear Pedido'" > 
+    </page-title>
     <div v-if="menu.ok" >
       <form>
-        <div class="w-full" >
-          <label >  Nombre del cliente </label>
+        <div class="w-full mt-2" >
+          <field-name text="Nombre del cliente" />  
           <input class="block rounded-md p-1 w-full" type="text" placeholder="Nombre del Cliente" name="customerName" list="customers" v-model="selectedCustomer" required />
         </div>
-          <label > Ubicacion  </label>
+          <field-name text="Ubicacion" />  
           <input class="block rounded-md p-1 w-full" type="text" placeholder="Ubicacion" name="customerLocation" list="locations" v-model="selectedLocation" required />
           
           <div style="text-align: center;" class="flex justify-evenly items-end "  >
@@ -45,10 +46,15 @@
 <script>
 // @ is an alias to /src
 import ErrorAlert from './ErrorAlert.vue'
+import PageTitle from './PageTitle.vue'
+import FieldName from './FieldName.vue'
+
 export default {
   name: 'PedidoEditOrCreate',
   components: {
-    ErrorAlert
+    ErrorAlert,
+    PageTitle,
+    FieldName
   },
   props: ['pedidoId'],
   data(){
