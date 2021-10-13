@@ -1,112 +1,116 @@
 <template>
-    <div class="mx-auto " >
+    <div>
+        <div class="mx-auto " v-if="calendar.ok" >
                 <h1  class="text-3xl font-bold">Pedidos</h1>
-
-            <div class="flex">
-                <div class="w-1/2" >
-                    <label for="since">Since</label>
-                    <input class=" block" type="date" name="sincePicker" id="since"  v-model="since" >
+                <div class="flex">
+                    <div class="w-1/2" >
+                        <label for="since">Since</label>
+                        <input class=" block" type="date" name="sincePicker" id="since"  v-model="since" >
+                    </div>
+                    <div class="w-1/2" >
+                        <label for="until">Until</label>
+                        <input class=" block" type="date" name="untilPicker" id="until" v-model="until" >
+                    </div>
                 </div>
-                <div class="w-1/2" >
-                    <label for="until">Until</label>
-                    <input class=" block" type="date" name="untilPicker" id="until" v-model="until" >
+
+                <p class="">Cliente</p>
+                <input class="w-full rounded-md p-1" placeholder="Buscar un cliente" name="customer" v-model="selectedCustomer" autocomplete="off"  >
+                        
+                <button @click="getPedidos" class="rounded-md bg-red-200 p-2 w-full mt-2 text-red-600" >Buscar pedidos</button>
+
+                <div class="flex mt-3 text-xs w-full justify-between" >
+                    <!-- TITULOS -->
+                    <div class=" w-2/12 " >
+                        <p class="">Lugar</p>
+                        <select class="" name="location" v-model="selectedLocation" v-if="locations" >
+                            <option value=""></option>
+                            <option v-for="location in locations" :key="location.id" >  {{ location.name }} </option>
+                        </select>
+                        <div v-else >
+                            <Loading />
+                        </div>
+                    </div>
+                    <div class="w-1/5">
+                        <div class="" >   
+                            <p  >Entregado</p>
+                            <select type="checkbox" name="delivered" id="delivered" class="" v-model="delivered"  > 
+                                <option value="1">Si</option>
+                                <option value="0">No</option>
+                                <option value="">Indiferente</option>
+                            </select>   
+                        </div>            
+                        <div class="flex" >
+                            <p>Pagado</p>
+                            <input type="checkbox" name="paid" id="paid" class="" v-model="paid" >
+                        </div>
+                        <div class="flex" >
+                            <p>Todos</p>
+                            <input type="checkbox" name="all" id="all" class="" v-model="all" >
+                        </div>
+                    </div>
+                    <div class="w-1/5">
+                        <div class="" v-if="calendar"  >
+                        {{ calendar.calendar.Comida1Id > calendar.calendar.Comida2Id ? calendar.calendar.Comida2.name : calendar.calendar.Comida1.name }}
+                        </div>
+                        <div v-else >
+                            <Loading />
+                        </div>
+                        <div class="flex" >
+                            <div class="" >
+                                {{ this.comida0DeliveredQuantity }}
+                            </div>
+                            /
+                            <div class="" >
+                            {{ this.comida0TotalQuantity }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-1/5"     >
+                        <div class="" v-if="calendar" >
+                            {{ calendar.calendar.Comida2Id > calendar.calendar.Comida1Id ? calendar.calendar.Comida2.name : calendar.calendar.Comida1.name  }}
+                        </div>
+                        <div v-else >
+                            <Loading />
+                        </div>
+                        <div class="flex" >
+                            <div class="" >
+                                {{ this.comida1DeliveredQuantity }}
+                            </div>
+                            /
+                            <div class="" >
+                            {{this.comida1TotalQuantity}}
+                            </div>
+                        </div>
+                    </div>   
+                    <div class="w-1/12">
+                        <p class="" >Total:</p>
+                        <p  class="" >
+                            $ {{ totalMoney }}
+                        </p>
+                </div>
+                </div> 
+            <div>
+                <div>    
+                    <div v-if="pedidos" >    
+                        <PedidoItem
+                            @delivery-state-changed="handleDeliveryChange"
+                            @pedido-loaded="handlePedido"
+                            v-for="pedido in pedidos"
+                            :pedidoId="pedido.id"
+                            :key="pedido.id"
+                            :customerFilter="selectedCustomer"
+                            :locationFilter="selectedLocation"
+                        >
+                        </PedidoItem>
+                    </div>
+                    <div v-else >
+                        <Loading />
+                    </div>
                 </div>
             </div>
-
-            <p class="">Cliente</p>
-            <input class="w-full rounded-md p-1" placeholder="Buscar un cliente" name="customer" v-model="selectedCustomer" autocomplete="off"  >
-                    
-            <button @click="getPedidos" class="rounded-md bg-red-200 p-2 w-full mt-2 text-red-600" >Buscar pedidos</button>
-
-            <div class="flex mt-3 text-xs w-full justify-between" >
-                <!-- TITULOS -->
-                <div class=" w-2/12 " >
-                    <p class="">Lugar</p>
-                    <select class="" name="location" v-model="selectedLocation" v-if="locations" >
-                        <option value=""></option>
-                        <option v-for="location in locations" :key="location.id" >  {{ location.name }} </option>
-                    </select>
-                    <div v-else >
-                        <Loading />
-                    </div>
-                </div>
-                <div class="w-1/5">
-                    <div class="" >   
-                        <p  >Entregado</p>
-                        <select type="checkbox" name="delivered" id="delivered" class="" v-model="delivered"  > 
-                            <option value="1">Si</option>
-                            <option value="0">No</option>
-                            <option value="">Indiferente</option>
-                        </select>   
-                    </div>            
-                    <div class="flex" >
-                        <p>Pagado</p>
-                        <input type="checkbox" name="paid" id="paid" class="" v-model="paid" >
-                    </div>
-                    <div class="flex" >
-                        <p>Todos</p>
-                        <input type="checkbox" name="all" id="all" class="" v-model="all" >
-                    </div>
-                </div>
-                <div class="w-1/5">
-                    <div class="" v-if="calendar"  >
-                    {{ calendar.calendar.Comida1Id > calendar.calendar.Comida2Id ? calendar.calendar.Comida2.name : calendar.calendar.Comida1.name }}
-                    </div>
-                    <div v-else >
-                        <Loading />
-                    </div>
-                    <div class="flex" >
-                        <div class="" >
-                            {{ this.comida0DeliveredQuantity }}
-                        </div>
-                        /
-                        <div class="" >
-                        {{ this.comida0TotalQuantity }}
-                        </div>
-                    </div>
-                </div>
-                <div class="w-1/5"     >
-                    <div class="" v-if="calendar" >
-                        {{ calendar.calendar.Comida2Id > calendar.calendar.Comida1Id ? calendar.calendar.Comida2.name : calendar.calendar.Comida1.name  }}
-                    </div>
-                    <div v-else >
-                        <Loading />
-                    </div>
-                    <div class="flex" >
-                        <div class="" >
-                            {{ this.comida1DeliveredQuantity }}
-                        </div>
-                        /
-                        <div class="" >
-                         {{this.comida1TotalQuantity}}
-                        </div>
-                    </div>
-                </div>   
-                <div class="w-1/12">
-                    <p class="" >Total:</p>
-                    <p  class="" >
-                        $ {{ totalMoney }}
-                    </p>
-               </div>
-            </div> 
-        <div>
-            <div>    
-                <div v-if="pedidos" >    
-                    <PedidoItem
-                        @delivery-state-changed="handleDeliveryChange"
-                        @pedido-loaded="handlePedido"
-                        v-for="pedido in pedidos"
-                        :pedidoId="pedido.id"
-                        :key="pedido.id"
-                        :customerFilter="selectedCustomer"
-                        :locationFilter="selectedLocation"
-                    >
-                    </PedidoItem>
-                </div>
-                <div v-else >
-                    <Loading />
-                </div>
-            </div>
+        </div>
+        <div v-if="!calendar.ok" >
+            <error-alert link="/calendar/create-menu" message="Primero Crea un Menu" />
         </div>
     </div>
 </template>
@@ -114,13 +118,16 @@
 <script>
 import PedidoItem from "@/components/PedidoItem.vue";
 import Loading from "@/components/Loading.vue"
+import ErrorAlert from '@/components/ErrorAlert.vue'
+
 import * as dayjs from 'dayjs'
 
 export default {
     name: 'QuerySettings',
     components: {
         PedidoItem,
-        Loading
+        Loading,
+        ErrorAlert
     },
     data(){
         return{

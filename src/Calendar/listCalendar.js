@@ -99,7 +99,7 @@ router.get('/api/all', async (req, res) => {
 
     if(!calendars.length > 0){
         console.log('no')
-        return res.status(404).json({ ok: false, message: 'Crea un calendario.', link: '/calendar/create-menu'})
+        return res.json({ ok: false, message: 'Crea un calendario.', link: '/calendar/create-menu'})
     }else{
         console.log(calendars)
     }
