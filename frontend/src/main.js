@@ -11,7 +11,8 @@ import {
     mdiCalendar,
     mdiTextBoxPlusOutline,
     mdiTextBoxOutline,
-    mdiAccount
+    mdiAccount,
+    mdiLink
 }  from '@mdi/js'
 
 import './styles/app.css'
@@ -27,7 +28,8 @@ createApp(App)
             mdiCalendar,
             mdiTextBoxPlusOutline,
             mdiTextBoxOutline,
-            mdiAccount
+            mdiAccount,
+            mdiLink
         }
     })
     .mount('#app')

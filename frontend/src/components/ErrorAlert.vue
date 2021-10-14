@@ -1,15 +1,8 @@
 <template>
-        <div class="" >
-            <span class="text">
-                {{ message }} 
-            </span>
-            
-
-        <span class="material-icons" style="font-size: 18px; vertical-align: middle;" >&#xe000;</span> 
-            <router-link :to="link" >
-                <span class="material-icons" style="font-size: 18px; vertical-align: middle; color: cornflowerblue;" >&#xe895;</span>
-            </router-link>
-    </div>
+    <router-link :to="link" class="flex hover:underline hover:text-blue-400 " >
+        <span>{{ message }}</span>
+        <mdicon name="link" />
+    </router-link>
 </template>
 
 <script>
@@ -18,15 +11,3 @@ export default {
     props: ['link', 'message']
 }
 </script>
-
-<style scoped>
-    .alert{
-        display: flex; 
-        align-items: center; 
-        font-size: 16px; 
-        vertical-align: middle;
-    }
-    .text{
-        font-size: 32px;
-    }
-</style>
