@@ -1,6 +1,6 @@
 <template>
     <div class=""> 
-            <h1 class="text-3xl font-semibold " > Menu </h1>
+            <page-title text="Menu" />
             <div class=""  >
                 <div class="bg-white p-2 my-2 flex justify-between rounded-md" v-for="food in foodList" :key="food.id" >
                     <div class="" >
@@ -23,8 +23,13 @@
 </template>
 
 <script>
+import PageTitle from '../components/PageTitle.vue'
 export default {
     name: 'FoodList',
+    components: {
+        PageTitle
+
+    },
     data(){
         return{
             foodList: '',
