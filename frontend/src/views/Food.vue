@@ -1,27 +1,39 @@
 <template>
     <div class="" >
-        <h1 class="text-3xl font-semibold" >Nuevo platillo</h1>
+        <page-title text="Nuevo Platillo" />
         <form >
             <h2> Anadir un platillo al menu  </h2>
-            <input class="rounded-md p-1 mt-2 w-full" name="name" placeholder="Nombre (Obligatorio)" required v-model="name" />
-            <input class="rounded-md p-1 mt-2 w-full" name="description" placeholder="Descripcion (Opcional)" v-model="description" />
-            <input class="rounded-md p-1 mt-2 w-full" name="link" placeholder="Link (Opcional) " v-model="link" />
+
+            <input-field  :inputType="text" name="name"         required v-model="name" placeholder="Nombre (Obligatorio)"  @input="showChanges" />
+            <input-field  :inputType="text" name="description"  v-model="description"  placeholder="Descripcion (Opcional)"  @input="showChanges" />
+            <input-field  :inputType="text" name="link"         v-model="link"  placeholder="Link (Opcional)"  @input="showChanges" />
+
 
             <button class="w-full bg-green-400 p-2 mt-2 text-white rounded-md" @click.prevent="postFood" > Crear platillo </button>
+            <button class="w-full bg-green-600 p-2 mt-2 text-white rounded-md" @click.prevent="showChanges" > chow data </button>
+            
         </form>
     </div>
 </template>
 
 <script>
+import PageTitle from '../components/PageTitle.vue'
+import InputField from '../components/InputField.vue'
+
 export default {
     name: 'Food',
+    components: {
+        PageTitle,
+        InputField
+    },
     data(){
         return{
             res: '',
             api: process.env.VUE_APP_API,
             name: '',
             description: '',
-            link: ''
+            link: '',
+            ndea: ''
         }
     },
     methods: {
@@ -42,6 +54,9 @@ export default {
             this.name = ''
             this.description = ''
             this.link = ''
+        },
+        showChanges(){
+            console.log(this.ndea)
         }
     },
 }

@@ -1,17 +1,16 @@
 <template>
     <div class="container" >
-        <h1 class="text-3xl font-bold"> Crear Menu del Dia </h1>
+        <h1 class="text-3xl font-bold">  </h1>
+        <page-title text="Crear Menu del Dia" /> 
 
         <form autocomplete="off">
             
-            <label > Elige un platillo.  </label>
-            <input class="block rounded-md p-1" type="text" name="comida1" placeholder="Nombre del platillo" v-model="comida0" autocomplete="off" list="menudata" />
-
-            <label > Elige un platillo mas.</label>
-            <input class="block rounded-md p-1" type="text" name="comida2" placeholder="Nombre del platillo" v-model="comida1" autocomplete="off" list="menudata"  />
+            <input-field inputType="text" placeholder="Nombre del platillo" name="comida1"  v-model="comida0" autocomplete="on" list="menudata" />
+            <input-field inputType="text" placeholder="Nombre del platillo" name="comida2"  v-model="comida1" autocomplete="on" list="menudata" />
         
             <label > En que fecha estara disponible este menu? </label>
-            <input class="w-full p-1 rounded-md" type="date" name="date" v-model="date"   />
+            <input class="w-full p-1 rounded-md" type="date" name="date" v-model="date"/>
+
             <div class="mx-auto mt-2 text-center" >
                 <button @click.prevent="postCalendar" class="rounded-md bg-pink-200 p-2  " >Crear Menu</button>
             </div>
@@ -27,8 +26,15 @@
     </div>
 </template>
 <script>
+import PageTitle from '../components/PageTitle.vue'
+import InputField from '../components/InputField.vue'
+
 export default {
     name: 'Calendar',
+    components: {
+        PageTitle,
+        InputField
+    },
     data () {
         return{
             api: process.env.VUE_APP_API,

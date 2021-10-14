@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="mx-auto " v-if="calendar.ok" >
-                <h1  class="text-3xl font-bold">Pedidos</h1>
+        <div class="mx-auto md:px-24 " v-if="calendar.ok" >
+            <page-title text="Pedidos" /> 
                 <div class="flex">
                     <div class="w-1/2" >
                         <label for="since">Since</label>
@@ -13,10 +13,9 @@
                     </div>
                 </div>
 
-                <p class="">Cliente</p>
-                <input class="w-full rounded-md p-1" placeholder="Buscar un cliente" name="customer" v-model="selectedCustomer" autocomplete="off"  >
+                <input-field placeholder="Buscar un cliente" name="customer" v-model="selectedCustomer" autocomplete="off" />
                         
-                <button @click="getPedidos" class="rounded-md bg-red-200 p-2 w-full mt-2 text-red-600" >Buscar pedidos</button>
+                <button @click="getPedidos" class="rounded-md bg-red-200 p-2 w-full mt-2 text-red-600" >Buscar pedidos y arreglar este boton </button>
 
                 <div class="flex mt-3 text-xs w-full justify-between" >
                     <!-- TITULOS -->
@@ -119,6 +118,9 @@
 import PedidoItem from "@/components/PedidoItem.vue";
 import Loading from "@/components/Loading.vue"
 import ErrorAlert from '@/components/ErrorAlert.vue'
+import PageTitle from '../components/PageTitle.vue'
+import InputField from './InputField.vue';
+
 
 import * as dayjs from 'dayjs'
 
@@ -127,7 +129,11 @@ export default {
     components: {
         PedidoItem,
         Loading,
-        ErrorAlert
+        ErrorAlert,
+        PageTitle,
+        InputField,
+
+        
     },
     data(){
         return{

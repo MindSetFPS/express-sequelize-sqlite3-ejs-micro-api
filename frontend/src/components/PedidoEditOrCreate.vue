@@ -5,20 +5,19 @@
     <div v-if="menu.ok" >
       <form>
         <div class="w-full mt-2" >
-          <field-name text="Nombre del cliente" />  
-          <input class="block rounded-md p-1 w-full" type="text" placeholder="Nombre del Cliente" name="customerName" list="customers" v-model="selectedCustomer" required />
+          <input-field inputType="text" placeholder="Nombre del cliente" name="customerName" list="customers" v-model="selectedCustomer" requiered />
         </div>
-          <field-name text="Ubicacion" />  
-          <input class="block rounded-md p-1 w-full" type="text" placeholder="Ubicacion" name="customerLocation" list="locations" v-model="selectedLocation" required />
+          <input-field inputType="text" placeholder="Ubicacion" name="customerLocation" list="locations" v-model="selectedLocation" required />
           
           <div style="text-align: center;" class="flex justify-evenly items-end "  >
               <div class="px-2 w-5/12 " >
                   <label   > <h2 v-if="menu" > {{ menu.calendar.Comida1.name  }} </h2> </label>
-                  <input class="rounded-md p-1 w-full" type="number" min="0" placeholder="cantidad" v-model="comida1Quantity" />
+                  <input-field  inputType="number" min="0" placeholder="Cantidad" v-model="comida1Quantity" />
               </div>
               <div class="px-2 w-5/12 " >
                   <label  > <h2 v-if="menu" > {{  menu.calendar.Comida2.name }} </h2> </label>
-                  <input class="rounded-md p-1 w-full" type="number" min="0" placeholder="cantidad" v-model="comida2Quantity"  />
+                  <input-field  inputType="number" min="0" placeholder="Cantidad" v-model="comida2Quantity" />
+
               </div>
               <h1 class=" text-xl font-bold text-center w-3/12 " > $ {{ (parseInt(comida1Quantity) + parseInt(comida2Quantity)) * 45 }}.00  </h1>
           </div>
@@ -47,14 +46,14 @@
 // @ is an alias to /src
 import ErrorAlert from './ErrorAlert.vue'
 import PageTitle from './PageTitle.vue'
-import FieldName from './FieldName.vue'
+import InputField from './InputField.vue'
 
 export default {
   name: 'PedidoEditOrCreate',
   components: {
     ErrorAlert,
     PageTitle,
-    FieldName
+    InputField
   },
   props: ['pedidoId'],
   data(){
