@@ -12,7 +12,9 @@ import {
     mdiTextBoxPlusOutline,
     mdiTextBoxOutline,
     mdiAccount,
-    mdiLink
+    mdiLink,
+    mdiLoading,
+    mdiCheckboxBlankCircleOutline
 }  from '@mdi/js'
 
 import './styles/app.css'
@@ -29,7 +31,11 @@ createApp(App)
             mdiTextBoxPlusOutline,
             mdiTextBoxOutline,
             mdiAccount,
-            mdiLink
+            mdiLink,
+            mdiLoading,
+            mdiCheckboxBlankCircleOutline
+            
+
         }
     })
     .mount('#app')
