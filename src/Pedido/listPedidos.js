@@ -100,7 +100,10 @@ router.get('/api/', async(req, res) => {
         ],      
     }).catch( e => console.error(e) )
 
-    res.json(pedidos)
+    res.json({
+            ok: true, 
+            data: pedidos
+        })
 })
 
 router.get('/api/today', async (req, res) => {
@@ -120,7 +123,10 @@ router.get('/api/today', async (req, res) => {
 
     }).catch(e => console.error(e))
 
-    res.json(pedidos)
+    res.json({
+        ok: true, 
+        data: pedidos
+    })
 })
 
 router.post('/api/create', async (req, res) => {
@@ -188,6 +194,7 @@ router.post('/api/create', async (req, res) => {
 })
 
 router.get('/api/details/:id', async (req, res) => {
+    console.log('consulting: /api/details/:id')
     const search = await Pedido.findByPk(req.params.id, {
         include: [
             {model: Food},
@@ -195,7 +202,7 @@ router.get('/api/details/:id', async (req, res) => {
             {model: Location}
         ]
     })
-    res.json(search)
+    res.json({ok: true, data: search})
 })
 
 router.get('/api/locations', async (req, res) => {

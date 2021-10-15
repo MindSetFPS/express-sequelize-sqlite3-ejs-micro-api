@@ -32,7 +32,7 @@
                     <div class="w-1/5">
                         <div class="" >   
                             <p  >Entregado</p>
-                            <select type="checkbox" name="delivered" id="delivered" class="" v-model="delivered"  > 
+                            <select name="delivered" id="delivered" class="" v-model="delivered"  > 
                                 <option value="1">Si</option>
                                 <option value="0">No</option>
                                 <option value="">Indiferente</option>
@@ -132,8 +132,6 @@ export default {
         ErrorAlert,
         PageTitle,
         InputField,
-
-        
     },
     data(){
         return{
@@ -177,14 +175,49 @@ export default {
             //     )
             // ).then(res => res.json()).catch(e => console.error(e))
 
-            const pedidos = await fetch(this.api + '/pedidos/api/today').then(res => res.json()).catch(e => console.error(e))
+            const pedidos = await fetch(this.api + '/pedidos/api/today')
+                .then((res) => res.json())
+                .catch((e) => {
+                    console.error(e)
+                    return {ok: false}
+                })
+            console.log(pedidos)
 
-            this.pedidos = pedidos
-            // this.calculateTotalMoney()
+            if(pedidos.ok){
+                console.log('request ok')
+                localStorage.setItem('pedidos', JSON.stringify(pedidos.data))
+                this.pedidos = pedidos.data
+            }
+
+            if(!pedidos.ok){
+                console.log('request bad')
+                this.pedidos = JSON.parse(localStorage.getItem('pedidos'))
+            }
+
+            console.log(this.pedidos)
+
         },
         async getCalendar(){
-            const calendar = await fetch(this.api + '/calendar/api/list').then(res => res.json()).catch(e => console.error(e))
-            this.calendar = calendar
+            this.calendar = await fetch(this.api + '/calendar/api/list')
+            .then((res) => res.json())
+            .catch((e) => {
+                    console.error(e)
+                    console.log('offline')
+                    return JSON.parse(localStorage.getItem('calendar'))
+            })
+
+            console.log(this.calendar)
+
+            // if(calendar.ok){
+            //     console.log('canlendar online')
+            //     this.calendar = calendar
+            //     localStorage.setItem('calendar', JSON.stringify(calendar))
+            // }
+            // if(typeof calendar.ok === 'undefinded'){
+            //     console.log('canlendar offline')
+            //     this.calendar = JSON.parse(localStorage.getItem('calendar'))
+            // }
+
             console.log('calendar: ' , this.calendar)
         },
         async getCustomers(){
@@ -206,13 +239,9 @@ export default {
             // }
 
             if(!delivered){
-                console.log('not delivered')
                 if(this.comida0DeliveredQuantity || this.comida1DeliveredQuantity >= 0){
-                    console.log( 'sumando ', food0Count, 'a comida 0')
                     this.comida0DeliveredQuantity = this.comida0DeliveredQuantity + food0Count
                     this.comida1DeliveredQuantity = this.comida1DeliveredQuantity + food1Count
-                    console.log('Post sum comida0 por entregar: ', this.comida0DeliveredQuantity)
-                    console.log('Post sum comida1 por entregar: ', this.comida1DeliveredQuantity)
                 }
             }
 
@@ -259,7 +288,6 @@ export default {
         }
     },
     mounted(){
-        console.log(this.comida0TotalQuantity)
         this.since = dayjs().format('YYYY-MM-DD')
         // this.until = dayjs().add(1, 'day').format('YYYY-MM-DD')
         this.getCalendar()

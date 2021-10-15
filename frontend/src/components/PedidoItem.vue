@@ -80,11 +80,28 @@ export default {
     },
     methods: {
         async getPedido(){
-            const pedido = await fetch(this.api + `/pedidos/api/details/${this.pedidoId}`).then( res => res.json()).catch(e => console.error(e))
-            this.pedido = pedido
-            this.food0Count = pedido.food[0].pedidoItems.quantity
-            this.food1Count = pedido.food[1].pedidoItems.quantity
-            this.delivered = pedido.delivered
+            console.log(this.pedidoId)
+            const pedido = await fetch(this.api + `/pedidos/api/details/${this.pedidoId}`)
+                .then(res => res.json())
+                .catch((e) => {
+                    console.error(e)
+                    return {ok: false}
+                })
+
+                if(pedido.ok){
+                    console.log('request good')
+                    localStorage.setItem(this.pedidoId, JSON.stringify(pedido.data))
+                    this.pedido = pedido.data
+                }
+                if(!pedido.ok){
+                    console.log('request bad')
+                    this.pedido = JSON.parse(localStorage.getItem(this.pedidoId))
+                }
+
+                this.food0Count = this.pedido.food[0].pedidoItems.quantity
+                this.food1Count = this.pedido.food[1].pedidoItems.quantity
+                this.delivered = this.pedido.delivered
+                
             this.$emit('pedido-loaded', this.food0Count, this.food1Count, this.pedido.delivered)
         },
         updatePedido(id){
@@ -110,7 +127,6 @@ export default {
         }
     },
     mounted(){
-        // console.log(this.pedido)
         this.getPedido()
     }
 }
