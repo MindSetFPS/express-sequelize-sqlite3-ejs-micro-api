@@ -1,6 +1,8 @@
 const bodyParser = require('body-parser')
 const express = require('express')
 const cors = require('cors')
+const { createServer } = require('http')
+const { Server } = require('socket.io')
 
 //const session = require('express-session')
 const session = require('cookie-session')
@@ -10,35 +12,37 @@ const passport = require('passport')
 const localizedFormat = require('dayjs/plugin/localizedFormat') 
 require('dayjs/locale/es')
 
-require('dotenv').config()
-
 const isAutenticated = require('./src/auth/passport')
 
 const accounts = require('./src/Accounts/Accounts')
-const login = require('./src/auth/Login')
-const register = require('./src/auth/Register')
-const foodRoutes = require('./src/Food/food')
 const createPedidos = require('./src/Pedido/createPedido')
+const customers = require('./src/Customer/customers')
+const foodRoutes = require('./src/Food/food')
+const login = require('./src/auth/Login')
 const listPedidos = require('./src/Pedido/listPedidos')
 const listCalendar = require('./src/Calendar/listCalendar')
-const customers = require('./src/Customer/customers')
+const register = require('./src/auth/Register')
 
+const { NODE_ENV, PORT, SECRETKEY, KEYONE, KEYTWO } = require('./config')
 
 require('./src/auth/passport')
 
 const dayjs = require('dayjs')
-
 dayjs.extend(localizedFormat)
 
+//setup socket.io and express
 const app = express()
-const port = process.env.ENVIRONMENT == 'development' ? 4500 : 3000
+const httpServer = createServer(app)
+const io = new Server(httpServer, {})
+
+if(NODE_ENV === 'development') app.use(cors({origin: 'http://localhost:8080'}))
 
 app.use(session({
     name: 'user',
-    secret: process.env.SECRETKEY ,
+    secret: SECRETKEY ,
     maxAge: 24 * 60 * 60 * 1000,
     httpOnly: false,
-    keys: [process.env.KEYONE, process.env.KEYTWO]
+    keys: [KEYONE, KEYTWO]
 }))
 app.use(cookieParser(process.env.COOKIEPARSERKEY))
 
@@ -53,13 +57,14 @@ app.use('/login', login)
 app.use('/register', register )
 app.use('/accounts', accounts)
 app.use('/food', foodRoutes)
-app.use(isAutenticated)
 app.use('/', createPedidos)
 app.use('/pedidos', listPedidos )
 app.use('/calendar', listCalendar)
 app.use('/customers', customers)
+app.use(isAutenticated)
 
-app.listen(port, () => {
-    console.log('Running on port: ', port)
-    console.log(`http://localhost:${port}`)
+//app.listen doesnot work with 
+httpServer.listen(PORT, () => {
+    console.log('Running on port: ', PORT)
+    console.log(`http://localhost:${PORT}`)
 })
