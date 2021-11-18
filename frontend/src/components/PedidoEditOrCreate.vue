@@ -72,6 +72,7 @@ export default {
   methods: {
     async getMenu(){
       const menu = await fetch(this.api + '/calendar/api/list').then(res => res.json()).catch(e => console.error(e))
+      console.log(menu)
       this.menu = menu
     },
     async getCustomers(){
@@ -80,16 +81,15 @@ export default {
      },
     async getLocations(){
        this.locations = await fetch( this.api + '/pedidos/api/locations').then( res => res.json() ).catch(e => console.error(e))
-       console.log(this.locations)
      }, 
     async getPedido(){
         const details = await fetch( this.api + `/pedidos/api/details/${this.pedidoId}` ).then( res => res.json()).catch()
-        this.pedidoDetails = details
+        this.pedidoDetails = details.data
         
-        this.selectedCustomer = details.customer.name
-        this.selectedLocation = details.location.name
-        this.comida1Quantity = details.food[0].pedidoItems.quantity
-        this.comida2Quantity = details.food[1].pedidoItems.quantity
+        this.selectedCustomer = details.data.customer.name
+        this.selectedLocation = details.data.location.name
+        this.comida1Quantity =  details.data.food[0].pedidoItems.quantity
+        this.comida2Quantity =  details.data.food[1].pedidoItems.quantity
 
      },
     async postPedido(){
@@ -108,7 +108,6 @@ export default {
       .then(res => res.json())
       .catch(e => console.error(e))
       this.res = res
-      console.log(this.res)
 
       this.selectedCustomer = ""
       this.selectedLocation = ""
