@@ -1,7 +1,10 @@
 <template>
-    <div class="" >
+    <div>
         <h1 class="text-4xl font-bold">Detalles</h1>
-        <div  v-if="pedidoDetails" > 
+        <div v-if="loading" >
+            Loading
+        </div>
+        <div v-else > 
             <h2 class="text-xl font-semibold">
                 {{ pedidoDetails.customer.name }}
             </h2>
@@ -44,7 +47,6 @@
             <div v-if="res" >
                 {{ res }}
             </div>
-
         </div>
     </div>
 </template>
@@ -58,22 +60,25 @@ export default {
             api: process.env.VUE_APP_API,
             pedidoId: this.$route.params.id,
             pedidoDetails: '',
+            loading: true
         }
     },
     methods: {
         async getPedido(){
-            const details = await fetch( this.api + `/pedidos/api/details/${this.pedidoId}` ).then( res => res.json()).catch()
-            this.pedidoDetails = details
-            console.log(details)
+            const details = await fetch( this.api + `/pedidos/api/details/${this.pedidoId}` )
+                .then( res => res.json())
+                .catch(error => console.error(error))
+
+            this.pedidoDetails = details.data
+            this.loading = false
         },
         async deletePedido(){
             const res = await fetch( this.api + '/pedidos/api/delete/' + this.pedidoId, {
                 headers: {'Content-Type': 'application/json'},
                 method: 'DELETE',
             }).then(res => res.json()).catch(e => console.error(e))
-            
-            this.res = res
 
+            this.res = res
             this.$router.push('/pedidos')
         }
     },
