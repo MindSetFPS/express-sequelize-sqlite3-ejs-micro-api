@@ -123,6 +123,7 @@ import InputField from './InputField.vue';
 
 
 import * as dayjs from 'dayjs'
+import { io } from 'socket.io-client'
 
 export default {
     name: 'QuerySettings',
@@ -285,6 +286,12 @@ export default {
             // console.log(this.pedidos)
             this.sendItemToLastPosition(id)
             this.setRemainingCount( delivered, food0Count, food1Count)
+        },
+        async getSocket(){
+            const socket = io(this.api)
+            socket.on('connect', ()=> {
+                console.log('connected to server via socket.io!')
+            })
         }
     },
     mounted(){
@@ -293,6 +300,7 @@ export default {
         this.getCalendar()
         this.getPedidos()
         this.getLocations()
+        this.getSocket()
     }
 }
 </script>

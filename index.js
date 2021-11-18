@@ -20,7 +20,7 @@ const customers = require('./src/Customer/customers')
 const foodRoutes = require('./src/Food/food')
 const login = require('./src/auth/Login')
 const listPedidos = require('./src/Pedido/listPedidos')
-const listCalendar = require('./src/Calendar/listCalendar')
+const Calendar = require('./src/Calendar/Calendar')
 const register = require('./src/auth/Register')
 
 const { NODE_ENV, PORT, SECRETKEY, KEYONE, KEYTWO } = require('./config')
@@ -33,7 +33,12 @@ dayjs.extend(localizedFormat)
 //setup socket.io and express
 const app = express()
 const httpServer = createServer(app)
-const io = new Server(httpServer, {})
+const io = new Server(httpServer, {
+    cors: {
+        origin: "http://localhost:8080",
+        methods: ["GET", "POST"]
+    }
+})
 
 if(NODE_ENV === 'development') app.use(cors({origin: 'http://localhost:8080'}))
 
@@ -59,11 +64,17 @@ app.use('/accounts', accounts)
 app.use('/food', foodRoutes)
 app.use('/', createPedidos)
 app.use('/pedidos', listPedidos )
-app.use('/calendar', listCalendar)
+app.use('/calendar', Calendar)
 app.use('/customers', customers)
 app.use(isAutenticated)
 
-//app.listen doesnot work with 
+
+io.on("connection", (socket)=>{
+    console.log('client successfully connected!')
+})
+
+
+//app.listen doesnot work with socketio 
 httpServer.listen(PORT, () => {
     console.log('Running on port: ', PORT)
     console.log(`http://localhost:${PORT}`)
