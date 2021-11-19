@@ -292,6 +292,10 @@ export default {
             socket.on('connect', ()=> {
                 console.log('connected to server via socket.io!')
             })
+            socket.on("UpdatePedidos", ()=>{
+                console.log("Otro cliente creo un nuevo pedido, actualizando lista de pedidos en este cliente.")
+                this.getPedidos()
+            })
         }
     },
     mounted(){

@@ -71,8 +71,12 @@ app.use(isAutenticated)
 
 io.on("connection", (socket)=>{
     console.log('client successfully connected!')
-})
+    socket.on("NewPedido", (arg)=>{
+        console.log('\x1b[32m', 'Actualizando clientes.','\x1b[0m')
+        socket.broadcast.emit("UpdatePedidos")
+    })
 
+})
 
 //app.listen doesnot work with socketio 
 httpServer.listen(PORT, () => {

@@ -48,6 +48,8 @@ import ErrorAlert from './ErrorAlert.vue'
 import PageTitle from './PageTitle.vue'
 import InputField from './InputField.vue'
 
+import { io } from 'socket.io-client'
+ 
 export default {
   name: 'PedidoEditOrCreate',
   components: {
@@ -67,6 +69,7 @@ export default {
       comida1Quantity: 0,
       comida2Quantity: 0,
       api: process.env.VUE_APP_API,
+      socket: '',
     }
   },
   methods: {
@@ -133,15 +136,24 @@ export default {
     buttonHandler(){
       if(!this.pedidoId){
         this.postPedido()
+        this.socket.emit("NewPedido")
         return
       }
       this.updatePedido()
+      this.socket.emit("NewPedido")
+    },
+  },
+  created(){
+    this.socket = io(this.api)
 
-    }
+    this.socket.on("connect", ()=>{
+      console.log("connected")
+    })
+
   },
   mounted(){
     if(this.pedidoId){
-        this.getPedido()
+      this.getPedido()
     }
     this.getMenu()
     this.getCustomers()
