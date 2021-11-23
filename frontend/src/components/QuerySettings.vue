@@ -13,7 +13,13 @@
                     </div>
                 </div>
 
-                <input-field placeholder="Buscar un cliente" name="customer" v-model="selectedCustomer" autocomplete="off" />
+                <input-field 
+                    placeholder="Buscar un cliente" 
+                    name="customer" 
+                    v-model="selectedCustomer" 
+                    autocomplete="off" 
+                    :clearButton="true" 
+                />
                         
                 <button @click="getPedidos" class="rounded-md bg-red-200 p-2 w-full mt-2 text-red-600" >Buscar pedidos y arreglar este boton </button>
 
