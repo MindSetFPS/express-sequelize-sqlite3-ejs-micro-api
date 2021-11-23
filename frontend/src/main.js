@@ -14,7 +14,8 @@ import {
     mdiAccount,
     mdiLink,
     mdiLoading,
-    mdiCheckboxBlankCircleOutline
+    mdiCheckboxBlankCircleOutline,
+    mdiCloseCircle
 }  from '@mdi/js'
 
 import './styles/app.css'
@@ -33,9 +34,8 @@ createApp(App)
             mdiAccount,
             mdiLink,
             mdiLoading,
-            mdiCheckboxBlankCircleOutline
-            
-
+            mdiCheckboxBlankCircleOutline,
+            mdiCloseCircle
         }
     })
     .mount('#app')
