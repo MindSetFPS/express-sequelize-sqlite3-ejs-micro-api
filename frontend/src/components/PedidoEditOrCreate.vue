@@ -79,7 +79,7 @@ export default {
       this.menu = menu
     },
     async getCustomers(){
-       this.customers = await fetch( this.api + '/customers').then( res => res.json() ).catch(e => console.error(e))
+       this.customers = await fetch( this.api + '/customer/all').then( res => res.json() ).catch(e => console.error(e))
        console.log(this.customers)
      },
     async getLocations(){

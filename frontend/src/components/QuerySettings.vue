@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="mx-auto md:px-24 " v-if="calendar.ok" >
-            <page-title text="Pedidos" /> 
+        <page-title text="Pedidos" /> 
+        <div class="mx-auto md:px-24 " v-if="calendar.ok && pedidos.length > 0 " >
                 <div class="flex">
                     <div class="w-1/2" >
                         <label for="since">Since</label>
@@ -114,6 +114,9 @@
                 </div>
             </div>
         </div>
+        <div v-if="calendar.ok && pedidos && !pedidos.length" >
+            <error-alert link="/" message="Crea un pedido" >  </error-alert>
+        </div>
         <div v-if="!calendar.ok" >
             <error-alert link="/calendar/create-menu" message="Primero Crea un Menu" />
         </div>
@@ -166,21 +169,22 @@ export default {
             this.comida0TotalQuantity = 0
             this.comida0DeliveredQuantity = 0
             this.comida1TotalQuantity = 0
-            this.comida1DeliveredQuantity = 0
-            console.log(this.selectedCustomer, this.selectedLocation, this.since, this.until, this.all)
-            // const pedidos = await fetch(
-            //     this.api + '/pedidos/api/?' + new URLSearchParams(
-            //         {
-            //             sincePicker: this.since, 
-            //             untilPicker: this.until, 
-            //             paid: this.paid, 
-            //             delivered: this.delivered, 
-            //             all: this.all, 
-            //             location: this.selectedLocation, 
-            //             customer: this.selectedCustomer.trim()
-            //         }
-            //     )
-            // ).then(res => res.json()).catch(e => console.error(e))
+            this.comida1DeliveredQuantity = 0            
+            /////////////////////Fetch with parameters////////////////////
+            // const pedidos = await fetch(                             //
+            //     this.api + '/pedidos/api/?' + new URLSearchParams(   //
+            //         {                                                //
+            //             sincePicker: this.since,                     //
+            //             untilPicker: this.until,                     //
+            //             paid: this.paid,                             //
+            //             delivered: this.delivered,                   //
+            //             all: this.all,                               //
+            //             location: this.selectedLocation,             //
+            //             customer: this.selectedCustomer.trim()       // 
+            //         }                                                //
+            //     )                                                    //
+            // ).then(res => res.json()).catch(e => console.error(e))   //
+            //////////////////////////////////////////////////////////////
 
             const pedidos = await fetch(this.api + '/pedidos/api/today')
                 .then((res) => res.json())
@@ -188,7 +192,7 @@ export default {
                     console.error(e)
                     return {ok: false}
                 })
-            console.log(pedidos)
+            console.log('pedidos: ', pedidos)
 
             if(pedidos.ok){
                 console.log('request ok')
@@ -228,7 +232,7 @@ export default {
             console.log('calendar: ' , this.calendar)
         },
         async getCustomers(){
-            const customers = await fetch(this.api + '/customers').then(res => res.json()).catch(e => console.error(e))
+            const customers = await fetch(this.api + '/customer/all').then(res => res.json()).catch(e => console.error(e))
             this.customers = customers
         },
         async getLocations(){
