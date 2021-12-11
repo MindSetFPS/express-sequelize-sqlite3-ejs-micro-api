@@ -16,12 +16,15 @@ export default {
     },
     data(){
         return{
-            customerId: this.$route.params.id
+            customerId: this.$route.params.id,
+            api: process.env.VUE_APP_API,
         }
     },
     methods: {
-        getCustomer(){
+        async getCustomer(){
+            const res = await fetch(this.api + '/customer/' + this.customerId).then(res => res.json())
             console.log(this.customerId)
+            console.log(res)
         }
     },
     mounted(){

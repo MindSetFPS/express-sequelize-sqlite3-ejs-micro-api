@@ -8,8 +8,10 @@ router.get('/all', async (req, res) => {
     res.json(customers)
 })
 
-router.post('/', async (req, res) => {
-
+router.get('/:id', async (req, res) => {
+    console.log('New request for /customer/:id')
+    console.log(req.params)
+    res.json({ok: true})
 })
 
 module.exports = router
