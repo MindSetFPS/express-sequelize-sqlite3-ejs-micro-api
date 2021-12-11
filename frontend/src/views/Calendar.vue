@@ -28,6 +28,7 @@
 <script>
 import PageTitle from '../components/PageTitle.vue'
 import InputField from '../components/InputField.vue'
+import dayjs from 'dayjs'
 
 export default {
     name: 'Calendar',
@@ -70,12 +71,17 @@ export default {
             this.res = res
             console.log(this.res)
             if(this.res.ok) this.$router.push('/')
+        },
+        getDate(){
+            const d = dayjs().format("YYYY-MM-DD")
+            this.date = d
+            console.log(this.date)
         }
 
     },
     mounted(){
         this.getFood()
-
+        this.getDate()
     }
 
 }
