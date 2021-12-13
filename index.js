@@ -15,12 +15,12 @@ require('dayjs/locale/es')
 const isAutenticated = require('./src/auth/passport')
 
 const accounts = require('./src/Accounts/Accounts')
+const Calendar = require('./src/Calendar/Calendar')
 const createPedidos = require('./src/Pedido/createPedido')
-const customers = require('./src/Customer/customers')
+const customers = require('./src/Customer/customer')
 const foodRoutes = require('./src/Food/food')
 const login = require('./src/auth/Login')
 const listPedidos = require('./src/Pedido/listPedidos')
-const Calendar = require('./src/Calendar/Calendar')
 const register = require('./src/auth/Register')
 
 const { NODE_ENV, PORT, SECRETKEY, KEYONE, KEYTWO } = require('./config')
@@ -65,7 +65,7 @@ app.use('/food', foodRoutes)
 app.use('/', createPedidos)
 app.use('/pedidos', listPedidos )
 app.use('/calendar', Calendar)
-app.use('/customers', customers)
+app.use('/customer', customers)
 app.use(isAutenticated)
 
 
