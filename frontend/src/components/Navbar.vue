@@ -21,7 +21,7 @@ export default {
                 {name: 'Pedidos',        icon: 'clipboard-text-outline', link: '/pedidos'},
                 {name: 'Crear Menu',     icon: 'calendar-edit', link: '/calendar/create-menu'},
                 {name: 'Calendario',     icon: 'calendar', link: '/calendar/list'},
-                {name: 'Nuevo Platillo', icon: 'text-box-plus-outline', link: '/food'},
+                {name: 'Crear Platillo', icon: 'text-box-plus-outline', link: '/food/create'},
                 {name: 'Platillos',      icon: 'text-box-outline', link: '/food/list'},
                 {name: 'Cuentas',        icon: 'account', link: '/accounts'},
             ]

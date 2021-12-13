@@ -8,7 +8,7 @@
                 <span class="font-normal text-lg" >Estadisticas de los ultimos 30 dias</span>
             </h1>
 
-            <div v-if="customer" class="flex justify-between "  >
+            <div v-if="customer" class="flex justify-between px-3 "  >
                 <div>
                     <h1 class="text-lg font-medium " >Comida Favorita</h1>
                     <p class="text-md" >{{ 'Papitas' }}</p>
@@ -29,7 +29,6 @@
                     <h1 class="text-lg font-medium " >Recaudado </h1>
                     <p class="text-md" > $ {{ 12 * 45 }}</p>
                 </div>
-
             </div>
         </div>
 
