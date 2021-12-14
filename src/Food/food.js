@@ -4,15 +4,6 @@ const router = express.Router()
 const Food  = require('./FoodModel')
 
 
-//-- ROUTES --//
-router.get('/', (req, res) => {
-    console.log('Sending...')
-    Food.findAll()
-    .then(food => {
-        res.render('create-food.njk', {menu: food})
-    })
-})
-
 router.get('/list', async (req, res)=>{
     await Food.findAll({order:[['name', 'ASC']]}).then(food => {
         if(Array.isArray(food) && food.length){
@@ -30,6 +21,11 @@ router.get('/api/', (req, res) => {
     Food.findAll().then(food => 
         res.json(food)
     )
+})
+
+router.get('/api/food/:id', (req, res) => {
+    console.log('New request at /api/food/:id')
+    res.json({ok: true, data: 'Successfull'})
 })
 
 router.post('/create',async (req, res) => {
@@ -50,17 +46,6 @@ router.post('/api/create',async (req, res) => {
     await newFood.save().catch( (e) => console.log(e))
     console.log('Created')
     res.json({ok: true, message: 'Comida Creada.'})
-})
-
-router.get('/edit/:id', async (req, res) => {
-    await Food.findByPk(req.params.id, {
-        attributes: ['id', 'name', 'description', 'link'],
-        limit: 1,
-    }).then( query => {
-
-        console.log('Sending...')
-        res.render('edit', {food: query })
-    } )  
 })
 
 router.post('/edit/:id', async (req, res) => {
