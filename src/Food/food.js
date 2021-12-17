@@ -1,31 +1,34 @@
 const express = require('express')
 const router = express.Router()
+const { Op } = require('sequelize')
 
 const Food  = require('./FoodModel')
-
-
-router.get('/list', async (req, res)=>{
-    await Food.findAll({order:[['name', 'ASC']]}).then(food => {
-        if(Array.isArray(food) && food.length){
-            return res.render('food-list.njk', {menu: food})
-            
-        } else {
-            res.render('food-list', {menu: food, error: 'Agrega el primer platillo al menu.'})
-        }
-    }).catch( e => console.error(e))
-})
+const { PedidoItems }= require('../Pedido/PedidoModel')
 
 router.get('/api/', (req, res) => {
-    console.log('Recieving request for "/food/api"')
-    console.log('Sending Api...')
+    console.log('New request for "/food/api"')
     Food.findAll().then(food => 
         res.json(food)
     )
 })
 
-router.get('/api/food/:id', (req, res) => {
+router.get('/api/:id', async (req, res) => {
     console.log('New request at /api/food/:id')
-    res.json({ok: true, data: 'Successfull'})
+    const f = await Food.findOne({
+        where: {
+            id: req.params.id,
+        }
+    })
+
+    const pi = await PedidoItems.findAll({
+        attributes: ['quantity'],
+        where: {
+            foodId: req.params.id,
+            quantity:  {[Op.gt]: 0}
+        }
+    })
+
+    res.json({ok: true, data: f, stats: pi})
 })
 
 router.post('/create',async (req, res) => {
