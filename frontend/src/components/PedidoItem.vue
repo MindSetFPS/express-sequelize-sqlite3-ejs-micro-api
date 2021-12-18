@@ -1,133 +1,82 @@
 <template>
-    <div class="" >
-        <div v-if="pedido" >
-            <div class="bg-white rounded-md mt-2 px-2 py-1 text-xs" :class="[pedido.paid ? 'bg-green-200' : '']"  
-                v-if="pedido.customer.name && pedido.customer.name.toLowerCase().includes(customerFilter.toLowerCase()) && locationFilter ==  '' || locationFilter == pedido.location.name " 
+    <div>
+        <div>
+            <div class="bg-white rounded-md mt-2 px-2 py-1 text-xs"  
+                v-if="customer && customer.toLowerCase().includes(customerFilter.toLowerCase()) && locationFilter ==  '' || locationFilter == location " 
             >
-
             <div class="" >
-                <h2 class="text-base font-medium inline-block"> {{ pedido.customer.name }} </h2> <span> {{ pedido.location.name }} </span>
+                <h2 class="text-xl" >{{ customer }}</h2>
+                <h3 class="text-md" >{{ createdAt }} </h3>
+                <h3 class="text-xs" > {{ location }} </h3>
             </div>
-                <div style="flex" >
-                    <p class="" >{{ pedido.createdAt }} </p>     
-                </div>
                 <div style="flex  justify-items: center; align-items: center; " class="flex justify-between" >
                     <div> 
-                        <div class="flex" >    
-                            <div class="" >
-                                <p>Entregado</p>
-                                <label class="switch">
-                                    <input 
-                                        type="checkbox" 
-                                        name="delivered" 
-                                        v-model="pedido.delivered" 
-                                        @change="emitChange(pedido.id, pedido.delivered)" 
-                                    >
-                                    <span class="slider round"></span>
-                                </label>
+                        <div >    
+                            <div
+                                @click="handleClick('changeDelivered')"
+                                class="bg-gray-100 hover:bg-gray-200 p-1 "
+                            >
+                                <p :class="delivered ? 'text-green-600' : 'text-red-500'" >
+                                    {{ delivered ? 'Entregado' : 'No entregado' }}
+                                </p>
                             </div>
-                            <div>
-                                <p class="" >Pagado</p>
-                                <label class="switch">
-                                    <input 
-                                    type="checkbox" 
-                                    name="paid" 
-                                    v-model="pedido.paid"  
-                                    >
-                                    <span class="slider round"></span>
-                                </label>
+                            <div
+                                @click="handleClick('changePaid')"
+                                class="bg-gray-100 hover:bg-gray-200 p-1 "
+                            >
+                                <p :class="paid ? 'text-green-700' : 'text-red-500'" >
+                                    {{ paid ? 'Pagado  ' : 'No pagado' }}
+                                </p>
                             </div>
                         </div>
-                        <button 
-                            @click="updatePedido(pedido.id)" 
-                            class=" p-1 bg-gray-100 mt-1 text-xs rounded-md" 
-                        > 
-                            Actualizar 
-                        </button>
                         <button class="p-1 bg-gray-50 mt-1" >
-                            <router-link :to="'/details/' + pedido.id" > 
+                            <router-link :to="'/details/' + pedidoId" > 
                                 Details
                             </router-link>
                         </button>
                     </div>
-                    <h3>{{ pedido.food[0].pedidoItems.quantity }}</h3>
-                    <h3>{{ pedido.food[1].pedidoItems.quantity }}</h3>
-                    <h3> $ {{ (pedido.food[0].pedidoItems.quantity + pedido.food[1].pedidoItems.quantity) * 45 }}</h3>
+                    <div>
+                        <h3>{{ comida0 }}</h3>
+                    </div>
+                    <div>
+                        <h3>{{ comida1 }}</h3>
+                    </div>
+                    <h3> $ {{ ( comida0 + comida1 ) * 45 }}</h3>
                 </div>
             </div>
-        </div>
-        <div v-else >
-            <loading />
         </div>
     </div>
 </template>
 
 <script>
-import Loading from './Loading.vue'
 export default {
-  components: { Loading },
     name: 'PedidoItem',
-    props: ["pedidoId", "customerFilter", "locationFilter"],
+    props: ["pedidoId", "customerFilter", "locationFilter", "location", "customer", "paid", "delivered", "createdAt", "comida0", "comida1"],
     data(){
         return{
-            pedido: '',
-            all: '',
-            food0Count: 0,
-            food1Count: 0,
-            delivered: 0,
             api: process.env.VUE_APP_API
         }
     },
     methods: {
-        async getPedido(){
-            console.log(this.pedidoId)
-            const pedido = await fetch(this.api + `/pedidos/api/details/${this.pedidoId}`)
-                .then(res => res.json())
-                .catch((e) => {
-                    console.error(e)
-                    return {ok: false}
-                })
-
-                if(pedido.ok){
-                    console.log('request good')
-                    localStorage.setItem(this.pedidoId, JSON.stringify(pedido.data))
-                    this.pedido = pedido.data
-                }
-                if(!pedido.ok){
-                    console.log('request bad')
-                    this.pedido = JSON.parse(localStorage.getItem(this.pedidoId))
-                }
-
-                this.food0Count = this.pedido.food[0].pedidoItems.quantity
-                this.food1Count = this.pedido.food[1].pedidoItems.quantity
-                this.delivered = this.pedido.delivered
-                
-            this.$emit('pedido-loaded', this.food0Count, this.food1Count, this.pedido.delivered)
-        },
-        updatePedido(id){
+        //Note: Local storage management was done here, it will have to me rewriten.
+        updatePedido(){
             const url = '/pedidos/api/update/'
-            console.log(this.api + url)
-            console.log(this.api + url)
-        
-            fetch( this.api + url + id , {
+            fetch( this.api + url + this.pedidoId , {
                 headers: {'Content-Type': 'application/json'},
                 method: 'POST',
-                body: JSON.stringify({delivered: this.pedido.delivered, paid: this.pedido.paid})
+                body: JSON.stringify({delivered: this.delivered, paid: this.paid})
             }).then(res => {
                 console.log(res)
             }).catch(
                 err => console.error(err)
             )
         },
-        showSelectedCustomer(){
-            console.log(this.customerFilter)
-        },
-        emitChange(id, delivered){
-            this.$emit('delivery-state-changed', id, delivered, this.food0Count, this.food1Count)
+        handleClick(change){
+            this.$emit(change, this.pedidoId)
+            this.updatePedido()
         }
     },
     mounted(){
-        this.getPedido()
     }
 }
 </script>
