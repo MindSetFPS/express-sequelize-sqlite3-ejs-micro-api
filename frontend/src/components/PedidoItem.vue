@@ -57,26 +57,33 @@ export default {
             api: process.env.VUE_APP_API
         }
     },
-    methods: {
-        //Note: Local storage management was done here, it will have to me rewriten.
-        updatePedido(){
-            const url = '/pedidos/api/update/'
-            fetch( this.api + url + this.pedidoId , {
-                headers: {'Content-Type': 'application/json'},
-                method: 'POST',
-                body: JSON.stringify({delivered: this.delivered, paid: this.paid})
-            }).then(res => {
-                console.log(res)
-            }).catch(
-                err => console.error(err)
-            )
+    watch: {
+        paid(val, oldVal){
+            console.log(val, oldVal)
+            this.updatePedido()
         },
-        handleClick(change){
-            this.$emit(change, this.pedidoId)
+        delivered(val, oldVal){
+            console.log(val, oldVal)
             this.updatePedido()
         }
     },
-    mounted(){
-    }
+    methods: {
+        //Note: Local storage management was done here, it will have to me rewriten.
+        async updatePedido(){
+            const url = '/pedidos/api/update/'
+            const update = await fetch( this.api + url + this.pedidoId , {
+                headers: {'Content-Type': 'application/json'},
+                method: 'POST',
+                body: JSON.stringify({delivered: this.delivered, paid: this.paid})
+            }).then(res => res.json())
+            .catch(
+                err => console.error(err)
+            )
+            console.log(update)
+        },
+        handleClick(change){
+            this.$emit(change, this.pedidoId)
+        }
+    },
 }
 </script>
