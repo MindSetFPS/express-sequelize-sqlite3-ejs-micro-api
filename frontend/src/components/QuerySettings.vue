@@ -1,7 +1,7 @@
 <template>
     <div>
         <page-title text="Pedidos" /> 
-        <div class="mx-auto md:px-24 " v-if="calendar.ok && pedidos.length > 0 " >
+        <div class="mx-auto md:px-24 " v-if="calendar.ok && pedidos && pedidos.length > 0 " >
                 <div class="flex">
                     <div class="w-1/2" >
                         <label for="since">Since</label>
@@ -155,23 +155,14 @@ export default {
     },
     data(){
         return{
-            calendar: '',
-            customers: '',  
-            locations: '',
-            since: '',
-            until: '',
-            paid: '',
-            delivered: '',
-            all: '',
-            selectedLocation: '',
-            selectedCustomer: '',
-            pedidos: undefined,
-            comida0TotalQuantity: 0,
-            comida0DeliveredQuantity: 0,
-            comida1TotalQuantity: 0,
-            comida1DeliveredQuantity: 0,
-            totalMoney: 0,
-            api: process.env.VUE_APP_API
+            all: '', api: process.env.VUE_APP_API, calendar: '', customers: '', locations: '', since: '', until: '', paid: '',delivered: '',
+            selectedLocation: '', selectedCustomer: '', pedidos: undefined, comida0TotalQuantity: 0, comida0DeliveredQuantity: 0,
+            comida1TotalQuantity: 0, comida1DeliveredQuantity: 0, totalMoney: 0,
+        }
+    },
+    watch: {
+        selectedLocation(){
+            this.loopPedidos()
         }
     },
     methods: {
@@ -253,18 +244,22 @@ export default {
             this.locations = locations
         },
         loopPedidos(){
+            console.log('contando')
             let totalComida0 = 0;
             let remainingComida0 = 0;
             let totalComida1 = 0;
             let remainingComida1 = 0;
             
+            console.log(this.selectedLocation)
             for( let pedido of this.pedidos){
-                if(!pedido.delivered){
-                    remainingComida0 = remainingComida0 + pedido.food[0].pedidoItems.quantity
-                    remainingComida1 = remainingComida1 + pedido.food[1].pedidoItems.quantity
-                } 
-                totalComida0 = totalComida0 + pedido.food[0].pedidoItems.quantity
-                totalComida1 = totalComida1 + pedido.food[1].pedidoItems.quantity
+                if(this.selectedLocation === pedido.location.name || this.selectedLocation == ''){
+                    if(!pedido.delivered){
+                        remainingComida0 = remainingComida0 + pedido.food[0].pedidoItems.quantity
+                        remainingComida1 = remainingComida1 + pedido.food[1].pedidoItems.quantity
+                    } 
+                    totalComida0 = totalComida0 + pedido.food[0].pedidoItems.quantity
+                    totalComida1 = totalComida1 + pedido.food[1].pedidoItems.quantity
+                }
             }
             
             this.comida0TotalQuantity = totalComida0
@@ -274,6 +269,7 @@ export default {
             this.comida1DeliveredQuantity = remainingComida1
 
             this.totalMoney = ((this.comida0TotalQuantity - this.comida0DeliveredQuantity ) + (this.comida1TotalQuantity - this.comida1DeliveredQuantity)) * 45
+            console.log('contado terminado')
 
         },
         handleDeliveredChange(pedidoId){

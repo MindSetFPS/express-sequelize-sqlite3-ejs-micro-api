@@ -12,28 +12,34 @@
                 <div style="flex  justify-items: center; align-items: center; " class="flex justify-between" >
                     <div> 
                         <div >    
-                            <div
+                            <button
                                 @click="handleClick('changeDelivered')"
-                                class="bg-gray-100 hover:bg-gray-200 p-1 "
+                                class="bg-gray-100 hover:bg-gray-200 p-1 rounded-sm mb-1 w-full "
                             >
                                 <p :class="delivered ? 'text-green-600' : 'text-red-500'" >
                                     {{ delivered ? 'Entregado' : 'No entregado' }}
                                 </p>
-                            </div>
-                            <div
+                            </button>
+                            <br />
+                            <button
                                 @click="handleClick('changePaid')"
-                                class="bg-gray-100 hover:bg-gray-200 p-1 "
+                                class="bg-gray-100 hover:bg-gray-200 p-1 rounded-sm w-full "
                             >
                                 <p :class="paid ? 'text-green-700' : 'text-red-500'" >
                                     {{ paid ? 'Pagado  ' : 'No pagado' }}
                                 </p>
-                            </div>
+                            </button>
                         </div>
-                        <button class="p-1 bg-gray-50 mt-1" >
-                            <router-link :to="'/details/' + pedidoId" > 
-                                Details
-                            </router-link>
-                        </button>
+                        <div class="flex mt-1 " >
+                            <button class="bg-gray-100 p-1 hover:bg-gray-200 w-full mr-1" @click="updatePedido" >
+                                Actualizar
+                            </button>
+                            <button class="p-1 bg-gray-100 hover:bg-gray-200 w-full " >
+                                <router-link :to="'/details/' + pedidoId" > 
+                                    Detalles
+                                </router-link>
+                            </button>
+                        </div>
                     </div>
                     <div>
                         <h3>{{ comida0 }}</h3>
