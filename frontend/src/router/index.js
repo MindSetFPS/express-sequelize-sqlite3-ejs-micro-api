@@ -4,6 +4,7 @@ import Accounts from '../views/Accounts.vue'
 import Calendar from '../views/Calendar.vue'
 import CalendarList from '../views/CalendarList.vue'
 import Customer from '../views/Customer.vue'
+import Customers from '../views/Customers.vue'
 import Details from '../views/Details.vue'
 import Edit from '../views/Edit.vue'
 import Food from '../views/Food.vue'
@@ -27,6 +28,10 @@ const routes = [
     path: '/food/create',
     name: 'Food',
     component: FoodCreate
+  },{
+    path: '/customers',
+    name: 'Customers',
+    component: Customers
   },{
     path: '/customer/:id',
     name: 'Customer',

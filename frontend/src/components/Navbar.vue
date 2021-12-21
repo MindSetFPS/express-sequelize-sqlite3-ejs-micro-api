@@ -23,7 +23,8 @@ export default {
                 {name: 'Calendario',     icon: 'calendar', link: '/calendar/list'},
                 {name: 'Crear Platillo', icon: 'text-box-plus-outline', link: '/food/create'},
                 {name: 'Platillos',      icon: 'text-box-outline', link: '/food/list'},
-                {name: 'Cuentas',        icon: 'account', link: '/accounts'},
+                {name: 'Customers',      icon: 'account', link: '/customers'},
+                
             ]
         }
     }

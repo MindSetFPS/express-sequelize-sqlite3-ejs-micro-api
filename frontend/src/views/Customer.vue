@@ -15,19 +15,23 @@
                 </div>
                 <div>
                     <h1 class="text-lg font-medium " >Pedidos </h1>
-                    <p class="text-md" >{{ '14' }}</p>
+                    <p class="text-md" > {{ pedidosTotal }} </p>
                 </div>
                 <div>
                     <h1 class="text-lg font-medium " >Pagados </h1>
-                    <p class="text-md" >{{ '12' }}</p>
+                    <p class="text-md" >{{ paid }}</p>
                 </div>
                 <div>
                     <h1 class="text-lg font-medium " >Por pagar </h1>
-                    <p class="text-md" >{{ '2' }}</p>
+                    <p class="text-md" >{{ notPaid }}</p>
                 </div>
                 <div>
                     <h1 class="text-lg font-medium " >Recaudado </h1>
-                    <p class="text-md" > $ {{ 12 * 45 }}</p>
+                    <p class="text-md text-green-500 font-bold " > $ {{ balance }}</p>
+                </div>
+                <div>
+                    <h1 class="text-lg font-medium " >Deuda </h1>
+                    <p class="text-md text-red-500 font-bold " > $ {{ debt }}</p>
                 </div>
             </div>
         </div>
@@ -92,9 +96,14 @@ export default {
     },
     data(){
         return{
+            pedidosTotal: 0,
+            paid: 0,
+            notPaid: 0,
+            balance: 0,
             customerId: this.$route.params.id,
             customer: false,
             pedidos: false,
+            debt: 0,
             api: process.env.VUE_APP_API,
         }
     },
@@ -104,6 +113,19 @@ export default {
             console.log(res)
             this.customer = res.customer
             this.pedidos = res.pedidos
+            this.loopPedidos()
+
+        },
+        loopPedidos(){
+            for(let pedido of this.pedidos){
+                if(pedido.paid){
+                    this.paid = this.paid + pedido.food[0].pedidoItems.quantity + pedido.food[1].pedidoItems.quantity
+                }
+                this.pedidosTotal = this.pedidosTotal + pedido.food[0].pedidoItems.quantity + pedido.food[1].pedidoItems.quantity
+            }
+            this.notPaid = this.pedidosTotal - this.paid
+            this.balance = this.paid * 45
+            this.debt = this.notPaid * 45
         },
         getDateAndTime(d){
             return dayjs(d).format('dddd DD [de] MMMM [del] YYYY')
