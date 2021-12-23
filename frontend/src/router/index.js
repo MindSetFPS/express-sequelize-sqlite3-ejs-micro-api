@@ -37,7 +37,7 @@ const routes = [
     name: 'Customer',
     component: Customer
   },{
-    path: '/food/list',
+    path: '/food',
     name: 'FoodList',
     component: FoodList
   },{

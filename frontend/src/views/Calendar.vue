@@ -51,7 +51,7 @@ export default {
     methods: {
         async getFood(){
             const foodList = await fetch( this.api + '/food/api' ).then(res => res.json()).catch(e => console.error(e))
-            this.foodList = foodList
+            this.foodList = foodList.data
             console.log(foodList)
             console.log(this.api)
         },

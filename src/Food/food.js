@@ -5,11 +5,11 @@ const { Op } = require('sequelize')
 const Food  = require('./FoodModel')
 const { PedidoItems }= require('../Pedido/PedidoModel')
 
-router.get('/api/', (req, res) => {
+router.get('/api/', async (req, res) => {
     console.log('New request for "/food/api"')
-    Food.findAll().then(food => 
-        res.json(food)
-    )
+    const f = await Food.findAll()
+    if(f.length > 0) res.json({ok: true, data: f})
+    if(f.length < 1) res.json({ok: false, error: 'Crea al menos 2 platillos.', link: '/food/create'})
 })
 
 router.get('/api/:id', async (req, res) => {
@@ -29,15 +29,6 @@ router.get('/api/:id', async (req, res) => {
     })
 
     res.json({ok: true, data: f, stats: pi})
-})
-
-router.post('/create',async (req, res) => {
-    if(req.body.name){
-        newFood = await Food.build({name: req.body.name, description: req.body.description, link: req.body.link})
-        await newFood.save().catch( (e) => console.log(e))
-    }
-    console.log('Created')
-    res.redirect('/')
 })
 
 router.post('/api/create',async (req, res) => {
@@ -66,14 +57,15 @@ router.post('/edit/:id', async (req, res) => {
     res.redirect('/')
 })
 
-router.get('/delete/:id', (req, res) => {
+router.delete('/delete/:id', (req, res) => {
+    console.log('New request at /food/delete/:id')
     Food.destroy({
         where: {
             id: req.params.id
         }
     })
     console.log('Deleted...')
-    res.redirect('/')
+    res.json({ok: true, data: 'successfully deleted'})
 })
 
 module.exports = router;
