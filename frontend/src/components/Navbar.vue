@@ -16,8 +16,7 @@ export default {
     data(){
         return{
             pages: [
-                {name: 'Inicio',         icon: 'home', link: '/'},
-                {name: 'Pedidos',        icon: 'clipboard-text-outline', link: '/pedidos'},
+                {name: 'Pedidos',         icon: 'clipboard-text-outline', link: '/'},
                 {name: 'Calendario',     icon: 'calendar', link: '/calendar/list'},
                 {name: 'Platillos',      icon: 'text-box-outline', link: '/food'},
                 {name: 'Customers',      icon: 'account', link: '/customers'},

@@ -1,9 +1,14 @@
 <template>
-    <div>
+    <div  >
         <div class="flex items-end" >
             <page-title text="Pedidos" /> 
             <clock />
         </div>
+
+        <Dialog text="Crear nuevo pedido" >
+            <pedido-edit-or-create  />
+        </Dialog>
+
         <div class="mx-auto md:px-24 " v-if="calendar.ok && pedidos && pedidos.length > 0 " >
                 <div class="flex">
                     <div class="w-1/2" >
@@ -140,10 +145,12 @@
 <script>
 import Clock from './Clock.vue'
 import ErrorAlert from './ErrorAlert.vue'
+import Dialog from './Dialog.vue'
 import InputField from './InputField.vue';
 import Loading from "./Loading.vue"
 import PageTitle from './PageTitle.vue'
 import PedidoItem from './PedidoItem.vue'
+import PedidoEditOrCreate from './PedidoEditOrCreate.vue'
 
 import * as dayjs from 'dayjs'
 import { io } from 'socket.io-client'
@@ -152,11 +159,13 @@ export default {
     name: 'QuerySettings',
     components: {
         Clock,
+        Dialog,
         ErrorAlert,
         InputField,
         Loading,
         PedidoItem,
         PageTitle,
+        PedidoEditOrCreate
     },
     data(){
         return{

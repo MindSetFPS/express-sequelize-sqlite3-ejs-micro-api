@@ -8,7 +8,6 @@ import Details from '../views/Details.vue'
 import Edit from '../views/Edit.vue'
 import Food from '../views/Food.vue'
 import FoodList from '../views/FoodList.vue'
-import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Pedidos from '../views/Pedidos.vue'
 import Register from '../views/Register.vue'
@@ -17,10 +16,6 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
-  },{
-    path: '/pedidos',
-    name: 'Pedidos',
     component: Pedidos
   },{
     path: '/customers',

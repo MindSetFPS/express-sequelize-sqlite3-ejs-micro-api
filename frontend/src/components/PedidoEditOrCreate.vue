@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="bg-white p-2 rounded-lg shadow-xl">
     <page-title :text="pedidoId ? 'Editar Pedido' : 'Crear Pedido'" > 
     </page-title>
     <div v-if="menu.ok" >
