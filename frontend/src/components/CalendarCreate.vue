@@ -1,5 +1,5 @@
 <template>
-    <div class="container" >
+    <div class="container bg-white p-2 rounded-md shadow-xl " >
         <h1 class="text-3xl font-bold">  </h1>
         <page-title text="Crear Menu del Dia" /> 
 
@@ -31,7 +31,7 @@ import InputField from '../components/InputField.vue'
 import dayjs from 'dayjs'
 
 export default {
-    name: 'Calendar',
+    name: 'CalendarCreate',
     components: {
         PageTitle,
         InputField

@@ -2,6 +2,9 @@
     <div class=" w-full " >
         <page-title text="Calendario" />
             <div v-if="calendars && calendars.length > 0 " class="mt-3" >
+                <Dialog text="Crear nuevo calendario" >
+                    <calendar />
+                </Dialog>
 
                 <div class=" bg-white w-full text-center rounded-md p-3 "   v-for="calendar in calendars" :key="calendar.id" >
                     <h1 class="font-medium text-xl" >{{ calendar.date }} </h1>
@@ -35,11 +38,16 @@
 <script>
 import ErrorAlert from '@/components/ErrorAlert.vue'
 import PageTitle from '../components/PageTitle.vue'
+import Dialog from '../components/Dialog.vue'
+import Calendar from '../components/CalendarCreate.vue'
+
 export default {
     name: 'CalendarList',
     components: {
         ErrorAlert,
         PageTitle,
+        Dialog,
+        Calendar
     },
     data() {
         return{

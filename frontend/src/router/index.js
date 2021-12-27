@@ -1,7 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 import Accounts from '../views/Accounts.vue'
-import Calendar from '../views/Calendar.vue'
 import CalendarList from '../views/CalendarList.vue'
 import Customer from '../views/Customer.vue'
 import Customers from '../views/Customers.vue'
@@ -39,10 +38,6 @@ const routes = [
     path: '/food/:id',
     name: 'Food Stats',
     component: Food
-  },{
-    path: '/calendar/create-menu',
-    name: 'Calendar',
-    component: Calendar
   },{
     path: '/calendar/list',
     name: 'Calendar List',

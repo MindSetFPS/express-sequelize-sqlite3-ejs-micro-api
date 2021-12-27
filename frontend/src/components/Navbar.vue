@@ -8,7 +8,6 @@
 <script>
 import NavbarItem from './NavbarItem.vue'
 
-
 export default {
     name: 'Navbar',
     components: {
@@ -19,7 +18,6 @@ export default {
             pages: [
                 {name: 'Inicio',         icon: 'home', link: '/'},
                 {name: 'Pedidos',        icon: 'clipboard-text-outline', link: '/pedidos'},
-                {name: 'Crear Menu',     icon: 'calendar-edit', link: '/calendar/create-menu'},
                 {name: 'Calendario',     icon: 'calendar', link: '/calendar/list'},
                 {name: 'Platillos',      icon: 'text-box-outline', link: '/food'},
                 {name: 'Customers',      icon: 'account', link: '/customers'},

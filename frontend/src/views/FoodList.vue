@@ -1,7 +1,7 @@
 <template>
     <div class=""> 
             <page-title text="Menu" />
-            <Dialog>
+            <Dialog text="Crear nuevo platillo" >
                 <food-create @new-food-added="getFood" />
             </Dialog>
             <div v-if="foodList.ok" >
