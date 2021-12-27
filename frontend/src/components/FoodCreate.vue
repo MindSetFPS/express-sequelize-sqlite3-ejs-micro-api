@@ -1,5 +1,5 @@
 <template>
-        <div class="bg-white p-2 shadow-xl rounded-md" >
+        <div class="bg-white p-2 shadow-xl rounded-md w-full" >
             <form >
                 <h2> Anadir un platillo al menu  </h2>
                 <input-field  :inputType="text" name="name"         required v-model="name" placeholder="Nombre (Obligatorio)"  @input="showChanges" />
