@@ -1,6 +1,9 @@
 <template>
     <div class=""> 
             <page-title text="Menu" />
+            <Dialog>
+                <food-create @new-food-added="getFood" />
+            </Dialog>
             <div v-if="foodList.ok" >
                 <div v-for="food in foodList.data" :key="food.id" class="bg-white p-2 my-2 flex justify-between rounded-md" >
                     <div>
@@ -22,14 +25,18 @@
 </template>
 
 <script>
-import PageTitle from '../components/PageTitle.vue'
+import Dialog from '../components/Dialog.vue'
 import ErrorAlert from '../components/ErrorAlert.vue'
+import FoodCreate from '../components/FoodCreate.vue'
+import PageTitle from '../components/PageTitle.vue'
 
 export default {
     name: 'FoodList',
     components: {
+        Dialog,
+        ErrorAlert,
+        FoodCreate,
         PageTitle,
-        ErrorAlert
     },
     data(){
         return{
@@ -43,8 +50,6 @@ export default {
         async getFood(){
             const req = await fetch(this.api + '/food/api').then(res => res.json()).catch(e => console.error(e))
             this.foodList = req
-            
-            
         },
         async deleteFood(id){
             await fetch(this.api + '/food/delete/' + id, {
