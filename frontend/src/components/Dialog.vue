@@ -14,7 +14,7 @@
             @click="invertDiplasy" 
             class="fixed right-0 bottom-0 bg-blue-300 hover:bg-blue-500 hover:text-white transition rounded-lg p-3 m-2 shadow-xl   "
         >
-            Crear Nuevo Platillo
+            {{ text }}
         </button>
     </div>
 </template>
@@ -23,6 +23,7 @@
 
 export default {
     name: 'FoodCreate',
+    props: ["text"],
     data(){
         return{
             res: '',
