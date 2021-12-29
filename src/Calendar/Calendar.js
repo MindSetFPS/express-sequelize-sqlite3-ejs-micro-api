@@ -75,7 +75,7 @@ router.post('/api/create', async (req, res) => {
     }).catch( e => console.error(e))
 
     if( !search1 || !search2 ){
-        res.status(400).json({error: true, message: 'La comida no existe.'})
+        return res.status(404).json({error: true, message: 'Uno o mas de estos platillos no existen.'})
     }
 
     console.log('Id comida1: ' + search1)
@@ -89,7 +89,7 @@ router.post('/api/create', async (req, res) => {
 
     await newTodayMenu.save().then( (e) => {
         console.log(e)
-        res.status(200).json({ok: true, message: 'Nuevo menu guardado'})
+        return res.status(200).json({ok: true, message: 'Nuevo menu guardado'})
     })
 
 })
