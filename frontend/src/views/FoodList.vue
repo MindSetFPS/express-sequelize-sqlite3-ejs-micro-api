@@ -19,14 +19,13 @@
                 </div>
             </div>
             <div v-else  >
-                <error-alert :link="foodList.link" :message="foodList.error" />
+                <food-create @new-food-added="getFood" />
             </div>
     </div>
 </template>
 
 <script>
 import Dialog from '../components/Dialog.vue'
-import ErrorAlert from '../components/ErrorAlert.vue'
 import FoodCreate from '../components/FoodCreate.vue'
 import PageTitle from '../components/PageTitle.vue'
 
@@ -34,7 +33,6 @@ export default {
     name: 'FoodList',
     components: {
         Dialog,
-        ErrorAlert,
         FoodCreate,
         PageTitle,
     },

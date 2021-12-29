@@ -1,7 +1,6 @@
 <template>
     <div class="container bg-white p-2 rounded-md shadow-xl " >
-        <h1 class="text-3xl font-bold">  </h1>
-        <page-title text="Crear Menu del Dia" /> 
+        <h1 class="text-3xl font-bold"> Crear Menu del Dia </h1>
 
         <form autocomplete="off">
             
@@ -26,14 +25,12 @@
     </div>
 </template>
 <script>
-import PageTitle from '../components/PageTitle.vue'
 import InputField from '../components/InputField.vue'
 import dayjs from 'dayjs'
 
 export default {
     name: 'CalendarCreate',
     components: {
-        PageTitle,
         InputField
     },
     data () {

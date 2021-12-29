@@ -5,7 +5,7 @@
             <clock />
         </div>
 
-        <Dialog text="Crear nuevo pedido" >
+        <Dialog text="Crear nuevo pedido" v-if="calendar.ok && pedidos && pedidos.length" >
             <pedido-edit-or-create  />
         </Dialog>
 
@@ -134,10 +134,10 @@
             </div>
         </div>
         <div v-if="calendar.ok && pedidos && !pedidos.length" >
-            <error-alert link="/" message="Crea un pedido" >  </error-alert>
+            <pedido-edit-or-create />
         </div>
         <div v-if="!calendar.ok" >
-            <error-alert link="/calendar/create-menu" message="Primero Crea un Menu" />
+            <error-alert link="/calendar/list" message="Primero Crea un Menu" />
         </div>
     </div>
 </template>

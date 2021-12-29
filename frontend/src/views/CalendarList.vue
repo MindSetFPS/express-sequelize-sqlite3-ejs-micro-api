@@ -26,17 +26,15 @@
                     </div>
                     
                 </div>
-
             </div>
 
             <div v-else >
-                <error-alert :message="calendars.message" :link="calendars.link" />
+                <calendar />
             </div>
     </div>
 </template>
 
 <script>
-import ErrorAlert from '@/components/ErrorAlert.vue'
 import PageTitle from '../components/PageTitle.vue'
 import Dialog from '../components/Dialog.vue'
 import Calendar from '../components/CalendarCreate.vue'
@@ -44,7 +42,6 @@ import Calendar from '../components/CalendarCreate.vue'
 export default {
     name: 'CalendarList',
     components: {
-        ErrorAlert,
         PageTitle,
         Dialog,
         Calendar
