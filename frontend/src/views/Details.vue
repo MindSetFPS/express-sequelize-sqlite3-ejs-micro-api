@@ -79,7 +79,7 @@ export default {
             }).then(res => res.json()).catch(e => console.error(e))
 
             this.res = res
-            this.$router.push('/pedidos')
+            this.$router.push('/')
         }
     },
     mounted(){
