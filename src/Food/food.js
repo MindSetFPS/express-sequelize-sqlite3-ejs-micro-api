@@ -42,7 +42,8 @@ router.post('/api/create',async (req, res) => {
     res.json({ok: true, message: 'Comida Creada.'})
 })
 
-router.post('/edit/:id', async (req, res) => {
+router.post('/api/update/:id', async (req, res) => {
+    console.log('New request at /api/update/:id')
     const search = await Food.findByPk(req.params.id, {
         attributes: ['id', 'name', 'description', 'link'],
         limit: 1,
@@ -54,7 +55,7 @@ router.post('/edit/:id', async (req, res) => {
     })
     console.log('Updated...')
 
-    res.redirect('/')
+    res.json({ok: true, updated: true})
 })
 
 router.delete('/delete/:id', (req, res) => {
