@@ -1,7 +1,6 @@
 <template>
   <div class="bg-white p-2 rounded-lg shadow-xl">
-    <page-title :text="pedidoId ? 'Editar Pedido' : 'Crear Pedido'" > 
-    </page-title>
+    <h2 class="text-3xl" > {{pedidoId ? 'Editar Pedido' : 'Crear Pedido'}} </h2>
     <div v-if="menu.ok" >
       <form>
         <div class="w-full mt-2" >
@@ -45,7 +44,6 @@
 <script>
 // @ is an alias to /src
 import ErrorAlert from './ErrorAlert.vue'
-import PageTitle from './PageTitle.vue'
 import InputField from './InputField.vue'
 
 import { io } from 'socket.io-client'
@@ -54,7 +52,6 @@ export default {
   name: 'PedidoEditOrCreate',
   components: {
     ErrorAlert,
-    PageTitle,
     InputField
   },
   props: ['pedidoId'],
