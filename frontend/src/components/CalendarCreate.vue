@@ -48,9 +48,18 @@ export default {
     methods: {
         async getFood(){
             const foodList = await fetch( this.api + '/food/api' ).then(res => res.json()).catch(e => console.error(e))
-            this.foodList = foodList.data
-            console.log(foodList)
-            console.log(this.api)
+            
+            if(foodList.ok){
+                this.foodList = foodList.data
+                if(this.foodList.length < 2){
+                    this.$router.push('/food')
+                }
+            }else{
+                    this.$router.push('/food')
+            }
+
+
+            console.log(this.foodList)
         },
         async postCalendar(){
             const res = await fetch( this.api + '/calendar/api/create', {

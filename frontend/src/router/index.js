@@ -7,6 +7,7 @@ import Customers from '../views/Customers.vue'
 import Details from '../views/Details.vue'
 import Edit from '../views/Edit.vue'
 import Food from '../views/Food.vue'
+import FoodEditOrCreate from '../components/FoodEditOrCreate.vue'
 import FoodList from '../views/FoodList.vue'
 import Login from '../views/Login.vue'
 import Pedidos from '../views/Pedidos.vue'
@@ -29,6 +30,10 @@ const routes = [
     path: '/food',
     name: 'FoodList',
     component: FoodList
+  },{
+    path: '/food/edit/:id',
+    name: 'Food Edit',
+    component: FoodEditOrCreate
   },{
     path: '/food/:id',
     name: 'Food Stats',

@@ -1,6 +1,7 @@
 <template>
     <div class=""> 
             <page-title text="Menu" />
+            <h3 class="text-xl my-3 " >{{ hint }}</h3>
             <Dialog text="Crear nuevo platillo" >
                 <food-create @new-food-added="getFood" />
             </Dialog>
@@ -41,13 +42,18 @@ export default {
             error: '',
             link: '',
             foodList: '',
+            hint: '',
             api: process.env.VUE_APP_API
         }
     },
     methods: {
         async getFood(){
-            const req = await fetch(this.api + '/food/api').then(res => res.json()).catch(e => console.error(e))
+            const req = await fetch(this.api + '/food/api')
+                .then(res => res.json())
+                .catch(e => console.error(e))
             this.foodList = req
+            console.log(this.foodList)
+            if(this.foodList.ok == false) this.hint = 'Agrega al menos 2 platillos al menu.'
         },
         async deleteFood(id){
             await fetch(this.api + '/food/delete/' + id, {
