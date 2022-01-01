@@ -38,7 +38,9 @@ router.get('/:id', async (req, res) => {
         },
         include:{
             model: Food,
-            attributes: ['quantity']
+            through: {
+                attributes: ['quantity']
+            }
         }
     })
     console.log(customer)
