@@ -1,23 +1,19 @@
 <template>
-
     <div>
         <page-title text="Customers" />
-        <div v-for="customer in customers"  :key="customer.id" >
-
-            <router-link :to="'/customer/' + customer.id" >
-                {{ customer.name }}
-            </router-link>
-
-        </div>
+        <customer-list :customers="customers" />
     </div>
 </template>
 <script>
 
 import PageTitle from '../components/PageTitle.vue'
+import CustomerList from '../components/CustomerList.vue'
+
 export default {
     name: 'Customers',
     components: {
-        PageTitle
+        PageTitle,
+        CustomerList
     },
     data(){
         return{
@@ -31,11 +27,11 @@ export default {
                 .then(res => res.json())
                 .catch(error => console.error(error))
             this.customers = customer
+            console.log(this.customers)
         }
     },
     mounted(){
         this.getCustomers()
     }
-
 }
 </script>
