@@ -12,6 +12,7 @@ import FoodList from '../views/FoodList.vue'
 import Login from '../views/Login.vue'
 import Pedidos from '../views/Pedidos.vue'
 import Register from '../views/Register.vue'
+import CalendarDay from '../views/CalendarDay'
 
 const routes = [
   {
@@ -43,6 +44,11 @@ const routes = [
     name: 'Calendar List',
     component: CalendarList
   },{
+    path: '/calendar/:id',
+    name: 'Calendar Day',
+    component: CalendarDay
+  }
+  ,{
     path: '/accounts',
     name: 'Accounts',
     component: Accounts
