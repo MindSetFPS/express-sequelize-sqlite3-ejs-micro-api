@@ -6,19 +6,24 @@ require('dayjs/locale/es')
 const { Op } = require('sequelize')
 const Food  = require('../Food/FoodModel')
 const Calendar = require('./CalendarModel')
+const { Pedido, PedidoItems, Location } = require('../Pedido/PedidoModel')
+const Customer = require('../Customer/CustomerModel')
 
 router.get('/api/all', async (req, res) => {
     console.log('New request for /calendar/api/all')
     formatedDate = date().format('YYYY-MM-DD')
     const calendars = await Calendar.findAll({
         where: {
-            date: {[Op.gte]: formatedDate}
+            date: {[Op.lte]: formatedDate}
         },
         include: [
             { model: Food, as: 'Comida1' },
             { model: Food, as: 'Comida2' }
-        ]
+        ],
+        order: [['date', 'DESC']]
     }).catch( e => console.error(e))
+
+    console.log(calendars)
 
     if(!calendars.length > 0){
         console.log('no')
@@ -28,7 +33,7 @@ router.get('/api/all', async (req, res) => {
     }
     res.json(calendars)
 })
-
+ 
 router.get('/api/list', async (req, res) => {
     console.log('New request for /calendar/api/list')
     formatedDate = date().format('YYYY-MM-DD')
@@ -52,6 +57,46 @@ router.get('/api/list', async (req, res) => {
         console.log('Correcto')
         res.json({ok: true, message: 'Ok', calendar: calendar})
     }    
+})
+
+router.get('/api/:id', async (req, res) => {
+    console.log('New request for /calendar/api/:id')
+    formatedDate = date().format('YYYY-MM-DD')
+
+    let calendar = ''
+
+    try {
+        calendar = await Calendar.findByPk(req.params.id).catch(e => console.error(e))
+        console.log(calendar)
+    } catch (error) {
+        console.error(error)
+    }
+
+    // console.log(calendar)
+
+    const pedidos = await Pedido.findAll({
+        where: {
+            createdAt: {
+                [Op.startsWith]: calendar.date
+            }
+        },
+        include: [  
+            {
+                model: Food,
+                through: {
+                    attributes: ['quantity']
+                },
+                order: [[Food, PedidoItems, 'id', 'DESC']]
+            },
+            {
+                model: Location
+            },{
+                model: Customer
+            },
+        ],
+    })
+
+    res.json({ok: true, calendar: calendar, pedidos: pedidos})
 })
 
 router.post('/api/create', async (req, res) => {
