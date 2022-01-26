@@ -6,8 +6,15 @@
                     <calendar />
                 </Dialog>
 
-                <div class=" bg-white w-full text-center rounded-md p-3 "   v-for="calendar in calendars" :key="calendar.id" >
-                    <h1 class="font-medium text-xl" >{{ calendar.date }} </h1>
+                <div 
+                :class="`bg-white w-full rounded-md p-3 m-3 ${ getDateAndTime(calendar.createdAt) == getDateAndTime(now) ? 'ring-4 ring-gray-400 scale-105 transform-gpu' : '' } `"
+                    v-for="calendar in calendars" 
+                    :key="calendar.id" 
+                >
+                    <router-link :to="/calendar/ + calendar.id" class="font-medium text-xl text-left hover:underline " >{{ getDateAndTime(calendar.createdAt) }} </router-link>
+                    
+                    {{  }}
+
                     <div class="" >
                         <div class="flex justify-evenly text-lg " >
                             <div>
@@ -18,7 +25,7 @@
                             </div>
                         </div>
                         <div class="flex justify-center" >
-                            <button class="     rounded-md bg-blue-100 text-blue-500 p-2 mr-2 " > Editar </button>
+                            <button class="rounded-md bg-blue-100 text-blue-500 p-2 mr-2 " > Editar </button>
                             <form>
                                 <button class="rounded-md bg-red-100 p-2 text-red-500" @click="deleteCalendar(calendar.id)" > Borrar </button>  
                             </form>
@@ -38,6 +45,7 @@
 import PageTitle from '../components/PageTitle.vue'
 import Dialog from '../components/Dialog.vue'
 import Calendar from '../components/CalendarCreate.vue'
+import dayjs from 'dayjs'
 
 export default {
     name: 'CalendarList',
@@ -50,6 +58,7 @@ export default {
         return{
             api: process.env.VUE_APP_API,
             calendars: '',
+            now: dayjs()
         }
     },
     methods: {
@@ -68,6 +77,9 @@ export default {
             if (deleteCalendar.ok){
                 this.getCalendars()
             }
+        },
+        getDateAndTime(d){
+            return dayjs(d).format('dddd DD MMMM YYYY')
         }
 
     },
