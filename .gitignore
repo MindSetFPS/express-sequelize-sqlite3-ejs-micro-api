@@ -2,4 +2,6 @@ node_modules/
 dist/
 db.sqlite
 .editorconfig
+.env.production
+.env.development
 .env
