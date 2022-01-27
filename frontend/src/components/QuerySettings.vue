@@ -29,8 +29,6 @@
                     :clearButton="true" 
                 />
                         
-                <button @click="getPedidos" class="rounded-md bg-red-200 p-2 w-full mt-2 text-red-600" >Buscar pedidos y arreglar este boton </button>
-
                 <div class="flex mt-3 text-xs w-full justify-between" >
                     <!-- TITULOS -->
                     <div class=" w-2/12 " >
