@@ -6,10 +6,10 @@
                 Ventas: {{ sells }}
             </div>
             <div>
-                Comida0: {{ sellsComida0 }}
+                {{ comida0Name }}: {{ sellsComida0 }}
             </div>
             <div>
-                Comida1: {{ sellsComida1 }}
+                {{ comida1Name }}: {{ sellsComida1 }}
             </div>
             <div>
                 Recolectado: ${{ collected }}
@@ -53,6 +53,8 @@ export default {
             calendar: '',
             collected: 0,
             total: '',
+            comida0Name: '',
+            comida1Name: '',
             sellsComida0: 0,
             sellsComida1: 0,
             sells: 0,
@@ -67,6 +69,8 @@ export default {
             if(cal.ok){
                 this.pedidos = cal.pedidos
                 this.calendar = cal.calendar
+                this.comida0Name = cal.calendar.Comida1.name
+                this.comida1Name = cal.calendar.Comida2.name
             }
             console.log(cal)
             this.count()

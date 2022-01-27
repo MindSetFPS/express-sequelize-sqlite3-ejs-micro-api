@@ -66,7 +66,15 @@ router.get('/api/:id', async (req, res) => {
     let calendar = ''
 
     try {
-        calendar = await Calendar.findByPk(req.params.id).catch(e => console.error(e))
+        calendar = await Calendar.findOne({
+            where: {
+                id: req.params.id
+            },
+            include: [
+                {model: Food, as: 'Comida1'} ,
+                {model: Food, as: 'Comida2'} ,
+            ],
+        }).catch(e => console.error(e))
         console.log(calendar)
     } catch (error) {
         console.error(error)
