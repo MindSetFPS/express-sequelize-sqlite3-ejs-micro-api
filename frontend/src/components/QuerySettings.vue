@@ -68,7 +68,7 @@
                         <div v-else >
                             <Loading />
                         </div>
-                        <div class="flex" >
+                        <div class="flex text-xl " >
                             <div class="" >
                                 {{ this.comida0DeliveredQuantity }}
                             </div>
@@ -78,14 +78,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-1/5"     >
+                    <div class="w-1/5">
                         <div class="" v-if="calendar" >
                             {{ calendar.calendar.Comida2Id > calendar.calendar.Comida1Id ? calendar.calendar.Comida2.name : calendar.calendar.Comida1.name  }}
                         </div>
                         <div v-else >
                             <Loading />
                         </div>
-                        <div class="flex" >
+                        <div class="flex text-xl " >
                             <div class="" >
                                 {{ this.comida1DeliveredQuantity }}
                             </div>
