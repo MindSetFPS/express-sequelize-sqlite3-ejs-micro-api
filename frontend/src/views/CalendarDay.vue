@@ -1,6 +1,23 @@
 <template>
     <div>
-        <h1>Ventas del dia {{ calendar.date }} </h1>
+        <page-title :text="'Ventas del dia ' +  calendar.date " > </page-title>
+        <div class="flex justify-evenly" >
+            <div>
+                Ventas: {{ sells }}
+            </div>
+            <div>
+                Comida0: {{ sellsComida0 }}
+            </div>
+            <div>
+                Comida1: {{ sellsComida1 }}
+            </div>
+            <div>
+                Recolectado: ${{ collected }}
+            </div>
+            <div>
+                Total: ${{ total }}
+            </div>
+        </div>
         <pedido-item 
             v-for="pedido in pedidos" 
             :key="pedido.id" 
@@ -15,17 +32,18 @@
             :customerFilter="pedido.customer.name"
             :locationFilter="pedido.location.name"
         />
-
     </div>
 
 </template>
 <script>
+import PageTitle from '../components/PageTitle.vue'
 import PedidoItem from '../components/PedidoItem.vue'
 
 export default {
     name: 'CalendarDay',
     components: {
-        PedidoItem
+        PedidoItem,
+        PageTitle
     },
     data(){
         return{
@@ -33,6 +51,11 @@ export default {
             api: process.env.VUE_APP_API,
             pedidos: '',
             calendar: '',
+            collected: 0,
+            total: '',
+            sellsComida0: 0,
+            sellsComida1: 0,
+            sells: 0,
         }
     },
     methods: {
@@ -46,7 +69,22 @@ export default {
                 this.calendar = cal.calendar
             }
             console.log(cal)
+            this.count()
         },
+        count(){
+            for( let pedido of this.pedidos){
+                if(pedido.paid){
+                    this.collected = this.collected + (pedido.food[0].pedidoItems.quantity * 50)
+                    this.collected = this.collected + (pedido.food[1].pedidoItems.quantity * 50)
+                } 
+                this.sellsComida0 = this.sellsComida0 + pedido.food[0].pedidoItems.quantity
+                this.sellsComida1 = this.sellsComida1 + pedido.food[1].pedidoItems.quantity
+            }
+
+            this.sells = this.sellsComida0 + this.sellsComida1
+            this.total = (this.sellsComida0 + this.sellsComida1) * 50
+
+        }
     },
     mounted(){
         this.getCalendar()
